@@ -47,7 +47,6 @@
                     android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp">
 
-
                     <TextView
                         style="@style/headerText"
                         android:layout_gravity="center"

@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -69,7 +70,7 @@ private ProgressBar progressBar;
         etAddress = findViewById(R.id.etAddress);
         tvsignin = findViewById(R.id.tvsignin);
         btnRegister = findViewById(R.id.btnRegister);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar_cyclic);
+        progressBar = findViewById(R.id.progressBar_cyclic);
 
 //Variables
         isValid = false;
@@ -102,10 +103,15 @@ private ProgressBar progressBar;
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
                                     writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString());
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                                   // updateUI(user);
                                     Toast.makeText(getApplicationContext(), "Registered Successfully Please check your E-Mail for verification", Toast.LENGTH_LONG).show();
-//                                    et.setText("");
-//                                    edtpass.setText("");
-//                                    edtcpass.setText("");
+                                    etName.setText("");
+                                    etAddress.setText("");
+                                    etMobile.setText("");
+                                    etEmail.setText("");
+                                    etPassword.setText("");
+                                    spinner.setSelection(0);
                                     // startActivity(new Intent(SignUp.this, SignIn.class));
                                     //finish();
                                 }else {
@@ -134,8 +140,9 @@ private ProgressBar progressBar;
 
     private void writeNewUser(String name, String mobile, String email, String password, String address, String userType) {
         User user = new User(name, mobile, email, password, address, userType);
-        String key = mDatabase.getDatabase().getReference().push().getKey();
-        mDatabase.child(userType).child(key).setValue(user);
+      //  String key = mDatabase.getDatabase().getReference().push().getKey();
+       String uid = firebaseAuth.getCurrentUser().getUid();
+        mDatabase.child(userType).child(uid).setValue(user);
     }
 
 private boolean validations(){
@@ -178,11 +185,9 @@ private boolean validations(){
         View selectedView = spinner.getSelectedView();
         if (selectedItemOfMySpinner == 0) {
             if (selectedView != null && selectedView instanceof TextView) {
-                //spinner.requestFocus();
                 TextView selectedTextView = (TextView) selectedView;
                 selectedTextView.setError(error);
                 selectedTextView.setText(error); // actual error message
-                // spinner.performClick();
                 selectedTextView.setTextColor(Color.RED);
             }
             isSpinnerValid = false;

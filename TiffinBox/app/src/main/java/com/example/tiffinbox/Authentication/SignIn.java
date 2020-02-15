@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.tiffinbox.Customer;
 import com.example.tiffinbox.MainActivity;
 import com.example.tiffinbox.R;
+import com.example.tiffinbox.Seller.AddView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,12 +40,12 @@ Button btnLogin;
 //Firebase
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    FirebaseDatabase firebaseDatabaseCust = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReferenceCust = firebaseDatabaseCust.getReference();
-    DatabaseReference dataCust = databaseReferenceCust.child("Customer");
-    FirebaseDatabase firebaseDatabaseSell = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReferenceSell = firebaseDatabaseSell.getReference();
-    DatabaseReference dataSell = databaseReferenceSell.child("Seller");
+//    FirebaseDatabase firebaseDatabaseCust = FirebaseDatabase.getInstance();
+//    DatabaseReference databaseReferenceCust = firebaseDatabaseCust.getReference();
+//    DatabaseReference dataCust = databaseReferenceCust.child("Customer");
+//    FirebaseDatabase firebaseDatabaseSell = FirebaseDatabase.getInstance();
+//    DatabaseReference databaseReferenceSell = firebaseDatabaseSell.getReference();
+//    DatabaseReference dataSell = databaseReferenceSell.child("Seller");
 
     DatabaseReference mFirebasedataRefSell = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mFirebasedataRefCust = FirebaseDatabase.getInstance().getReference();
@@ -64,16 +65,11 @@ Button btnLogin;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-
-
-//        if (firebaseUser!=null&&firebaseAuth.getCurrentUser().isEmailVerified()){
+        //        if (firebaseUser!=null&&firebaseAuth.getCurrentUser().isEmailVerified()){
 //            startActivity(new Intent(SignIn.this, MainActivity.class));
 //            finish();
 //        }
-
-//dataSell.addValueEventListener(this);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+                btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validations()){
@@ -85,18 +81,7 @@ Button btnLogin;
 
                                     querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString());
                                     queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString());
-                                fire();
-                                    //    Toast.makeText(SignIn.this, "In"+mFirebaseDatabaseReference.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()), Toast.LENGTH_LONG).show();
-//
-//                                    if(mFirebaseDatabaseReference.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString())) {
-//                                        Toast.makeText(SignIn.this, "In", Toast.LENGTH_LONG).show();
-//                                    }else if (dataSell.orderByChild("email").equals(etEmailLogin.getText().toString())){
-//                                        Toast.makeText(SignIn.this, "In2", Toast.LENGTH_LONG).show();
-//
-//                                    }else {
-//                                        Toast.makeText(SignIn.this, "out", Toast.LENGTH_LONG).show();
-//
-//                                    }
+                                triggerQuey();
                                 }else {
                                     Toast.makeText(SignIn.this,"Please verify your E-Mail address", Toast.LENGTH_LONG).show();
 
@@ -114,10 +99,7 @@ Button btnLogin;
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.getValue() != null) {
             String key = dataSnapshot.getKey();
-
             if (key.equals("Customer")) {
-               // map = (Map<String, Object>) dataSnapshot.getValue();
-
                 data = dataSnapshot.getValue().toString();
                 Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SignIn.this, Customer.class));
@@ -125,12 +107,8 @@ Button btnLogin;
             } else if (key.equals("Seller")){
                 data2 = dataSnapshot.getValue().toString();
                 Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignIn.this, MainActivity.class));
+                startActivity(new Intent(SignIn.this, AddView.class));
 
-//                if (data2.contains(etEmailLogin.getText().toString())){
-//                    startActivity(new Intent(SignIn.this, MainActivity.class));
-//                }
-//            }
             }
         }
     }
@@ -139,7 +117,7 @@ Button btnLogin;
         Toast.makeText(getApplicationContext(),"failed "+data2,Toast.LENGTH_SHORT).show();
 
     }
-public void fire(){
+public void triggerQuey(){
     if (queryCustomer!=null && querySeller!=null) {
         querySeller.addValueEventListener(this);
         queryCustomer.addValueEventListener(this);

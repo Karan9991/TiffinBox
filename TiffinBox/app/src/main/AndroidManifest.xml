@@ -9,16 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Customer"></activity>
-        <activity android:name=".Authentication.SignIn" />
-        <activity android:name=".Authentication.Register">
+        <activity
+            android:name=".Seller.AddView"
+            android:label="@string/title_activity_add_view"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Customer" />
+        <activity android:name=".Authentication.SignIn" />
+        <activity android:name=".Authentication.Register">
+
+        </activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>

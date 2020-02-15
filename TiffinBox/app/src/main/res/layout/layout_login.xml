@@ -10,8 +10,6 @@
     android:layout_marginBottom="@dimen/loginViewsMargin"
     android:background="@color/whiteCardColor">
 
-
-
     <LinearLayout
         style="@style/linearParent"
         android:layout_gravity="center"
@@ -70,7 +68,6 @@
             android:textStyle="bold"
             android:textColor="@color/primaryTextColor"
             android:text="@string/login_signup_hint"
-            android:onClick="viewRegisterClicked"
             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
 
