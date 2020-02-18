@@ -1,14 +1,11 @@
 package com.example.tiffinbox.Seller;
 
-import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Path;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,12 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -32,19 +26,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tiffinbox.Authentication.Model.User;
 import com.example.tiffinbox.R;
-import com.example.tiffinbox.Seller.Model.AddImage;
+import com.example.tiffinbox.Seller.Model.AddRecipe;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -82,7 +70,8 @@ public class AddSeller extends Fragment {
     Boolean isValid;
     private OnFragmentInteractionListener mListener;
     String ImageUploadId;
-    AddImage imageUploadInfo;
+    AddRecipe imageUploadInfo;
+     Uri downlduri;
 //UI
     Button btnAdd;
     CardView cvSellerTitle, cvSellerPrice, cvSellerDesc;
@@ -190,7 +179,7 @@ public class AddSeller extends Fragment {
                 // Getting selected image into Bitmap.
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), FilePathUri);
                 // Setting up bitmap selected image into ImageView.
-                ivUploadimg.setImageBitmap(bitmap);
+            //    ivUploadimg.setImageBitmap(bitmap);
                 // After selecting image change choose button above text.
               //  ChooseButton.setText("Image Selected");
 
@@ -227,23 +216,21 @@ public class AddSeller extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Hiding the progressDialog after done uploading.
-                            progressDialog.dismiss();
-                            // Showing toast message after done uploading.
-                            Toast.makeText(getContext(), "Recipe Added", Toast.LENGTH_LONG).show();
 
-                           // @SuppressWarnings("VisibleForTests")
-                             imageUploadInfo = new AddImage(taskSnapshot.getStorage().getDownloadUrl().toString(), etSellerPrice.getText().toString(), etSellerDesc.getText().toString());
+                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                     downlduri = uri;
+                                    imageUploadInfo = new AddRecipe(downlduri.toString(),etSellerPrice.getText().toString(), etSellerDesc.getText().toString());
 
-                            // Getting image upload ID.
-                             ImageUploadId = databaseReference.push().getKey();
+                                    databaseReference.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(etSellerTitle.getText().toString()).setValue(imageUploadInfo);
+                                    progressDialog.dismiss();
+                                    //  @SuppressWarnings("VisibleForTests")
+                                    Toast.makeText(getContext(), "Recipe Added", Toast.LENGTH_LONG).show();
 
 
-
-                            // Adding image upload id s child element into databaseReference.
-                            //databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
-                           databaseReference.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(etSellerTitle.getText().toString()).setValue(imageUploadInfo);
-                            // User user= dataSnapshot.getValue(User.class);
+                                }
+                            });
 
                         }
                     })

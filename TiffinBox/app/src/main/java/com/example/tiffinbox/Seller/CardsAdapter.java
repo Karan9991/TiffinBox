@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.Model.CardModel;
 
@@ -41,8 +42,11 @@ public class CardsAdapter extends ArrayAdapter<CardModel> {
 
         CardModel model = getItem(position);
 
-        holder.imageView.setImageResource(model.getImageId());
-        holder.tvTitle.setText(model.getTitle());
+       // holder.imageView.setImageResource(model.getImageURL());
+        Glide.with(getContext()).load(model.getImageURL()).into(holder.imageView);
+
+        //  holder.tvTitle.setText(model.getTitle());
+        holder.tvTitle.setText(model.getImageTitle());
 
         return convertView;
     }
@@ -53,8 +57,8 @@ public class CardsAdapter extends ArrayAdapter<CardModel> {
         TextView tvSubtitle;
 
         ViewHolder(View view) {
-            imageView = (ImageView) view.findViewById(R.id.image);
-            tvTitle = (TextView) view.findViewById(R.id.text_title);
+            imageView = (ImageView) view.findViewById(R.id.imgView);
+            tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         }
     }
 }

@@ -12,10 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tiffinbox.Authentication.Model.User;
 import com.example.tiffinbox.Customer;
 import com.example.tiffinbox.MainActivity;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.AddView;
+import com.example.tiffinbox.ToastListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
