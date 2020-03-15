@@ -5,6 +5,10 @@ package com.example.tiffinbox.Seller.Model;
  */
 
 public class CardModel {
+    private boolean isSelected;
+
+
+
     private int imageId;
     private int titleId;
     private String imageTitle;
@@ -13,6 +17,11 @@ public class CardModel {
     public CardModel(String imageTitle, String imageURL) {
         this.imageTitle = imageTitle;
         this.imageURL = imageURL;
+    }
+
+    public CardModel(boolean isSelected, String imageTitle) {
+        this.isSelected = isSelected;
+        this.imageTitle = imageTitle;
     }
 
     public CardModel() {
@@ -25,7 +34,13 @@ public class CardModel {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+    public boolean isSelected() {
+        return isSelected;
+    }
 
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
     public CardModel(int imageId, int titleId) {
         this.imageId = imageId;
         this.titleId = titleId;

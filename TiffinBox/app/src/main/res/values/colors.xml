@@ -12,4 +12,15 @@
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
     <color name="carview">#00A5FF</color>
+
+    <color name="from">#000000</color>
+    <color name="subject">#111111</color>
+    <color name="timestamp">#4285f4</color>
+    <color name="message">#7a7a7a</color>
+    <color name="icon_tint_normal">#7a7a7a</color>
+    <color name="icon_tint_selected">#fed776</color>
+    <color name="row_activated">#00A5FF</color>
+    <color name="bg_action_mode">#757575</color>
+    <color name="bg_circle_default">#666666</color>
+    <color name="blu">#ADDFFF</color>
 </resources>

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.tiffinbox.Seller.AddSeller;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.ViewSeller;
+import com.example.tiffinbox.Seller.ViewSeller2;
 //import com.example.tiffinbox.Seller.R;
 
 /**
@@ -39,7 +40,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
            fragment = new AddSeller();
            break;
        case 1:
-           fragment = new ViewSeller();
+           fragment = new ViewSeller2();
            break;
    }
 return fragment;

@@ -19,7 +19,7 @@ import android.view.View;
 
 import com.example.tiffinbox.Seller.ui.main.SectionsPagerAdapter;
 
-public class AddView extends AppCompatActivity implements AddSeller.OnFragmentInteractionListener, ViewSeller.OnFragmentInteractionListener {
+public class AddView extends AppCompatActivity implements AddSeller.OnFragmentInteractionListener, ViewSeller2.OnFragmentInteractionListener {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     @Override

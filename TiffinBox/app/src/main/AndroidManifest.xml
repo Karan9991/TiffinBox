@@ -13,7 +13,7 @@
         <activity
             android:name=".Seller.AddView"
             android:label="@string/title_activity_add_view"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Customer" />
-        <activity android:name=".Authentication.SignIn" />
+        <activity android:name=".Authentication.SignIn">
+
+        </activity>
         <activity android:name=".Authentication.Register"></activity>
         <activity android:name=".MainActivity"></activity>
     </application>
