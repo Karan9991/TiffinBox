@@ -224,6 +224,8 @@ public class AddSeller extends Fragment {
                                     imageUploadInfo = new AddRecipe(downlduri.toString(),etSellerPrice.getText().toString(), etSellerDesc.getText().toString());
 
                                     databaseReference.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(etSellerTitle.getText().toString()).setValue(imageUploadInfo);
+//                                    databaseReference.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child("Title").setValue(etSellerTitle.getText().toString());
+
                                     progressDialog.dismiss();
                                     //  @SuppressWarnings("VisibleForTests")
                                     Toast.makeText(getContext(), "Recipe Added", Toast.LENGTH_LONG).show();

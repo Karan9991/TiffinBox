@@ -90,16 +90,19 @@
                     <TextView
                         android:id="@+id/tvTitle"
                         style="@style/modifiedEditText"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:width="20dp"
                         android:hint="@string/titleSeller"
                         android:inputType="text"
                         android:maxLength="50"
                         android:maxLines="1"
+                        android:text="Welocome to IO"
+                        android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:text="Welocome to IO" />
+                        android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
 
                 <de.hdodenhof.circleimageview.CircleImageView

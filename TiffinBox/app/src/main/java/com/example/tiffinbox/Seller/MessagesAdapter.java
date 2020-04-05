@@ -1,9 +1,5 @@
 package com.example.tiffinbox.Seller;
 
-/**
- * Created by abhisheksisodia on 2017-10-06.
- */
-
 import android.content.Context;
 import android.graphics.Typeface;
 //import android.support.v4.content.ContextCompat;
@@ -34,9 +30,13 @@ import com.example.tiffinbox.Seller.Model.Message;
 import com.example.tiffinbox.Seller.helper.CircleTransform;
 import com.example.tiffinbox.Seller.helper.FlipAnimator;
 import com.example.tiffinbox.ToastListener;
+import com.google.android.gms.common.util.ArrayUtils;
 
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder> {
@@ -52,10 +52,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     // index is used to animate only the selected row
     // dirty fix, find a better solution
     private static int currentSelectedIndex = -1;
+    String[] a = new String[10];
+    int j=0;
+ArrayList<String> aList = new ArrayList<String>();
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         public TextView from, subject, message, iconText, timestamp, title;
-        public ImageView iconImp, imgProfile,imgleft,imgright;
+        public ImageView iconImp, imgProfile,imgleft,imgright,imageView;
         public LinearLayout messageContainer;
         public RelativeLayout iconContainer, iconBack, iconFront;
 
@@ -67,6 +71,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 //            iconText = (TextView) view.findViewById(R.id.icon_text);
             //timestamp = (TextView) view.findViewById(R.id.timestamp);
                         title = (TextView) view.findViewById(R.id.tvTitle);
+            imageView = (ImageView) view.findViewById(R.id.imgView);
 
             iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
             iconFront = (RelativeLayout) view.findViewById(R.id.icon_front);
@@ -82,7 +87,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
         @Override
         public boolean onLongClick(View view) {
-            listener.onRowLongClicked(getAdapterPosition());
+            listener.onRowLongClicked(getAdapterPosition(),view);
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             return true;
         }
@@ -114,9 +119,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 //        holder.subject.setText(message.getSubject());
 //        holder.message.setText(message.getMessage());
 //        holder.timestamp.setText(message.getTimestamp());
-        holder.title.setText(message.getMessage());
 
 
+        holder.title.setText(message.getImageTitle());
+        Glide.with(this.mContext).load(message.getImageURL()).into(holder.imageView);
+
+      //  Log.i("sssssssss","v"+message.getImageTitle());
         // displaying the first letter of From in icon text
 //        holder.iconText.setText(message.getFrom().substring(0, 1));
 
@@ -124,16 +132,16 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         holder.itemView.setActivated(selectedItems.get(position, false));
 
         // change the font style depending on message read status
-        applyReadStatus(holder, message);
+   //     applyReadStatus(holder, message);
 
         // handle message star
-        applyImportant(holder, message);
+     //   applyImportant(holder, message);
 
         // handle icon animation
         applyIconAnimation(holder, position);
 
         // display profile image
-        applyProfilePicture(holder, message);
+       // applyProfilePicture(holder, message);
 
 //         apply click events
         applyClickEvents(holder, position);
@@ -143,7 +151,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         holder.iconContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                listener.onRowLongClicked(position);
+                listener.onRowLongClicked(position,view);
                 view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 return true;
             }
@@ -159,61 +167,92 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         holder.iconContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMessageRowClicked(position);
-                Log.i("vvvv", "shortclick");
+                listener.onMessageRowClicked(position, view);
+              //  Log.i("vvvv", "shortclick");
             }
         });
 
         holder.messageContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                listener.onRowLongClicked(position);
+                listener.onRowLongClicked(position,view);
                 view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+              //  aList.add(position, ((TextView)view.findViewById(R.id.tvTitle)).getText().toString());
                 return true;
             }
         });
     }
-
-    private void applyProfilePicture(MyViewHolder holder, Message message) {
-        if (!TextUtils.isEmpty(message.getPicture())) {
-//            Glide.with(mContext).load(message.getPicture())
-//                    .thumbnail(0.5f)
-//                   /* .crossFade()*/
-//                    .transform(new CircleTransform())
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .into(holder.imgProfile);
-            holder.imgProfile.setColorFilter(null);
-//            holder.iconText.setVisibility(View.GONE);
-        } else {
-//            holder.imgProfile.setImageResource(R.drawable.bg_circle);
-//            holder.imgProfile.setColorFilter(message.getColor());
-//            holder.iconText.setVisibility(View.VISIBLE);
-        }
-    }
-
+//    private void applyProfilePicture(MyViewHolder holder, Message message) {
+//        if (!TextUtils.isEmpty(message.getPicture())) {
+////            Glide.with(mContext).load(message.getPicture())
+////                    .thumbnail(0.5f)
+////                   /* .crossFade()*/
+////                    .transform(new CircleTransform())
+////                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+////                    .into(holder.imgProfile);
+//            holder.imgProfile.setColorFilter(null);
+////            holder.iconText.setVisibility(View.GONE);
+//        } else {
+////            holder.imgProfile.setImageResource(R.drawable.bg_circle);
+////            holder.imgProfile.setColorFilter(message.getColor());
+////            holder.iconText.setVisibility(View.VISIBLE);
+//        }
+//    }
     private void applyIconAnimation(MyViewHolder holder, int position) {
         if (selectedItems.get(position, false)) {
             holder.iconFront.setVisibility(View.GONE);
             resetIconYAxis(holder.iconBack);
             holder.iconBack.setVisibility(View.VISIBLE);
             holder.iconBack.setAlpha(1);
+            Log.i("iftest1","ttttt"+position);
             if (currentSelectedIndex == position) {
+                Log.i("iftest2","ttttt"+position);
+                //Log.i("iftest2","ttttt"+position);
+                    //  if (a[0] == null) {
+
+//                    a[j] = holder.title.getText().toString();
+                   try {
+                       aList.set(position, holder.title.getText().toString());
+                       //j++;
+                   } catch (ArrayIndexOutOfBoundsException e) {
+
+                   }
+                    //}
+            //    selectedViews.put("selected",holder.title.getText().toString());
                 FlipAnimator.flipView(mContext, holder.iconBack, holder.iconFront, true);
                 resetCurrentIndex();
             }
         } else {
+            Log.i("iftest3","ttttt"+position);
             holder.iconBack.setVisibility(View.GONE);
             resetIconYAxis(holder.iconFront);
             holder.iconFront.setVisibility(View.VISIBLE);
             holder.iconFront.setAlpha(1);
+            //Log.i("test1","ttttt"+position);
             if ((reverseAllAnimations && animationItemsIndex.get(position, false)) || currentSelectedIndex == position) {
+             //  Log.i("test2","ttttt"+position);
+               //a[position] = null;
+             //  remove(a, 1);
+                try {
+//                    aList.get(position);
+                  aList.set(position, null);
+                 // aList.remove(position);
+                    //j--;
+                }catch (ArrayIndexOutOfBoundsException e){
+
+                }
+             //  removeTheElement(a,position);
+                //selectedViews.put("unselected",holder.title.getText().toString());
+                Log.i("iftest4","ttttt"+position);
                 FlipAnimator.flipView(mContext, holder.iconBack, holder.iconFront, false);
                 resetCurrentIndex();
             }
         }
+//        for (int i=0; i<=animationItemsIndex.size();i++){
+//        Log.i("anumated", "a "+animationItemsIndex.get(i, true));
+//    }
+             //   Log.i("anumated", "a "+ testD(holder,position));
     }
-
-
     // As the views will be reused, sometimes the icon appears as
     // flipped because older view is reused. Reset the Y-axis to 0
     private void resetIconYAxis(View view) {
@@ -232,29 +271,29 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         return messages.get(position).getId();
     }
 
-    private void applyImportant(MyViewHolder holder, Message message) {
-//        if (message.isImportant()) {
-//           // holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_black_24dp));
-//            holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_selected));
-//        } else {
-//           // holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_border_black_24dp));
-////            holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_normal));
-//        }
-    }
+//    private void applyImportant(MyViewHolder holder, Message message) {
+////        if (message.isImportant()) {
+////           // holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_black_24dp));
+////            holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_selected));
+////        } else {
+////           // holder.iconImp.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star_border_black_24dp));
+//////            holder.iconImp.setColorFilter(ContextCompat.getColor(mContext, R.color.icon_tint_normal));
+////        }
+//    }
 
-    private void applyReadStatus(MyViewHolder holder, Message message) {
-        if (message.isRead()) {
-//            holder.from.setTypeface(null, Typeface.NORMAL);
-//            holder.subject.setTypeface(null, Typeface.NORMAL);
-//            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.subject));
-//            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.message));
-        } else {
-//            holder.from.setTypeface(null, Typeface.BOLD);
-//            holder.subject.setTypeface(null, Typeface.BOLD);
-//            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.from));
-//            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.subject));
-        }
-    }
+//    private void applyReadStatus(MyViewHolder holder, Message message) {
+//        if (message.isRead()) {
+////            holder.from.setTypeface(null, Typeface.NORMAL);
+////            holder.subject.setTypeface(null, Typeface.NORMAL);
+////            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.subject));
+////            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.message));
+//        } else {
+////            holder.from.setTypeface(null, Typeface.BOLD);
+////            holder.subject.setTypeface(null, Typeface.BOLD);
+////            holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.from));
+////            holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.subject));
+//        }
+//    }
 
     @Override
     public int getItemCount() {
@@ -274,15 +313,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     }
 public void selectAll(){
     final int checkedCount  = messages.size();
-   // animationItemsIndex.put(0, true);
 
     for (int i = 0; i <  checkedCount; i++) {
         selectedItems.put(i, true);
         if (selectedItems.get(i, true)) {
             animationItemsIndex.put(i, true);
-            Log.i("check", "" + i);
+            notifyItemChanged(i);
         }
-        //  listviewadapter.toggleSelection(i);
     }
 
 }
@@ -319,8 +356,8 @@ public void selectAll(){
 
         void onIconImportantClicked(int position);
 
-        void onMessageRowClicked(int position);
+        void onMessageRowClicked(int position, View view);
 
-        void onRowLongClicked(int position);
+        void onRowLongClicked(int position, View view);
     }
 }

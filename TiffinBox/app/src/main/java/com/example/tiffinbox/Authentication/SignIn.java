@@ -103,12 +103,12 @@ Button btnLogin;
             String key = dataSnapshot.getKey();
             if (key.equals("Customer")) {
                 data = dataSnapshot.getValue().toString();
-                Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SignIn.this, Customer.class));
 
             } else if (key.equals("Seller")){
                 data2 = dataSnapshot.getValue().toString();
-                Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, AddView.class));
 
             }

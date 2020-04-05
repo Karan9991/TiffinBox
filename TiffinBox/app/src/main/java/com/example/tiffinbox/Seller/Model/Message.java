@@ -15,11 +15,34 @@ public class Message {
     private boolean isRead;
     private int color = -1;
 
+    private String imageTitle;
+    private String imageURL;
     public Message() {
     }
 
     public Message(String message) {
         this.message = message;
+    }
+
+    public Message(String imageTitle, String imageURL) {
+        this.imageTitle = imageTitle;
+        this.imageURL = imageURL;
+    }
+
+    public String getImageTitle() {
+        return imageTitle;
+    }
+
+    public void setImageTitle(String imageTitle) {
+        this.imageTitle = imageTitle;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public int getId() {
