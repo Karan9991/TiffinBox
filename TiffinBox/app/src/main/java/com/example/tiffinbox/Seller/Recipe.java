@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -43,7 +45,7 @@ import java.util.Map;
 public class Recipe extends AppCompatActivity implements ValueEventListener {
 
 //UI
-    ImageView imgRecipe,imgView;
+    ImageView imgRecipe,imgView,imgLeftArrow;
     EditText etTitle, etPrice, etDesc;
     EditRecipe editRecipe;
     Button btnEdit,btnUpdate;
@@ -54,6 +56,7 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
     int Image_Request_Code = 7;
     Uri downlduri;
     ProgressDialog progressDialog ;
+    private boolean isValid;
 
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -75,20 +78,27 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
         btnEdit = findViewById(R.id.btnEdit);
         btnUpdate = findViewById(R.id.btnUpdate);
         imgView = findViewById(R.id.imgView);
+        imgLeftArrow = findViewById(R.id.imgLeftArrow);
+
 
         editRecipe = new EditRecipe();
          key = firebaseAuth.getCurrentUser().getUid();
         progressDialog = new ProgressDialog(Recipe.this);
-
+        isValid = false;
 
         dfUpdate = database.getReference().child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe");
         storageReference = FirebaseStorage.getInstance().getReference();
 
+         etTitle.setEnabled(false);
+         gettingIntent();
 
-        gettingIntent();
 
-
-
+         imgLeftArrow.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 startActivity(new Intent(Recipe.this, AddView.class));
+             }
+         });
 
         imgView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,8 +121,10 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               UploadImageFileToFirebaseStorage(etDesc.getText().toString(),etPrice.getText().toString());
-                // writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getText().toString());
+                if (validations()) {
+                    UploadImageFileToFirebaseStorage(etDesc.getText().toString(), etPrice.getText().toString());
+                }
+               // writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getText().toString());
             }
         });
 
@@ -137,7 +149,6 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(title , postValues);
         dfUpdate.updateChildren(childUpdates);
-        ToastListener.longToast(Recipe.this, "Recipe Updated");
     }
     private void gettingIntent(){
         title = getIntent().getStringExtra("etTitle");
@@ -145,7 +156,6 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
             df = database.getReference().child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(title);
             df.addValueEventListener(this);
         }
-
     }
 
     @Override
@@ -172,7 +182,6 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
     }
     // Creating Method to get the selected image file Extension from File Path URI.
     public String GetFileExtension(Uri uri) {
-
         ContentResolver contentResolver = getApplication().getApplicationContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         // Returning the file Extension.
@@ -210,6 +219,7 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
                                     dfUpdate.updateChildren(childUpdates);
                                  //   dfImgUpdate.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(etSellerTitle.getText().toString()).setValue(imageUploadInfo);
                                     progressDialog.dismiss();
+
                                     //  @SuppressWarnings("VisibleForTests")
                                     Toast.makeText(Recipe.this, "Recipe Updated", Toast.LENGTH_LONG).show();
 
@@ -247,5 +257,24 @@ writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getT
     @Override
     public void onCancelled(@NonNull DatabaseError databaseError) {
        ToastListener.longToast(Recipe.this, databaseError.toException().toString());
+    }
+
+    private boolean validations(){
+        if (TextUtils.isEmpty(etTitle.getText())) {
+            etTitle.setError("Title is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etPrice.getText())) {
+            etPrice.setError("Price is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etDesc.getText())) {
+            etDesc.setError("Description is required!");
+            isValid = false;
+        }
+        else {
+            isValid = true;
+        }
+        return isValid;
     }
 }

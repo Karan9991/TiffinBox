@@ -10,11 +10,11 @@
     tools:context=".Seller.ViewSeller2">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
 
-    android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    android:id="@+id/swipe_refresh_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
         <androidx.recyclerview.widget.RecyclerView
 
@@ -25,5 +25,5 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

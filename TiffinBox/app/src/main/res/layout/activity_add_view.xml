@@ -29,7 +29,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary" />
+            app:tabTextColor="@color/whiteTextColor"
+            app:tabIndicatorColor="@android:color/white"
+            android:background="@color/colorAccent" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

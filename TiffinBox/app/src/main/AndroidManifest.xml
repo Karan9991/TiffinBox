@@ -13,7 +13,7 @@
         <activity
             android:name=".Seller.AddView"
             android:label="@string/title_activity_add_view"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity android:name=".Customer" />

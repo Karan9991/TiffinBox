@@ -16,12 +16,20 @@ public class EditRecipe {
     public EditRecipe() {
     }
 
-    public EditRecipe(String uid, String desc, String imageURL, String price) {
-        this.uid = uid;
-        this.desc = desc;
-        this.imageURL = imageURL;
-        this.price = price;
-    }
+//    public EditRecipe(String uid, String desc, String imageURL, String price) {
+//        this.uid = uid;
+//        this.desc = desc;
+//        this.imageURL = imageURL;
+//        this.price = price;
+//    }
+
+//    public EditRecipe(String uid, String desc, String imageURL, String price, String title) {
+//        this.uid = uid;
+//        this.desc = desc;
+//        this.imageURL = imageURL;
+//        this.price = price;
+//        this.title = title;
+//    }
 
     public EditRecipe(String desc, String imageURL, String price) {
         this.desc = desc;
@@ -73,4 +81,5 @@ public class EditRecipe {
     public void setPrice(String price) {
         this.price = price;
     }
+
 }

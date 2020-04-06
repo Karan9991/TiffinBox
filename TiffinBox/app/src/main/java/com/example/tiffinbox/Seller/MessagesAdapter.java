@@ -1,6 +1,7 @@
 package com.example.tiffinbox.Seller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 //import android.support.v4.content.ContextCompat;
 //import android.support.v7.widget.RecyclerView;
@@ -168,7 +169,13 @@ ArrayList<String> aList = new ArrayList<String>();
             @Override
             public void onClick(View view) {
                 listener.onMessageRowClicked(position, view);
-              //  Log.i("vvvv", "shortclick");
+                if (ViewSeller2.actionMode == null) {
+                    String title = ((TextView) view.findViewById(R.id.tvTitle)).getText().toString();
+                    Intent intent = new Intent(mContext.getApplicationContext(), Recipe.class);
+                    intent.putExtra("etTitle", title);
+                    mContext.startActivity(intent);
+                    Log.i("vvvv", "shortclick");
+                }
             }
         });
 

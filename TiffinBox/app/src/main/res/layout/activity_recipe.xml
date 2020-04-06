@@ -9,6 +9,18 @@ android:background="@drawable/login_button_bk"
 
     >
 
+    <ImageView
+        android:id="@+id/imgLeftArrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_leftarrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         style="@style/parent"
         android:layout_width="377dp"

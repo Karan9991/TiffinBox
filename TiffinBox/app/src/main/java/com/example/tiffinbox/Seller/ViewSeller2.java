@@ -1,5 +1,6 @@
 package com.example.tiffinbox.Seller;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -24,11 +25,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.Model.Message;
 import com.example.tiffinbox.Seller.Model.ViewRecipe;
+import com.example.tiffinbox.ToastListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +50,7 @@ import java.util.Map;
  * Use the {@link ViewSeller2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewSeller2 extends Fragment implements SwipeRefreshLayout.OnRefreshListener,androidx.appcompat.view.ActionMode.Callback, MessagesAdapter.MessageAdapterListener {
+public class ViewSeller2 extends Fragment implements androidx.appcompat.view.ActionMode.Callback, MessagesAdapter.MessageAdapterListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,10 +59,10 @@ public class ViewSeller2 extends Fragment implements SwipeRefreshLayout.OnRefres
     private List<Message> messages = new ArrayList<>();
     private RecyclerView recyclerView;
     private MessagesAdapter mAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+   // private SwipeRefreshLayout swipeRefreshLayout;
     ViewRecipe viewRecipe = new ViewRecipe();
     //  private ActionModeCallback actionModeCallback;
-    private androidx.appcompat.view.ActionMode actionMode;
+    public static androidx.appcompat.view.ActionMode actionMode;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -118,8 +121,8 @@ public class ViewSeller2 extends Fragment implements SwipeRefreshLayout.OnRefres
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
-        swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
+//        swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+//        swipeRefreshLayout.setOnRefreshListener(this);
 
         mAdapter = new MessagesAdapter(getContext(), messages, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -227,10 +230,10 @@ getFirebase();
                viewRecipe = dataSnapshot.getValue(ViewRecipe.class);
 
                // adapter.add(new MEs(dataSnapshot.getKey(),viewRecipe.imageURL));
-               messages.add(new Message(viewRecipe.desc,viewRecipe.imageURL));
+               messages.add(new Message(dataSnapshot.getKey(),viewRecipe.imageURL));
                //Log.i("Recipetest",""+viewRecipe.recipe);
                mAdapter.notifyDataSetChanged();
-               // ToastListener.shortToast(getContext(), "v"+dataSnapshot.getChildrenCount());
+                //ToastListener.shortToast(getContext(), "ssss"+dataSnapshot.getKey());
            }
            @Override
            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -292,30 +295,35 @@ getFirebase();
 //    }
     public void deleteRecipe2(String desc){
        // Log.i("ONDATA2 "+desc,"ONDATA2 "+desc2);
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Seller");
+//        Query dummyQuery = ref
+//                .child(firebaseAuth.getCurrentUser().getUid())
+//                .child("Recipe")
+//                .orderByChild("desc")
+//                .equalTo(desc);
+//        dummyQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+////                for (DataSnapshot dummySnapshot: dataSnapshot.getChildren()) {
+////                    // dummySnapshot.getRef().removeValue();
+////                }
+//                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+//                    appleSnapshot.getRef().removeValue();
+//                }
+//              //  Log.i("NEW", "key "+dummyQuery.orderByChild(desc2).equalTo(desc));
+////                dataSnapshot.child("Seller").child(firebaseAuth.getCurrentUser().getUid())
+////                        .child("Recipe").child(dataSnapshot.getKey()).getRef().removeValue();
+//           }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("tag", "onCancelled", databaseError.toException());
+//            }
+//        });
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Seller");
-        Query dummyQuery = ref
+       ref
                 .child(firebaseAuth.getCurrentUser().getUid())
                 .child("Recipe")
-                .orderByChild("desc")
-                .equalTo(desc);
-        dummyQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot dummySnapshot: dataSnapshot.getChildren()) {
-//                    // dummySnapshot.getRef().removeValue();
-//                }
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    appleSnapshot.getRef().removeValue();
-                }
-              //  Log.i("NEW", "key "+dummyQuery.orderByChild(desc2).equalTo(desc));
-//                dataSnapshot.child("Seller").child(firebaseAuth.getCurrentUser().getUid())
-//                        .child("Recipe").child(dataSnapshot.getKey()).getRef().removeValue();
-           }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("tag", "onCancelled", databaseError.toException());
-            }
-        });
+                .child(desc).removeValue();
 //real
 //        deleteRecipe2 = df2.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(desc2).orderByValue().equalTo(desc);
 //       deleteRecipe2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -426,12 +434,12 @@ getFirebase();
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRefresh() {
-      //  getFirebase();
-        // swipe refresh is performed, fetch the messages again
-     //   getInbox();
-    }
+//    @Override
+//    public void onRefresh() {
+//      //  getFirebase();
+//        // swipe refresh is performed, fetch the messages again
+//     //   getInbox();
+//    }
     @Override
     public void onIconClicked(int position) {
         if (actionMode == null) {
@@ -500,7 +508,7 @@ getFirebase();
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         mode.getMenuInflater().inflate(R.menu.menu_action_mode, menu);
         // disable swipe refresh if action mode is enabled
-        swipeRefreshLayout.setEnabled(false);
+      //  swipeRefreshLayout.setEnabled(false);
         return true;
     }
 
@@ -516,28 +524,30 @@ getFirebase();
                 // delete all the selected messages
                 deleteMessages();
                 for (int y=0; y<mAdapter.aList.size(); y++){
-                    deleteRecipe2(mAdapter.aList.get(y));
-                   // Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
+                    if (mAdapter.aList.get(y)!=null) {
+                        deleteRecipe2(mAdapter.aList.get(y));
+                    }
+                    //Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
                 }
                 mode.finish();
                 return true;
-            case R.id.selectAll:
-             mAdapter.selectAll();
-                actionMode.setTitle(mAdapter.getSelectedItemCount()  + "  Selected");
-
-                // mode.finish();
-                return true;
-            case R.id.test:
-              //  for (int j=0;j<=mAdapter.getSelectedItems().size();j++) {
-                    //  if (a[0] == null) {
-                    //}
-//                for (int y=0; y<mAdapter.aList.size(); y++){
-//                deleteRecipe2(mAdapter.aList.get(y),"lk");
-//                    Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
-//                }
-               // deleteRecipe2("b","jh");
-               // Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
-                return  true;
+//            case R.id.selectAll:
+//             mAdapter.selectAll();
+//                actionMode.setTitle(mAdapter.getSelectedItemCount()  + "  Selected");
+//
+//                // mode.finish();
+//                return true;
+//            case R.id.test:
+//              //  for (int j=0;j<=mAdapter.getSelectedItems().size();j++) {
+//                    //  if (a[0] == null) {
+//                    //}
+////                for (int y=0; y<mAdapter.aList.size(); y++){
+////                deleteRecipe2(mAdapter.aList.get(y),"lk");
+////                    Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
+////                }
+//               // deleteRecipe2("b","jh");
+//               // Log.i("aaaaaaaaaaaaaa",  "List" +mAdapter.aList);
+//                return  true;
             default:
                 return false;
         }
@@ -546,7 +556,7 @@ getFirebase();
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         mAdapter.clearSelections();
-        swipeRefreshLayout.setEnabled(true);
+      //  swipeRefreshLayout.setEnabled(true);
         actionMode = null;
         recyclerView.post(new Runnable() {
             @Override
