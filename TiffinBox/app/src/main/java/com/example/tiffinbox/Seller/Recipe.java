@@ -149,6 +149,8 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(title , postValues);
         dfUpdate.updateChildren(childUpdates);
+        Toast.makeText(Recipe.this, "Recipe Updated", Toast.LENGTH_LONG).show();
+
     }
     private void gettingIntent(){
         title = getIntent().getStringExtra("etTitle");
@@ -222,8 +224,6 @@ public class Recipe extends AppCompatActivity implements ValueEventListener {
 
                                     //  @SuppressWarnings("VisibleForTests")
                                     Toast.makeText(Recipe.this, "Recipe Updated", Toast.LENGTH_LONG).show();
-
-
                                 }
                             });
 

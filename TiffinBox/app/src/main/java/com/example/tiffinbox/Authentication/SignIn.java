@@ -6,18 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tiffinbox.Authentication.Model.User;
-import com.example.tiffinbox.Customer;
-import com.example.tiffinbox.MainActivity;
+import com.example.tiffinbox.Customer.Customer;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.AddView;
-import com.example.tiffinbox.ToastListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,6 +34,7 @@ import java.util.Map;
 public class SignIn extends AppCompatActivity implements ValueEventListener {
 EditText etEmailLogin, etPasswordLogin;
 Button btnLogin;
+TextView tvSignUp, tvForgotPassword;
 
      Boolean isValid;
      String data, data2;
@@ -61,16 +61,24 @@ Button btnLogin;
         etEmailLogin = findViewById(R.id.etEmailLogin);
         etPasswordLogin = findViewById(R.id.etPasswordLogin);
         btnLogin = findViewById(R.id.btnLogin);
+        tvSignUp = findViewById(R.id.tvSignUp);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
 //Variables
         isValid = false;
 //Firebase Objects
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        //        if (firebaseUser!=null&&firebaseAuth.getCurrentUser().isEmailVerified()){
-//            startActivity(new Intent(SignIn.this, MainActivity.class));
-//            finish();
-//        }
+//If User already signed in
+                if (firebaseUser!=null&&firebaseAuth.getCurrentUser().isEmailVerified()){
+                    querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail());
+                    queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail());
+                    triggerQuey();
+                 // finish();
+                 //   startActivity(new Intent(SignIn.this, AddView.class));
+                    }
+
                 btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,9 +104,25 @@ Button btnLogin;
                 }
             }
         });
+
+                tvSignUp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(SignIn.this, Register.class));
+                    }
+                });
+
+           tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignIn.this, ForgotPassword.class));
+            }
+        });
     }
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Log.i("qqqq","qqqq");
+
         if (dataSnapshot.getValue() != null) {
             String key = dataSnapshot.getKey();
             if (key.equals("Customer")) {
@@ -107,8 +131,9 @@ Button btnLogin;
                 startActivity(new Intent(SignIn.this, Customer.class));
 
             } else if (key.equals("Seller")){
+
                 data2 = dataSnapshot.getValue().toString();
-                //Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, AddView.class));
 
             }
@@ -123,6 +148,7 @@ public void triggerQuey(){
     if (queryCustomer!=null && querySeller!=null) {
         querySeller.addValueEventListener(this);
         queryCustomer.addValueEventListener(this);
+
     }
 }
     private boolean validations(){

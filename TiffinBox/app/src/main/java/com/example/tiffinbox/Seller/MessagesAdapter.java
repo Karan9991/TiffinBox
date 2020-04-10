@@ -73,11 +73,8 @@ ArrayList<String> aList = new ArrayList<String>();
             //timestamp = (TextView) view.findViewById(R.id.timestamp);
                         title = (TextView) view.findViewById(R.id.tvTitle);
             imageView = (ImageView) view.findViewById(R.id.imgView);
-
             iconBack = (RelativeLayout) view.findViewById(R.id.icon_back);
             iconFront = (RelativeLayout) view.findViewById(R.id.icon_front);
-            //iconImp = (ImageView) view.findViewById(R.id.icon_star);
-            imgProfile = (ImageView) view.findViewById(R.id.icon_profile);
             imgleft = (ImageView) view.findViewById(R.id.imgView);
             imgright = (ImageView) view.findViewById(R.id.rightarrowViewimg);
 

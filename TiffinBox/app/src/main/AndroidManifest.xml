@@ -9,22 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Seller.Recipe"></activity>
+        <activity android:name=".Customer.SwipeRecipe"></activity>
+        <activity android:name=".Customer.SellerDetail" />
+        <activity
+            android:name=".Authentication.ForgotPassword"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Seller.Profile.Profile" />
+        <activity android:name=".Seller.Recipe" />
         <activity
             android:name=".Seller.AddView"
             android:label="@string/title_activity_add_view"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".Customer" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Customer.Customer" />
         <activity android:name=".Authentication.SignIn">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".Authentication.Register">  <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Authentication.Register" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

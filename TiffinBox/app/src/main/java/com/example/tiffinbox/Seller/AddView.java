@@ -1,9 +1,11 @@
 package com.example.tiffinbox.Seller;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.tiffinbox.R;
+import com.example.tiffinbox.Seller.Profile.Profile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -36,8 +38,9 @@ public class AddView extends AppCompatActivity implements AddSeller.OnFragmentIn
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                startActivity(new Intent(AddView.this, Profile.class));
             }
         });
     }

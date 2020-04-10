@@ -1,9 +1,7 @@
-package com.example.tiffinbox.Seller;
+package com.example.tiffinbox.Customer;
 
 import android.content.Context;
 //import android.support.annotation.NonNull;
-import android.graphics.Color;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.tiffinbox.R;
-import com.example.tiffinbox.Seller.Model.CardModel;
+import com.example.tiffinbox.Customer.Model.CardModel;
 import com.example.tiffinbox.ToastListener;
 
 import java.util.List;
@@ -62,14 +58,12 @@ CardModel cardModel = new CardModel();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.fragmentaddview_list, parent, false);
+            convertView = inflater.inflate(R.layout.customerhelper, parent, false);
             holder = new ViewHolder(convertView);
-
             convertView.setTag(holder);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
-
         }
 
         CardModel model = getItem(position);
@@ -77,16 +71,17 @@ CardModel cardModel = new CardModel();
         Glide.with(getContext()).load(model.getImageURL()).into(holder.imageView);
 
         //  holder.tvTitle.setText(model.getTitle());
-        holder.tvTitle.setText(model.getImageTitle());
-
-try {
-    if (position == mSelectedP) {
-        holder.tvTitle.setBackgroundColor(Color.GREEN);
-
-    }
-}catch (ArrayIndexOutOfBoundsException e){
-
-}
+        holder.tvName.setText(model.getName());
+        holder.tvAddress.setText(model.getAddress());
+        holder.tvTest.setText(model.getEmail());
+//try {
+//    if (position == mSelectedP) {
+//        holder.tvNa.setBackgroundColor(Color.GREEN);
+//
+//    }
+//}catch (ArrayIndexOutOfBoundsException e){
+//
+//}
 
 //        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -118,21 +113,23 @@ try {
 //           // holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
 //
 //        }
-        Log.i("View", "View"+position);
-
+     //   Log.i("View", "View"+model.getEmail());
         return convertView;
     }
 
     static class ViewHolder {
         ImageView imageView;
-        TextView tvTitle;
+        TextView tvName, tvAddress, tvTest;
         LinearLayout relativeLayout;
         TextView tvSubtitle;
 
         ViewHolder(View view) {
-            imageView = (ImageView) view.findViewById(R.id.imgView);
-            tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-          //  relativeLayout = (LinearLayout) view.findViewById(R.id.fragmntaddViewRL);
+            imageView = (ImageView) view.findViewById(R.id.imgRecipe);
+            tvName = (TextView) view.findViewById(R.id.tvName);
+            tvAddress = (TextView) view.findViewById(R.id.tvAddress);
+            tvTest = (TextView) view.findViewById(R.id.tvTest);
+
+            //  relativeLayout = (LinearLayout) view.findViewById(R.id.fragmntaddViewRL);
         }
     }
 
@@ -145,15 +142,13 @@ try {
     // get List after update or delete
 
     public List<CardModel> getMyList() {
-
         return cardModelList;
-
     }
 
 public void pos(int position){
    // if (currentSelectedIndex == position){
         //convertView.setBackgroundColor(Color.BLUE);
-        holder.tvTitle.setBackgroundResource(R.color.colorAccent);
+        holder.tvName.setBackgroundResource(R.color.colorAccent);
         holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
         ToastListener.longToast(getContext(), "pos"+position+"current"+currentSelectedIndex);
        // resetCurrentIndex();
@@ -175,8 +170,6 @@ public void pos(int position){
 
     }
 
-
-
     // Remove selection after unchecked
 
     public void  removeSelection() {
@@ -186,8 +179,6 @@ public void pos(int position){
         notifyDataSetChanged();
 
     }
-
-
 
     // Item checked on selection
 

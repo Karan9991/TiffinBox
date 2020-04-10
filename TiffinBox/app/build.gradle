@@ -66,6 +66,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
 
 
-
 }
 apply plugin: 'com.google.gms.google-services'

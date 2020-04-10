@@ -4,16 +4,12 @@
     android:layout_height="wrap_content"
     android:id="@+id/message_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
     android:clipToPadding="false"
-    android:background="@drawable/bg_list_row"
     android:orientation="vertical"
     android:paddingBottom="@dimen/cardview_default_elevation"
     android:paddingLeft="@dimen/cardview_default_elevation"
     android:paddingRight="@dimen/cardview_default_elevation"
     android:paddingTop="@dimen/cardview_default_elevation">
-
-
     <RelativeLayout
         android:id="@+id/icon_container"
         android:layout_width="match_parent"
@@ -22,49 +18,17 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
-        <RelativeLayout
-            android:id="@+id/icon_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="@dimen/icon_width_height"
-                android:layout_height="@dimen/icon_width_height"
-                android:src="@drawable/bg_circle" />
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_done_white_24dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/icon_front"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/icon_profile"
-                android:layout_width="@dimen/icon_width_height"
-                android:layout_height="@dimen/icon_width_height" />
-
-            <TextView
-                android:id="@+id/icon_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/icon_text" />
-        </RelativeLayout>
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgView"
+            android:id="@+id/imgRecipe"
+            android:focusable="false"
+
             android:layout_width="70dp"
             android:layout_height="64dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="71dp"
             android:elevation="7dp"
             android:src="@drawable/ic_photo_camera_black_24dp"
             app:civ_border_color="@color/colorAccent"
@@ -73,7 +37,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvSellerTitle"
             android:layout_width="350dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -83,35 +47,63 @@
             android:layout_marginBottom="5dp"
             android:elevation="2dp"
             app:cardCornerRadius="@dimen/loginCardRadius"
-
             app:cardPreventCornerOverlap="false">
-
-
-            <TextView
-                android:id="@+id/tvTitle"
-                style="@style/modifiedEditText"
-                android:layout_width="155dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="150dp"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:width="20dp"
-                android:hint="@string/titleSeller"
-                android:inputType="text"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:text="Welocome to IO"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/modifiedEditText"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:width="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:hint="@string/titleSeller"
+                    android:inputType="text"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:text="Welocome to IO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvTest"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:id="@+id/tvAddress"
+                    style="@style/modifiedEditText"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:width="20dp"
+                    android:hint="@string/titleSeller"
+                    android:inputType="text"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:text="Welocome to IO"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+                       </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/rightarrowViewimg"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:focusable="false"
+
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="83dp"
             android:layout_marginEnd="41dp"
             android:elevation="7dp"
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp"

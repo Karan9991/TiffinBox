@@ -39,5 +39,6 @@
     <string name="uranus_sub" formatted="false">A giant gas planet which is made up of mostly rock and various ices.</string>
     <string name="neptune_sub" formatted="false">A giant gas planet which is most likely made up of various \"ices\" and rock.</string>
     <string name="pluto_sub" formatted="false">A small, icy "dwarf planet". Scientists are still unsure as to exactly what it\'s made of.</string>
+    <string name="profile">Profile</string>
 
 </resources>
