@@ -60,9 +60,17 @@ public class Customer extends AppCompatActivity {
         lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String name = ((TextView) view.findViewById(R.id.tvTest)).getText().toString();
+                String email = ((TextView) view.findViewById(R.id.tvTest)).getText().toString();
+                String name = ((TextView) view.findViewById(R.id.tvName)).getText().toString();
+                String address = ((TextView) view.findViewById(R.id.tvAddress)).getText().toString();
+                String mobile = ((TextView) view.findViewById(R.id.tvPhone)).getText().toString();
+
                 Intent intent = new Intent(Customer.this, SwipeRecipe.class);
                 intent.putExtra("name", name);
+                intent.putExtra("email", email);
+                intent.putExtra("address", address);
+                intent.putExtra("mobile", mobile);
+
                 startActivity(intent);
 
             }
@@ -366,7 +374,7 @@ public class Customer extends AppCompatActivity {
                 cardModel = dataSnapshot.getValue(CardModel.class);
                 //viewRecipe = dataSnapshot.getValue(ViewRecipe.class);
                 //  adapter.add(new CardModel(dataSnapshot.getKey(),viewRecipe.imageURL));
-                adapter.add(new CardModel(cardModel.getName(),cardModel.getAddress(), imageur, cardModel.email));
+                adapter.add(new CardModel(cardModel.getName(),cardModel.getAddress(), imageur, cardModel.email, cardModel.mobile));
               //  Log.i("for222","for222"+cardModel.getImageURL());
 
             }

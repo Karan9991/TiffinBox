@@ -15,6 +15,7 @@ public class CardModel {
     public String address;
     public String email;
     private String image;
+    public String mobile;
 
     public CardModel(String imageURL) {
         this.imageURL = imageURL;
@@ -56,6 +57,22 @@ public class CardModel {
         this.imageURL = imageURL;
         this.email = email;
 
+    }
+    public CardModel(String name, String address, String imageURL,String email, String mobile) {
+        this.name = name;
+        this.address = address;
+        this.imageURL = imageURL;
+        this.email = email;
+        this.mobile = mobile;
+
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getImage() {

@@ -78,6 +78,12 @@
                     android:visibility="gone"
                     />
                 <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    />
+                <TextView
                     android:id="@+id/tvAddress"
                     style="@style/modifiedEditText"
                     android:layout_width="155dp"

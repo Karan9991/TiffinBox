@@ -74,6 +74,8 @@ CardModel cardModel = new CardModel();
         holder.tvName.setText(model.getName());
         holder.tvAddress.setText(model.getAddress());
         holder.tvTest.setText(model.getEmail());
+        holder.tvPhone.setText(model.getMobile());
+
 //try {
 //    if (position == mSelectedP) {
 //        holder.tvNa.setBackgroundColor(Color.GREEN);
@@ -119,7 +121,7 @@ CardModel cardModel = new CardModel();
 
     static class ViewHolder {
         ImageView imageView;
-        TextView tvName, tvAddress, tvTest;
+        TextView tvName, tvAddress, tvTest, tvPhone;
         LinearLayout relativeLayout;
         TextView tvSubtitle;
 
@@ -128,6 +130,7 @@ CardModel cardModel = new CardModel();
             tvName = (TextView) view.findViewById(R.id.tvName);
             tvAddress = (TextView) view.findViewById(R.id.tvAddress);
             tvTest = (TextView) view.findViewById(R.id.tvTest);
+            tvPhone = (TextView) view.findViewById(R.id.tvPhone);
 
             //  relativeLayout = (LinearLayout) view.findViewById(R.id.fragmntaddViewRL);
         }

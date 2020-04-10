@@ -81,40 +81,7 @@ gettingIntent();
 //demo();
     }
 
-    public void demo(){
-        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-        DatabaseReference df2 = database2.getReference();
-//        Query queryse = df.child("Seller").child(a[1]).child("name");
 
-        querywr.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.i("KEy","k"+a[1]+dataSnapshot.getValue().toString());
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
     private void gettingIntent(){
         tvEmail = getIntent().getStringExtra("name");
 //        if (tvEmail!=null) {

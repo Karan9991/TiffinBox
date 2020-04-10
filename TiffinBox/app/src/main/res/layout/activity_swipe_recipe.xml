@@ -6,6 +6,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <ScrollView
+        style="@style/parent"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.578"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:foregroundGravity="center_vertical"
+                android:id="@+id/cvRecipie"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="4dp"
+                app:cardCornerRadius="@dimen/loginCardRadius"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false">
+
+                <RelativeLayout
+                    android:layout_width="358dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="110dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="123dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="123dp"
+                        android:text="Seller Detail"
+                        android:textColor="@color/green"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:layout_width="330dp"
+                        android:layout_height="106dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="61dp"
+                        android:layout_marginEnd="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSellerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/tvSellerPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/tvSellerEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/tvSellerAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:textColor="@color/colorAccent" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
     <androidx.viewpager.widget.ViewPager
         android:foregroundGravity="center"
@@ -14,8 +114,10 @@
         android:overScrollMode="never"
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_marginTop="410dp"
+        android:layout_height="400dp">
     </androidx.viewpager.widget.ViewPager>
-
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
