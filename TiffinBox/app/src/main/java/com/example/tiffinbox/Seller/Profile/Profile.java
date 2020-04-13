@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.example.tiffinbox.Authentication.Register;
+import com.example.tiffinbox.Authentication.SignIn;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.AddView;
 import com.example.tiffinbox.Seller.Model.EditRecipe;
@@ -180,7 +181,7 @@ AlertDialog.Builder builder, builder2;
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent i = new Intent(Profile.this, Register.class);
+                        Intent i = new Intent(Profile.this, SignIn.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                     }

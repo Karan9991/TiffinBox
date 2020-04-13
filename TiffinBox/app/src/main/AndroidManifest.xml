@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".Customer.SwipeRecipe"></activity>
-        <activity android:name=".Customer.SellerDetail" />
         <activity
             android:name=".Authentication.ForgotPassword"
             android:theme="@style/AppTheme" />
@@ -22,14 +21,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Customer.Customer" />
         <activity android:name=".Authentication.SignIn">
+
+        </activity>
+        <activity android:name=".Authentication.Register" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".IntroScreen.IntroActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Authentication.Register" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

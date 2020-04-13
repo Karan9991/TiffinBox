@@ -20,7 +20,39 @@ public class CardModel {
     public CardModel(String imageURL) {
         this.imageURL = imageURL;
     }
+    public CardModel(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
+    public CardModel(boolean isSelected, String imageTitle) {
+        this.isSelected = isSelected;
+        this.imageTitle = imageTitle;
+    }
+
+    public CardModel() {
+    }
+    public CardModel(String name, String address, String imageURL) {
+        this.name = name;
+        this.address = address;
+        this.imageURL = imageURL;
+    }
+
+    public CardModel(String name, String address, String imageURL,String email) {
+        this.name = name;
+        this.address = address;
+        this.imageURL = imageURL;
+        this.email = email;
+
+    }
+    public CardModel(String name, String address, String imageURL,String email, String mobile) {
+        this.name = name;
+        this.address = address;
+        this.imageURL = imageURL;
+        this.email = email;
+        this.mobile = mobile;
+
+    }
     public String getName() {
         return name;
     }
@@ -45,28 +77,6 @@ public class CardModel {
         this.address = address;
     }
 
-    public CardModel(String name, String address, String imageURL) {
-        this.name = name;
-        this.address = address;
-        this.imageURL = imageURL;
-    }
-
-    public CardModel(String name, String address, String imageURL,String email) {
-        this.name = name;
-        this.address = address;
-        this.imageURL = imageURL;
-        this.email = email;
-
-    }
-    public CardModel(String name, String address, String imageURL,String email, String mobile) {
-        this.name = name;
-        this.address = address;
-        this.imageURL = imageURL;
-        this.email = email;
-        this.mobile = mobile;
-
-    }
-
     public String getMobile() {
         return mobile;
     }
@@ -81,25 +91,6 @@ public class CardModel {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public CardModel(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
-
-
-//    public CardModel(String imageTitle, String imageURL) {
-//        this.imageTitle = imageTitle;
-//        this.imageURL = imageURL;
-//    }
-
-    public CardModel(boolean isSelected, String imageTitle) {
-        this.isSelected = isSelected;
-        this.imageTitle = imageTitle;
-    }
-
-    public CardModel() {
     }
 
     public String getImageURL() {
@@ -120,7 +111,6 @@ public class CardModel {
         this.imageId = imageId;
         this.titleId = titleId;
     }
-
 
     public String getImageTitle() {
         return imageTitle;

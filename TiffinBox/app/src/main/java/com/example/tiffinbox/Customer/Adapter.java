@@ -1,10 +1,8 @@
 package com.example.tiffinbox.Customer;
 
 import android.content.Context;
-import android.content.Intent;
 //import android.support.annotation.NonNull;
 //import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
-import com.example.tiffinbox.Customer.Model.CardModel;
+import com.example.tiffinbox.Customer.Model.ModelDemo;
 import com.example.tiffinbox.R;
 
 import java.util.List;
@@ -61,9 +59,7 @@ public class Adapter extends PagerAdapter {
         price.setText(" Price : "+modelDemos.get(position).getPrice());
         desc.setText(modelDemos.get(position).getDesc());
 
-      //  Glide.with(context).load("https://firebasestorage.googleapis.com/v0/b/citric-plexus-190723.appspot.com/o/Recipe%2F1586368406653.png?alt=media&token=c1b79343-6d20-4c59-a438-88a369fd6139").into(imageView);
       Glide.with(context).load(modelDemos.get(position).getImageURL()).into(imageView);
-        Log.i("Glide","position "+position+"value "+modelDemos.get(position).getImageURL());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,13 @@ import com.example.tiffinbox.Seller.Model.AddRecipe;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -72,7 +78,9 @@ public class AddSeller extends Fragment {
     String ImageUploadId;
     AddRecipe imageUploadInfo;
      Uri downlduri;
-//UI
+     long countChildren;
+    int intcountChildren;
+    //UI
     Button btnAdd;
     CardView cvSellerTitle, cvSellerPrice, cvSellerDesc;
     EditText etSellerTitle, etSellerPrice, etSellerDesc;
@@ -146,6 +154,9 @@ public class AddSeller extends Fragment {
         cvSellerTitle.startAnimation(animation1);
         cvSellerPrice.startAnimation(animation1);
         cvSellerDesc.startAnimation(animation1);
+//Count Recipe
+countRecipe();
+
 //Upload image
         ivUploadimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,8 +172,15 @@ public class AddSeller extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("OKkkkkk","ok"+countRecipe());
+
                 if (validations()) {
-                    UploadImageFileToFirebaseStorage();
+                    if (countRecipe() < 3) {
+                        Toast.makeText(getContext(), "Recipes", Toast.LENGTH_LONG).show();
+                        UploadImageFileToFirebaseStorage();
+                    }else {
+                        Toast.makeText(getContext(), "You can't add more than 3 Recipes", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -334,4 +352,53 @@ public class AddSeller extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public int countRecipe(){
+        FirebaseDatabase databaseCountRecipe = FirebaseDatabase.getInstance();
+        DatabaseReference dfCountRecipe = databaseCountRecipe.getReference();
+        Query countRecipe;
+        countRecipe = dfCountRecipe.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe");
+        countRecipe.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                countChildren = dataSnapshot.getChildrenCount();
+                 intcountChildren = (int) countChildren;
+
+                Log.i("Count Children ", ""+intcountChildren+" Values"+dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return intcountChildren;
+//        countRecipe.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+    }
+
 }

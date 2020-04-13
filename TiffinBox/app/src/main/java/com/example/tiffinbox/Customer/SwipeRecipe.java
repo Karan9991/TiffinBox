@@ -1,17 +1,23 @@
 package com.example.tiffinbox.Customer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.animation.ArgbEvaluator;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tiffinbox.Authentication.SignIn;
+import com.example.tiffinbox.Customer.Model.ModelDemo;
 import com.example.tiffinbox.R;
-import com.example.tiffinbox.Seller.Model.ViewRecipe;
-import com.example.tiffinbox.ToastListener;
+import com.example.tiffinbox.Seller.Profile.Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +37,10 @@ public class SwipeRecipe extends AppCompatActivity {
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     TextView tvSellerName, tvSellerEmail, tvSellerPhone, tvSellerAddress;
+    ImageView imgLeftArrowSwipeR, imgCustomerLogout;
 
     String tvEmail, tvName, tvAddress, tvMobile;
+    AlertDialog.Builder builder, builder2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,10 @@ public class SwipeRecipe extends AppCompatActivity {
         tvSellerEmail = findViewById(R.id.tvSellerEmail);
         tvSellerPhone = findViewById(R.id.tvSellerPhone);
         tvSellerAddress = findViewById(R.id.tvSellerAddress);
+        imgLeftArrowSwipeR = findViewById(R.id.imgLeftArrowSwipeR);
+        imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
+
+        builder2 = new AlertDialog.Builder(this);
 
         gettingIntent();
         getRecipes();
@@ -51,6 +63,19 @@ public class SwipeRecipe extends AppCompatActivity {
         tvSellerEmail.setText("E-Mail: "+tvEmail);
         tvSellerAddress.setText("Address: "+tvAddress);
         tvSellerPhone.setText("Phone: "+tvMobile);
+
+        imgLeftArrowSwipeR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SwipeRecipe.this, Customer.class));
+            }
+        });
+        imgCustomerLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    logout();
+            }
+        });
     }
 
     public void all(){
@@ -66,6 +91,10 @@ public class SwipeRecipe extends AppCompatActivity {
         viewPager.setPadding(130, 0, 130, 0);
 
         Integer[] colors_temp = {
+                getResources().getColor(R.color.color1),
+                getResources().getColor(R.color.color2),
+                getResources().getColor(R.color.color3),
+                getResources().getColor(R.color.color4),
                 getResources().getColor(R.color.color1),
                 getResources().getColor(R.color.color2),
                 getResources().getColor(R.color.color3),
@@ -144,5 +173,25 @@ public  void getRecipes(){
         tvName = getIntent().getStringExtra("name");
         tvAddress = getIntent().getStringExtra("address");
         tvMobile = getIntent().getStringExtra("mobile");
+    }
+
+    private void logout(){
+        builder2.setTitle("Logout");
+        builder2.setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        FirebaseAuth.getInstance().signOut();
+                        Intent i = new Intent(SwipeRecipe.this, SignIn.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder2.create();
+        alert.show();
     }
 }

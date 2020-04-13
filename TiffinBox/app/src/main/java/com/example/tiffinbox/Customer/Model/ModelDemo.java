@@ -1,4 +1,4 @@
-package com.example.tiffinbox.Customer;
+package com.example.tiffinbox.Customer.Model;
 
 public class ModelDemo {
     private int image;
@@ -7,8 +7,6 @@ public class ModelDemo {
     private String price;
 
     public static String imageURL;
-
-    //
 
     public ModelDemo() {
     }

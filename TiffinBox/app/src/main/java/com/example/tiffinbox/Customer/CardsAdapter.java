@@ -33,10 +33,8 @@ List<CardModel> cardModelList;
 CardModel cardModel = new CardModel();
     private static int currentSelectedIndex = -1;
 
-  //  List<CardModel> dataList;
     private  SparseBooleanArray mSelectedItemsIds;
     private int mSelectedP = -1;
-
 
     ViewHolder holder;
 
@@ -76,46 +74,6 @@ CardModel cardModel = new CardModel();
         holder.tvTest.setText(model.getEmail());
         holder.tvPhone.setText(model.getMobile());
 
-//try {
-//    if (position == mSelectedP) {
-//        holder.tvNa.setBackgroundColor(Color.GREEN);
-//
-//    }
-//}catch (ArrayIndexOutOfBoundsException e){
-//
-//}
-
-//        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                currentSelectedIndex = position;
-//                ToastListener.shortToast(getContext(), "RL");
-//                notifyDataSetChanged();
-//
-//            }
-//        });
-   //     pos(position);
-
-        //listview working
-        //holder.tvTitle.setText(getItem(position).toString());
-
-//if (convertView.isSelected()){
-//    convertView.setBackgroundResource(R.color.colorPrimary);
-//}
-
-        // Capture position and set to the  ImageView
-
-      //  holder.imageView.setImageResource(R.drawable.ic_launcher_background);
-//        if (model.isSelected()){
-//            holder.tvTitle.setBackgroundResource(R.color.colorAccent);
-//            holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
-//            ToastListener.longToast(getContext(), "pos"+position+"current"+currentSelectedIndex);
-//        }
-//        else {
-//           // holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
-//
-//        }
-     //   Log.i("View", "View"+model.getEmail());
         return convertView;
     }
 
@@ -131,8 +89,6 @@ CardModel cardModel = new CardModel();
             tvAddress = (TextView) view.findViewById(R.id.tvAddress);
             tvTest = (TextView) view.findViewById(R.id.tvTest);
             tvPhone = (TextView) view.findViewById(R.id.tvPhone);
-
-            //  relativeLayout = (LinearLayout) view.findViewById(R.id.fragmntaddViewRL);
         }
     }
 
@@ -142,34 +98,17 @@ CardModel cardModel = new CardModel();
         notifyDataSetChanged();
     }
 
-    // get List after update or delete
-
     public List<CardModel> getMyList() {
         return cardModelList;
     }
 
 public void pos(int position){
-   // if (currentSelectedIndex == position){
-        //convertView.setBackgroundColor(Color.BLUE);
         holder.tvName.setBackgroundResource(R.color.colorAccent);
         holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
-        ToastListener.longToast(getContext(), "pos"+position+"current"+currentSelectedIndex);
-       // resetCurrentIndex();
-   // }
 
 }
-
     public void  toggleSelection(int position) {
         selectView(position, !mSelectedItemsIds.get(position));
-        //cardModel.setSelected(true);
-//        if (cardModel.isSelected()){
-//            holder.tvTitle.setBackgroundResource(R.color.colorAccent);
-//            holder.relativeLayout.setBackgroundResource(R.color.colorAccent);
-//            ToastListener.longToast(getContext(), "pos"+position+"current"+currentSelectedIndex+cardModel.isSelected());
-//        //cardModel.setSelected(false);
-//        }
-        //ToastListener.shortToast(getContext(),"selection"+cardModel.isSelected());
-    //    pos(position);
 
     }
 
@@ -183,17 +122,11 @@ public void pos(int position){
 
     }
 
-    // Item checked on selection
-
     public void selectView(int position, boolean value) {
 
         if (value) {
             currentSelectedIndex = position;
-
             mSelectedItemsIds.put(position, value);
-          //  ToastListener.longToast(getContext(), "OKOKOK");
-           //pos(position);
-         //  resetCurrentIndex();
         }else {
 
             mSelectedItemsIds.delete(position);
@@ -218,8 +151,6 @@ public void pos(int position){
 
         notifyDataSetChanged();
     }
-
-
 
     public  SparseBooleanArray getSelectedIds() {
 

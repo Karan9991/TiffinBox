@@ -5,39 +5,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_button_bk"
     tools:context=".MainActivity">
+
     <ScrollView
         style="@style/parent"
         android:layout_width="377dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.578"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
-                android:foregroundGravity="center_vertical"
                 android:id="@+id/cvRecipie"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="4dp"
+                android:foregroundGravity="center_vertical"
                 app:cardCornerRadius="@dimen/loginCardRadius"
                 app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="false">
@@ -107,16 +111,38 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-    <androidx.viewpager.widget.ViewPager
-        android:foregroundGravity="center"
-        android:id="@+id/viewPager"
-        android:layout_centerInParent="true"
-        android:overScrollMode="never"
-        android:clipToPadding="false"
-        android:layout_width="match_parent"
-        android:layout_marginTop="410dp"
-        android:layout_height="400dp">
-    </androidx.viewpager.widget.ViewPager>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="410dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center"
+                android:overScrollMode="never"></androidx.viewpager.widget.ViewPager>
+
+            <ImageView
+                android:id="@+id/imgLeftArrowSwipeR"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="630dp"
+                android:src="@drawable/ic_leftarrow" />
+
+            <ImageView
+                android:id="@+id/imgCustomerLogout"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="638dp"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_logout_svg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </RelativeLayout>
     </ScrollView>
 

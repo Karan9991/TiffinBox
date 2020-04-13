@@ -198,8 +198,8 @@ getFirebase();
                    mAdapter.aList.add(z, null);
                }
 
-               Log.i("loop",""+mAdapter.aList+"v"+countChildren);
-               Log.i("vv ", ""+dataSnapshot.getKey()+dataSnapshot.getChildrenCount());
+              // Log.i("loop",""+mAdapter.aList+"v"+countChildren);
+               //Log.i("vv ", ""+dataSnapshot.getKey()+dataSnapshot.getChildrenCount());
            }
 
            @Override
