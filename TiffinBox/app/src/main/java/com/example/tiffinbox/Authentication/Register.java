@@ -168,6 +168,7 @@ private boolean validations(){
        }
        else if(!PASSWORD_PATTERN.matcher(etPassword.getText().toString().trim()).matches()){
            etPassword.setError( "Password too weak" );
+           isValid = false;
        }
        else if (TextUtils.isEmpty(etAddress.getText())) {
            etAddress.setError("Address is required!");

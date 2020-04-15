@@ -8,8 +8,8 @@
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="signup_addresshint">Address</string>
     <string name="title_activity_add_view">AddView</string>
-    <string name="tab_text_1">ADD</string>
-    <string name="tab_text_2">VIEW</string>
+    <string name="tab_text_1">Add Recipe</string>
+    <string name="tab_text_2">Published Recipes</string>
 
     <string name="titleSeller">Title</string>
     <string name="priceSeller">Price</string>

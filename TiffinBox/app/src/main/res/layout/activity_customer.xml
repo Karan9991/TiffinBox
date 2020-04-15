@@ -8,10 +8,11 @@
 
     <ListView
         android:id="@+id/list_cards"
+        android:layout_width="414dp"
+        android:layout_height="655dp"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-    </ListView>
+        app:layout_constraintTop_toBottomOf="@+id/etSearchbar"
+        tools:layout_editor_absoluteX="-3dp"></ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

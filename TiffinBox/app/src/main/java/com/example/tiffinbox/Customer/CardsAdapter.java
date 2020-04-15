@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,16 +21,19 @@ import com.example.tiffinbox.R;
 import com.example.tiffinbox.Customer.Model.CardModel;
 import com.example.tiffinbox.ToastListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Alhaytham Alfeel on 10/10/2016.
  */
 
-public class CardsAdapter extends ArrayAdapter<CardModel> {
+public class CardsAdapter extends ArrayAdapter<CardModel> implements Filterable {
 
     Context myContext;
 List<CardModel> cardModelList;
+    List<CardModel> cardModelListfiltered;
+
     LayoutInflater inflater;
 CardModel cardModel = new CardModel();
     private static int currentSelectedIndex = -1;
@@ -41,6 +46,7 @@ CardModel cardModel = new CardModel();
     public CardsAdapter(Context context, int resourceId,  List<CardModel> cardModelList) {
         super(context,resourceId, cardModelList);
         this.cardModelList = cardModelList;
+        this.cardModelListfiltered = cardModelList;
         mSelectedItemsIds = new SparseBooleanArray();
 
         this.myContext = context;
@@ -51,7 +57,6 @@ CardModel cardModel = new CardModel();
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,8 +74,8 @@ CardModel cardModel = new CardModel();
         Glide.with(getContext()).load(model.getImageURL()).into(holder.imageView);
 
         //  holder.tvTitle.setText(model.getTitle());
-        holder.tvName.setText(model.getName());
-        holder.tvAddress.setText(model.getAddress());
+        holder.tvName.setText(cardModelListfiltered.get(position).getName());
+        holder.tvAddress.setText(cardModelListfiltered.get(position).getAddress());
         holder.tvTest.setText(model.getEmail());
         holder.tvPhone.setText(model.getMobile());
 
@@ -91,7 +96,58 @@ CardModel cardModel = new CardModel();
             tvPhone = (TextView) view.findViewById(R.id.tvPhone);
         }
     }
+//Filter for search
+    @NonNull
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
 
+                FilterResults filterResults = new FilterResults();
+                if(constraint == null || constraint.length() == 0){
+                    filterResults.count = cardModelList.size();
+                    filterResults.values = cardModelList;
+
+                }else{
+                    List<CardModel> resultsModel = new ArrayList<>();
+                    String searchStr = constraint.toString().toLowerCase();
+
+                    for(CardModel itemsModel:cardModelList){
+                        if(itemsModel.getName().contains(searchStr) || itemsModel.getAddress().contains(searchStr)){
+                            resultsModel.add(itemsModel);
+                        }
+                        filterResults.count = resultsModel.size();
+                        filterResults.values = resultsModel;
+                    }
+                }
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                cardModelListfiltered = (List<CardModel>) results.values;
+                notifyDataSetChanged();
+
+            }
+        };
+        return filter;    }
+    @Override
+    public int getCount() {
+        return cardModelListfiltered.size();
+    }
+
+    @Nullable
+    @Override
+    public CardModel getItem(int position) {
+        return cardModelListfiltered.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
     @Override
     public void remove(@Nullable CardModel object) {
         cardModelList.remove(object);

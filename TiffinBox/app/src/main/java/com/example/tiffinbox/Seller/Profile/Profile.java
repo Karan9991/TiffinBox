@@ -149,6 +149,9 @@ AlertDialog.Builder builder, builder2;
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(),"Your Account Deleted Permanently", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(Profile.this, SignIn.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
                         }
                     }
                 });
@@ -161,9 +164,6 @@ AlertDialog.Builder builder, builder2;
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         deleteAccount();
-                        Intent i = new Intent(Profile.this, Register.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -4,28 +4,26 @@
 
 
 
-        <item
+<!--        <item-->
+<!--            android:id="@+id/selectAll"-->
+<!--            android:title="Select  All"/>-->
+<!--        <item-->
+<!--            android:id="@+id/delete"-->
+<!--            android:title="Delete"/>-->
 
-            android:id="@+id/selectAll"
+<!--    <item-->
+<!--        android:id="@+id/action_search"-->
+<!--        android:icon="@drawable/ic_search_white_24dp"-->
+<!--        android:orderInCategory="100"-->
+<!--        android:title="Search"-->
+<!--        app:showAsAction="always" />-->
 
-
-
-            android:title="Select  All"/>
-
-        <item
-
-            android:id="@+id/delete"
-
-
-
-            android:title="Delete"/>
-
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:orderInCategory="100"
+    <item android:id="@+id/searchView"
         android:title="Search"
-        app:showAsAction="always" />
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
 
-    </menu>
+
+</menu>
 

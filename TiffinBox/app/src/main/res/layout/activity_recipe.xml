@@ -157,7 +157,7 @@ android:layout_gravity="center_horizontal"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="Title"
                             android:inputType="textCapWords"
-                            android:maxLength="30"
+                            android:maxLength="70"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.cardview.widget.CardView>
@@ -222,7 +222,7 @@ android:layout_gravity="center_horizontal"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="Description"
                             android:inputType="textCapWords"
-                            android:maxLength="30"
+                            android:maxLength="75"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
 

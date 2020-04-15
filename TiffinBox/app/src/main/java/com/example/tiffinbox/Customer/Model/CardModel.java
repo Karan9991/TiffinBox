@@ -43,7 +43,6 @@ public class CardModel {
         this.address = address;
         this.imageURL = imageURL;
         this.email = email;
-
     }
     public CardModel(String name, String address, String imageURL,String email, String mobile) {
         this.name = name;
@@ -51,7 +50,6 @@ public class CardModel {
         this.imageURL = imageURL;
         this.email = email;
         this.mobile = mobile;
-
     }
     public String getName() {
         return name;

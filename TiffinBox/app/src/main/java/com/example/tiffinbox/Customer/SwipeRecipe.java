@@ -40,7 +40,7 @@ public class SwipeRecipe extends AppCompatActivity {
     ImageView imgLeftArrowSwipeR, imgCustomerLogout;
 
     String tvEmail, tvName, tvAddress, tvMobile;
-    AlertDialog.Builder builder, builder2;
+    AlertDialog.Builder builder2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

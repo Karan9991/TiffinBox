@@ -88,7 +88,7 @@
                         style="@style/modifiedEditText"
                         android:hint="@string/titleSeller"
                         android:inputType="text"
-                        android:maxLength="35"
+                        android:maxLength="45"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
@@ -141,7 +141,7 @@
                         style="@style/modifiedEditText"
                         android:hint="@string/descSeller"
                         android:inputType="text"
-                        android:maxLength="35"
+                        android:maxLength="120"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>

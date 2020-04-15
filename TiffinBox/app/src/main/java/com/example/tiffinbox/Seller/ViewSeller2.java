@@ -421,10 +421,10 @@ getFirebase();
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            Toast.makeText(getContext(), "Search...", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+//        if (id == R.id.action_search) {
+//            Toast.makeText(getContext(), "Search...", Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
 //        if (id == R.id.cancel_ride) {
 //            startActivity(new Intent(MainActivity.this, Sent.class));
 //            //return true;

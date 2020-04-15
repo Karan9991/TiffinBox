@@ -19,7 +19,8 @@
             android:name=".Seller.AddView"
             android:label="@string/title_activity_add_view"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Customer.Customer" />
+        <activity android:name=".Customer.Customer"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".Authentication.SignIn">
 
         </activity>

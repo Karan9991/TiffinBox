@@ -6,9 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.tiffinbox.Customer.Model.CardModel;
@@ -42,6 +49,8 @@ public class Customer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
+
+        getSupportActionBar().setTitle("Recipes");
 
         viewRecipe = new ViewRecipe();
 
@@ -78,6 +87,7 @@ public class Customer extends AppCompatActivity {
         lvCards.setAdapter(adapter);
 
         gettingSellerList();
+
     }
 
     public void gettingSellerList(){
@@ -96,14 +106,12 @@ public class Customer extends AppCompatActivity {
                         //This might work but it retrieves all the data
                     }
                 }
-
 //getting name and address
                 cardModel = dataSnapshot.getValue(CardModel.class);
                 //viewRecipe = dataSnapshot.getValue(ViewRecipe.class);
                 //  adapter.add(new CardModel(dataSnapshot.getKey(),viewRecipe.imageURL));
                 adapter.add(new CardModel(cardModel.getName(),cardModel.getAddress(), imageur, cardModel.email, cardModel.mobile));
               //  Log.i("for222","for222"+cardModel.getImageURL());
-
             }
 
             @Override
@@ -127,4 +135,37 @@ public class Customer extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+        MenuItem menuItem = menu.findItem(R.id.searchView);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Search by Location");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.e("Main"," data search"+newText);
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.searchView){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

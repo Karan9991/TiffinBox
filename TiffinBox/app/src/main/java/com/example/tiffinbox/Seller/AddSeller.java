@@ -1,8 +1,10 @@
 package com.example.tiffinbox.Seller;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,8 +12,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -27,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tiffinbox.Authentication.SignIn;
+import com.example.tiffinbox.Customer.SwipeRecipe;
 import com.example.tiffinbox.R;
 import com.example.tiffinbox.Seller.Model.AddRecipe;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,6 +87,8 @@ public class AddSeller extends Fragment {
      Uri downlduri;
      long countChildren;
     int intcountChildren;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
     //UI
     Button btnAdd;
     CardView cvSellerTitle, cvSellerPrice, cvSellerDesc;
@@ -139,6 +148,9 @@ public class AddSeller extends Fragment {
         ivUploadimg = getView().findViewById(R.id.ivUploadimg);
         btnAdd = getView().findViewById(R.id.btnAdd);
 
+        builder = new AlertDialog.Builder(getActivity(),  R.style.Theme_AppCompat_Dialog_Alert);
+         alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog_Alert).create();
+
         isValid = false;
         progressDialog = new ProgressDialog(getContext());
 //Firebase
@@ -172,11 +184,10 @@ countRecipe();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("OKkkkkk","ok"+countRecipe());
 
                 if (validations()) {
                     if (countRecipe() < 3) {
-                        Toast.makeText(getContext(), "Recipes", Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getContext(), "Recipes", Toast.LENGTH_LONG).show();
                         UploadImageFileToFirebaseStorage();
                     }else {
                         Toast.makeText(getContext(), "You can't add more than 3 Recipes", Toast.LENGTH_LONG).show();
@@ -245,8 +256,9 @@ countRecipe();
 //                                    databaseReference.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child("Title").setValue(etSellerTitle.getText().toString());
 
                                     progressDialog.dismiss();
-                                    //  @SuppressWarnings("VisibleForTests")
-                                    Toast.makeText(getContext(), "Recipe Added", Toast.LENGTH_LONG).show();
+
+                                     // @SuppressWarnings("VisibleForTests")
+                                    Toast.makeText(getContext(), "Recipe Added, Your Recipe Published, Customers will Contact You Soon ",Toast.LENGTH_LONG).show();
 
 
                                 }
@@ -373,32 +385,7 @@ countRecipe();
             }
         });
         return intcountChildren;
-//        countRecipe.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 
-}
+ }
+
