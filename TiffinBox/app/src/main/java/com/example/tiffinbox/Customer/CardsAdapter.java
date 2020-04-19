@@ -96,6 +96,9 @@ CardModel cardModel = new CardModel();
             tvPhone = (TextView) view.findViewById(R.id.tvPhone);
         }
     }
+
+
+
 //Filter for search
     @NonNull
     @Override
@@ -114,7 +117,7 @@ CardModel cardModel = new CardModel();
                     String searchStr = constraint.toString().toLowerCase();
 
                     for(CardModel itemsModel:cardModelList){
-                        if(itemsModel.getName().contains(searchStr) || itemsModel.getAddress().contains(searchStr)){
+                        if(itemsModel.getAddress().toLowerCase().contains(searchStr)||itemsModel.getName().toLowerCase().contains(searchStr)){
                             resultsModel.add(itemsModel);
                         }
                         filterResults.count = resultsModel.size();

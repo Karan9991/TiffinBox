@@ -142,7 +142,7 @@ public class Customer extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main,menu);
         MenuItem menuItem = menu.findItem(R.id.searchView);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search by Location");
+        searchView.setQueryHint("Location or Seller Name");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -152,7 +152,7 @@ public class Customer extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.e("Main"," data search"+newText);
+                //Log.e("Main"," data search"+newText);
                 adapter.getFilter().filter(newText);
                 return true;
             }

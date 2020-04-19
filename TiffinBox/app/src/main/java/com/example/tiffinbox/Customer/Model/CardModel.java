@@ -1,10 +1,12 @@
 package com.example.tiffinbox.Customer.Model;
 
+import java.io.Serializable;
+
 /**
  * @author Alhaytham Alfeel on 10/10/2016.
  */
 
-public class CardModel {
+public class CardModel implements Serializable {
     private boolean isSelected;
     private int imageId;
     private int titleId;
