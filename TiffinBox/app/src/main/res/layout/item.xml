@@ -25,14 +25,18 @@
 
             <TextView
                 android:id="@+id/title"
-                android:textColor="#262626"
-                android:layout_below="@id/image"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="16dp"
-                android:text="Brochure"
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="20dp"
+                android:layout_below="@id/image"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
+                android:layout_toStartOf="@+id/price"
+                android:text="Brochure"
+                android:textColor="#262626"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/price"
@@ -42,23 +46,25 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="64dp"
+                android:layout_marginEnd="4dp"
                 android:text="Brochure"
                 android:textColor="@color/green"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:layout_marginTop="3dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="5dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="16dp"
-                android:maxLines="3"
                 android:drawablePadding="10dp"
                 android:ellipsize="end"
-                android:text="Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:maxLines="3"
+                android:text="Description" />
 
         </RelativeLayout>
 

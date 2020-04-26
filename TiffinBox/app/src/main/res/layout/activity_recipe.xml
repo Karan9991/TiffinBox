@@ -154,9 +154,7 @@ android:layout_gravity="center_horizontal"
                         <EditText
                             android:id="@+id/etTitle"
                             style="@style/modifiedEditText"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="Title"
-                            android:inputType="textCapWords"
                             android:maxLength="70"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -185,9 +183,7 @@ android:layout_gravity="center_horizontal"
                         <EditText
                             android:id="@+id/etPrice"
                             style="@style/modifiedEditText"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="Price"
-                            android:inputType="textCapWords"
                             android:maxLength="30"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -219,11 +215,8 @@ android:layout_gravity="center_horizontal"
                         <EditText
                             android:id="@+id/etDesc"
                             style="@style/modifiedEditText"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="Description"
-                            android:inputType="textCapWords"
-                            android:maxLength="75"
-                            android:maxLines="1" />
+                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </androidx.cardview.widget.CardView>
