@@ -88,4 +88,10 @@
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
+<!--    Chat-->
+    <style name="MenuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
 </resources>
