@@ -16,9 +16,11 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,10 +31,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tiff.tiffinbox.Authentication.Model.User;
+import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.Fragments.ChatsFragment;
 import com.tiff.tiffinbox.Chat.Fragments.ProfileFragment;
 import com.tiff.tiffinbox.Chat.Fragments.UsersFragment;
 import com.tiff.tiffinbox.Chat.Model.Chat;
+import com.tiff.tiffinbox.FindUserType;
 import com.tiff.tiffinbox.R;
 
 import java.util.ArrayList;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser firebaseUser;
     DatabaseReference reference, refUserType;
+    FindUserType findUserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,28 +64,34 @@ public class MainActivity extends AppCompatActivity {
 
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
+        findUserType = new FindUserType();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
-               username.setText(user.getUsername());
-                if (user.getImageURL().equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    //change this
-                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        if (SignIn.UT.equals("Customer")){
+            Customerr();
+        }else {
+            Sellerr();
+        }
+Log.i("eeeeeeeeee","ee"+ SignIn.UT);
+//        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+//               username.setText(user.getUsername());
+//                if (user.getImageURL().equals("default")){
+//                    profile_image.setImageResource(R.mipmap.ic_launcher);
+//                } else {
+//                    //change this
+//                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         final TabLayout tabLayout = findViewById(R.id.tab_layout);
         final ViewPager viewPager = findViewById(R.id.view_pager);
@@ -122,7 +133,49 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+public void Sellerr()
+{
+    reference = FirebaseDatabase.getInstance().getReference("Seller").child(firebaseUser.getUid());
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                profile_image.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                //change this
+                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+            }
+        }
 
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
+public void Customerr(){
+    reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                profile_image.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                //change this
+                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);

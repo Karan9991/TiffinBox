@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.tiff.tiffinbox.Authentication.Model.User;
+import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.R;
 
 import java.util.HashMap;
@@ -66,25 +67,30 @@ public class ProfileFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getUsername());
-                if (user.getImageURL().equals("default")){
-                    image_profile.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        if (SignIn.UT.equals("Customer")){
+            Customerr();
+        }else if (SignIn.UT.equals("Seller")){
+            Sellerr();
+        }
+//        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+//
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+//                username.setText(user.getUsername());
+//                if (user.getImageURL().equals("default")){
+//                    image_profile.setImageResource(R.mipmap.ic_launcher);
+//                } else {
+//                    Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +101,48 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+public void Sellerr(){
+    reference = FirebaseDatabase.getInstance().getReference("Seller").child(fuser.getUid());
 
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                image_profile.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
+public void Customerr(){
+    reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                image_profile.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
     private void openImage() {
         Intent intent = new Intent();
         intent.setType("image/*");

@@ -39,7 +39,7 @@ EditText etEmailLogin, etPasswordLogin;
 Button btnLogin;
 TextView tvSignUp, tvForgotPassword;
 private ProgressBar progressBar;
-
+public static String UT;
 
      Boolean isValid;
      String data, data2;
@@ -140,9 +140,9 @@ private ProgressBar progressBar;
                 data = dataSnapshot.getValue().toString();
               //  Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SignIn.this, Customer.class));
-
+ UT = "Customer";
             } else if (key.equals("Seller")){
-
+UT = "Seller";
                 data2 = dataSnapshot.getValue().toString();
               //  Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, AddView.class));

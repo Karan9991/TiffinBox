@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tiff.tiffinbox.Authentication.Model.User;
+import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.Adapter.UserAdapter;
 import com.tiff.tiffinbox.R;
 
@@ -51,8 +52,12 @@ public class UsersFragment extends Fragment {
 
         mUsers = new ArrayList<>();
 
-        readUsers();
-
+//        if (SignIn.UT.equals("Seller")){
+//            readCustomers();
+//        }else if (SignIn.UT.equals("Customer")){
+//            readSellers();
+//        }
+readCustomers();
         search_users = view.findViewById(R.id.search_users);
         search_users.addTextChangedListener(new TextWatcher() {
             @Override
@@ -77,7 +82,7 @@ public class UsersFragment extends Fragment {
     private void searchUsers(String s) {
 
         final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-        Query query = FirebaseDatabase.getInstance().getReference("Seller").orderByChild("search")
+        Query query = FirebaseDatabase.getInstance().getReference("Customer").orderByChild("search")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
 
@@ -107,10 +112,69 @@ public class UsersFragment extends Fragment {
 
     }
 
-    private void readUsers() {
+//    private void readUsers() {
+//        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Seller");
+//
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (search_users.getText().toString().equals("")) {
+//                    mUsers.clear();
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+//                        //Log.i("TTTTTTTT", "vv"+user.getId());
+////                        if (!user.getId().equals(firebaseUser.getUid())) {
+////                            mUsers.add(user);
+////                        }
+//                            mUsers.add(user);
+//
+//                    }
+//
+//                    userAdapter = new UserAdapter(getContext(), mUsers, false);
+//                    recyclerView.setAdapter(userAdapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+private void readSellers() {
+    final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Seller");
 
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if (search_users.getText().toString().equals("")) {
+                mUsers.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+                    //Log.i("TTTTTTTT", "vv"+user.getId());
+//                        if (!user.getId().equals(firebaseUser.getUid())) {
+//                            mUsers.add(user);
+//                        }
+                    mUsers.add(user);
+
+                }
+
+                userAdapter = new UserAdapter(getContext(), mUsers, false);
+                recyclerView.setAdapter(userAdapter);
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
+    private void readCustomers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Seller");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -123,7 +187,7 @@ public class UsersFragment extends Fragment {
 //                        if (!user.getId().equals(firebaseUser.getUid())) {
 //                            mUsers.add(user);
 //                        }
-                            mUsers.add(user);
+                        mUsers.add(user);
 
                     }
 

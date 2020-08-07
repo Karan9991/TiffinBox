@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.Adapter.MessageAdapter;
 import com.tiff.tiffinbox.Chat.Fragments.APIService;
 import com.tiff.tiffinbox.Chat.Model.Chat;
@@ -117,33 +118,82 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-
-        reference = FirebaseDatabase.getInstance().getReference("Seller").child(userid);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
-                username.setText(user.getUsername());
-                if (user.getImageURL().equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    //and this
-                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
-                }
-
-                readMesagges(fuser.getUid(), userid, user.getImageURL());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        if (SignIn.UT.equals("Seller")){
+            Customerr();
+        }else if (SignIn.UT.equals("Customer")){
+            Sellerr();
+        }
+//        reference = FirebaseDatabase.getInstance().getReference("Seller").child(userid);
+//
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+//                username.setText(user.getUsername());
+//                if (user.getImageURL().equals("default")){
+//                    profile_image.setImageResource(R.mipmap.ic_launcher);
+//                } else {
+//                    //and this
+//                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+//                }
+//
+//                readMesagges(fuser.getUid(), userid, user.getImageURL());
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         seenMessage(userid);
     }
+public void Sellerr(){
+    reference = FirebaseDatabase.getInstance().getReference("Seller").child(userid);
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                profile_image.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                //and this
+                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+            }
 
+            readMesagges(fuser.getUid(), userid, user.getImageURL());
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
+public void Customerr(){
+    reference = FirebaseDatabase.getInstance().getReference("Customer").child(userid);
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+            username.setText(user.getUsername());
+            if (user.getImageURL().equals("default")){
+                profile_image.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                //and this
+                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+            }
+
+            readMesagges(fuser.getUid(), userid, user.getImageURL());
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
     private void seenMessage(final String userid){
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         seenListener = reference.addValueEventListener(new ValueEventListener() {
@@ -205,7 +255,7 @@ public class MessageActivity extends AppCompatActivity {
 
         final String msg = message;
 
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -296,7 +346,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void status(String status){
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
