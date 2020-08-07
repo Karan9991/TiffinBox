@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 //import android.support.v7.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Chat.Adapter.UserAdapter;
 import com.tiff.tiffinbox.Chat.Model.Chatlist;
-import com.tiff.tiffinbox.Chat.Model.User;
 import com.tiff.tiffinbox.Chat.Notifications.Token;
 import com.tiff.tiffinbox.R;
 
@@ -39,7 +41,7 @@ public class ChatsFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
-    private List<User> mUsers;
+    private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -81,7 +83,6 @@ public class ChatsFragment extends Fragment {
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
-
         return view;
     }
 
@@ -93,17 +94,19 @@ public class ChatsFragment extends Fragment {
 
     private void chatList() {
         mUsers = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference = FirebaseDatabase.getInstance().getReference("Seller");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
                     for (Chatlist chatlist : usersList){
+
                         if (user.getId().equals(chatlist.getId())){
                             mUsers.add(user);
                         }
+
                     }
                 }
                 userAdapter = new UserAdapter(getContext(), mUsers, true);

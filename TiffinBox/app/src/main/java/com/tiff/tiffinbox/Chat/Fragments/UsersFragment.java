@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,8 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Chat.Adapter.UserAdapter;
-import com.tiff.tiffinbox.Chat.Model.User;
 import com.tiff.tiffinbox.R;
 
 import java.util.ArrayList;
@@ -33,10 +35,9 @@ public class UsersFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
-    private List<User> mUsers;
+    private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
 
     EditText search_users;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,7 +77,7 @@ public class UsersFragment extends Fragment {
     private void searchUsers(String s) {
 
         final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("search")
+        Query query = FirebaseDatabase.getInstance().getReference("Seller").orderByChild("search")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
 
@@ -85,7 +86,7 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(User.class);
 
                     assert user != null;
                     assert fuser != null;
@@ -109,7 +110,7 @@ public class UsersFragment extends Fragment {
     private void readUsers() {
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Seller");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -117,11 +118,12 @@ public class UsersFragment extends Fragment {
                 if (search_users.getText().toString().equals("")) {
                     mUsers.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User user = snapshot.getValue(User.class);
-
-                        if (!user.getId().equals(firebaseUser.getUid())) {
+                        com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+                        //Log.i("TTTTTTTT", "vv"+user.getId());
+//                        if (!user.getId().equals(firebaseUser.getUid())) {
+//                            mUsers.add(user);
+//                        }
                             mUsers.add(user);
-                        }
 
                     }
 

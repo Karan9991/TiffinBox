@@ -14,9 +14,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.Chat.MainActivity;
+import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Customer.Model.ModelDemo;
 import com.tiff.tiffinbox.R;
+import com.tiff.tiffinbox.Seller.AddView;
 import com.tiff.tiffinbox.Seller.Profile.Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +39,7 @@ public class SwipeRecipe extends AppCompatActivity {
     Adapter adapter;
     List<ModelDemo> modelDemos;
     Integer[] colors = null;
+    String userid;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     TextView tvSellerName, tvSellerEmail, tvSellerPhone, tvSellerAddress;
@@ -55,6 +61,20 @@ public class SwipeRecipe extends AppCompatActivity {
         imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
 
         builder2 = new AlertDialog.Builder(this);
+
+        FloatingActionButton fab = findViewById(R.id.fabChat);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                intent.putExtra("userid", userid);
+                startActivity(intent);
+                //startActivity(new Intent(SwipeRecipe.this, MainActivity.class));
+            }
+        });
 
         gettingIntent();
         getRecipes();
@@ -145,7 +165,10 @@ public  void getRecipes(){
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
             for (DataSnapshot child : dataSnapshot.getChildren()) {
+                Log.i("kkkkkkkkkkkkkkk","key"+child.getKey());
+                userid = child.getKey();
                 for (DataSnapshot childd : child.getChildren()) {
+
                     for (DataSnapshot childdd : childd.getChildren()) {
 
                         ModelDemo modelDemo = new ModelDemo();

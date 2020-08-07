@@ -121,6 +121,18 @@
                 android:foregroundGravity="center"
                 android:overScrollMode="never"></androidx.viewpager.widget.ViewPager>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginTop="705dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="@dimen/fab_margin"
+                app:srcCompat="@drawable/ic_baseline_chat_24" />
+
             <ImageView
                 android:id="@+id/imgLeftArrowSwipeR"
                 android:layout_width="40dp"

@@ -102,7 +102,9 @@ private ProgressBar progressBar;
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
-                                    writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString());
+                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                    String userid = firebaseUser.getUid();
+                                    writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                    // updateUI(user);
                                     Toast.makeText(getApplicationContext(), "Registered Successfully Please check your E-Mail for verification", Toast.LENGTH_LONG).show();
@@ -138,8 +140,9 @@ private ProgressBar progressBar;
         });
     }
 
-    private void writeNewUser(String name, String mobile, String email, String password, String address, String userType) {
-        User user = new User(name, mobile, email, password, address, userType);
+    private void writeNewUser(String name, String mobile, String email, String password, String address, String userType, String imageURL, String status, String id, String username, String search) {
+
+        User user = new User(name, mobile, email, password, address, userType, imageURL, status, id, username, search);
       //  String key = mDatabase.getDatabase().getReference().push().getKey();
        String uid = firebaseAuth.getCurrentUser().getUid();
         mDatabase.child(userType).child(uid).setValue(user);

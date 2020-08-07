@@ -29,15 +29,17 @@
         <activity android:name=".IntroScreen.IntroActivity"
             android:theme="@style/AppTheme">
 <!--          Internt filter here-->
-        </activity>
 
-<!--        Chat-->
-        <activity android:name=".Chat.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+<!--        Chat-->
+        <activity android:name=".Chat.StartActivity">
+
         </activity>
         <activity
             android:name=".Chat.RegisterActivity"

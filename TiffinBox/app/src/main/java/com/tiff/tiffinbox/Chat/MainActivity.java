@@ -28,11 +28,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Chat.Fragments.ChatsFragment;
 import com.tiff.tiffinbox.Chat.Fragments.ProfileFragment;
 import com.tiff.tiffinbox.Chat.Fragments.UsersFragment;
 import com.tiff.tiffinbox.Chat.Model.Chat;
-import com.tiff.tiffinbox.Chat.Model.User;
 import com.tiff.tiffinbox.R;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     TextView username;
 
     FirebaseUser firebaseUser;
-    DatabaseReference reference;
+    DatabaseReference reference, refUserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +61,16 @@ public class MainActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getUsername());
+                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+               username.setText(user.getUsername());
                 if (user.getImageURL().equals("default")){
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
-
                     //change this
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
                 }
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void status(String status){
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
