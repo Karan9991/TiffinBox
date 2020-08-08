@@ -35,8 +35,7 @@
                 android:textStyle="bold"
                 android:layout_marginStart="25dp" />
 
-        </androidx.appcompat.widget.Toolbar
->
+        </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

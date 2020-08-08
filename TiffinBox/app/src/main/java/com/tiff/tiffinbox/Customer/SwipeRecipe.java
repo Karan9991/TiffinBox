@@ -62,19 +62,19 @@ public class SwipeRecipe extends AppCompatActivity {
 
         builder2 = new AlertDialog.Builder(this);
 
-        FloatingActionButton fab = findViewById(R.id.fabChat);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                intent.putExtra("userid", userid);
-                startActivity(intent);
-                //startActivity(new Intent(SwipeRecipe.this, MainActivity.class));
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fabChat);
+//
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+//                intent.putExtra("userid", userid);
+//                startActivity(intent);
+//                //startActivity(new Intent(SwipeRecipe.this, MainActivity.class));
+//            }
+//        });
 
         gettingIntent();
         getRecipes();

@@ -1,5 +1,7 @@
 package com.tiff.tiffinbox.Chat.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,13 +32,13 @@ import com.tiff.tiffinbox.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class UsersFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
     private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
+    SharedPreferences sharedPref;
 
     EditText search_users;
 
@@ -49,15 +51,23 @@ public class UsersFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        sharedPref = getActivity().getSharedPreferences("UserType", Context.MODE_PRIVATE);
 
         mUsers = new ArrayList<>();
 
+        if (sharedPref.getString("UT",null).equals("Customer")){
+            readSellers();
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
+            readCustomers();
+        }
 //        if (SignIn.UT.equals("Seller")){
 //            readCustomers();
 //        }else if (SignIn.UT.equals("Customer")){
 //            readSellers();
 //        }
-readCustomers();
+//        readSellers();
+
+//readCustomers();
         search_users = view.findViewById(R.id.search_users);
         search_users.addTextChangedListener(new TextWatcher() {
             @Override
@@ -67,7 +77,11 @@ readCustomers();
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchUsers(charSequence.toString().toLowerCase());
+                if (sharedPref.getString("UT",null).equals("Customer")){
+                    searchSellers(charSequence.toString().toLowerCase());
+                }else if (sharedPref.getString("UT",null).equals("Seller")){
+                    searchCustomers(charSequence.toString().toLowerCase());
+                }
             }
 
             @Override
@@ -79,9 +93,10 @@ readCustomers();
         return view;
     }
 
-    private void searchUsers(String s) {
+    private void searchCustomers(String s) {
 
         final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+
         Query query = FirebaseDatabase.getInstance().getReference("Customer").orderByChild("search")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
@@ -99,7 +114,6 @@ readCustomers();
                         mUsers.add(user);
                     }
                 }
-
                 userAdapter = new UserAdapter(getContext(), mUsers, false);
                 recyclerView.setAdapter(userAdapter);
             }
@@ -109,7 +123,37 @@ readCustomers();
 
             }
         });
+    }
+    private void searchSellers(String s) {
 
+        final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+
+        Query query = FirebaseDatabase.getInstance().getReference("Seller").orderByChild("search")
+                .startAt(s)
+                .endAt(s+"\uf8ff");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUsers.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(User.class);
+
+                    assert user != null;
+                    assert fuser != null;
+                    if (!user.getId().equals(fuser.getUid())){
+                        mUsers.add(user);
+                    }
+                }
+                userAdapter = new UserAdapter(getContext(), mUsers, false);
+                recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 //    private void readUsers() {

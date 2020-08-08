@@ -3,7 +3,9 @@ package com.tiff.tiffinbox.Authentication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -41,6 +43,10 @@ TextView tvSignUp, tvForgotPassword;
 private ProgressBar progressBar;
 public static String UT;
 
+SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
+
      Boolean isValid;
      String data, data2;
     Map<String, Object> map,map2;
@@ -69,6 +75,8 @@ public static String UT;
         tvSignUp = findViewById(R.id.tvSignUp);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         progressBar = findViewById(R.id.progressBar_cyclicSignin);
+        sharedPref = getSharedPreferences("UserType", Context.MODE_PRIVATE);
+        editor =  sharedPref.edit();
 
         progressBar.setVisibility(View.GONE);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
@@ -141,8 +149,15 @@ public static String UT;
               //  Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SignIn.this, Customer.class));
  UT = "Customer";
+ editor.putString("UT", "Customer");
+                editor.commit();
+
             } else if (key.equals("Seller")){
 UT = "Seller";
+                editor.putString("UT", "Seller");
+                editor.commit();
+
+
                 data2 = dataSnapshot.getValue().toString();
               //  Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, AddView.class));

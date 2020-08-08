@@ -19,6 +19,9 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.tiff.tiffinbox.Chat.MainActivity;
+import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
@@ -54,6 +57,20 @@ public class Customer extends AppCompatActivity {
         getSupportActionBar().setTitle("Tiffin Recipes");
 
         viewRecipe = new ViewRecipe();
+
+        FloatingActionButton fab = findViewById(R.id.fabChatCustomer);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+//                intent.putExtra("userid", userid);
+//                startActivity(intent);
+                startActivity(new Intent(Customer.this, MainActivity.class));
+            }
+        });
 
         //Firebase
         queryInfo = df.child("Seller");

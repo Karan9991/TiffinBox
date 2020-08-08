@@ -1,5 +1,6 @@
 package com.tiff.tiffinbox.Chat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -69,6 +70,8 @@ public class MessageActivity extends AppCompatActivity {
     APIService apiService;
 
     boolean notify = false;
+    SharedPreferences sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +82,13 @@ public class MessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        sharedPref = getSharedPreferences("UserType", Context.MODE_PRIVATE);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // and this
-                startActivity(new Intent(MessageActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+             //   startActivity(new Intent(MessageActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
@@ -254,12 +259,15 @@ public void Customerr(){
         chatRefReceiver.child("id").setValue(fuser.getUid());
 
         final String msg = message;
-
-        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+ if (sharedPref.getString("UT",null).equals("Seller")){
+     reference = FirebaseDatabase.getInstance().getReference("Seller").child(fuser.getUid());
+        }else if (sharedPref.getString("UT",null).equals("Customer")){
+     reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+        }
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
                 if (notify) {
                     sendNotifiaction(receiver, user.getUsername(), msg);
                 }
@@ -272,6 +280,43 @@ public void Customerr(){
             }
         });
     }
+//public void SSeller(){
+//    reference = FirebaseDatabase.getInstance().getReference("Seller").child(fuser.getUid());
+//    reference.addValueEventListener(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+//            if (notify) {
+//                sendNotifiaction(receiver, user.getUsername(), msg);
+//            }
+//            notify = false;
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//        }
+//    });
+//}
+//public void CCustomer(){
+//    reference = FirebaseDatabase.getInstance().getReference("Seller").child(fuser.getUid());
+//    reference.addValueEventListener(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+//            if (notify) {
+//                sendNotifiaction(receiver, user.getUsername(), msg);
+//            }
+//            notify = false;
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//        }
+//    });
+//}
+
 
     private void sendNotifiaction(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");

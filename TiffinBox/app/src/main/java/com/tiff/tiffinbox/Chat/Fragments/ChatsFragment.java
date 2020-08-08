@@ -1,6 +1,7 @@
 package com.tiff.tiffinbox.Chat.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 //import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ public class ChatsFragment extends Fragment {
     DatabaseReference reference;
 
     private List<Chatlist> usersList;
+    SharedPreferences sharedPref;
 
     @Nullable
     @Override
@@ -57,6 +59,7 @@ public class ChatsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        sharedPref = getActivity().getSharedPreferences("UserType", Context.MODE_PRIVATE);
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -94,7 +97,12 @@ public class ChatsFragment extends Fragment {
 
     private void chatList() {
         mUsers = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Seller");
+
+        if (sharedPref.getString("UT",null).equals("Customer")){
+            reference = FirebaseDatabase.getInstance().getReference("Seller");
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
+            reference = FirebaseDatabase.getInstance().getReference("Customer");
+        }
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

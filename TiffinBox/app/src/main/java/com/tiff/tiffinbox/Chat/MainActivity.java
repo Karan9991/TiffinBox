@@ -1,6 +1,8 @@
 package com.tiff.tiffinbox.Chat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference reference, refUserType;
     FindUserType findUserType;
+    SharedPreferences sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +69,21 @@ public class MainActivity extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
         findUserType = new FindUserType();
+        sharedPref = getSharedPreferences("UserType", Context.MODE_PRIVATE);
+
+        Log.i("eeeeeeeeee","ee"+ SignIn.UT);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (SignIn.UT.equals("Customer")){
+//        if (SignIn.UT.equals("Customer")){
+//            Customerr();
+//        }else if (SignIn.UT.equals("Seller")){
+//            Sellerr();
+//        }
+        if (sharedPref.getString("UT",null).equals("Customer")){
             Customerr();
-        }else {
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
             Sellerr();
         }
-Log.i("eeeeeeeeee","ee"+ SignIn.UT);
 //        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
 //        reference.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -130,8 +141,6 @@ Log.i("eeeeeeeeee","ee"+ SignIn.UT);
 
             }
         });
-
-
     }
 public void Sellerr()
 {
@@ -176,25 +185,25 @@ public void Customerr(){
         }
     });
 }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-
-            case  R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                // change this code beacuse your app will crash
-                startActivity(new Intent(MainActivity.this, StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                return true;
-        }
-
-        return false;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//
+//            case  R.id.logout:
+//                FirebaseAuth.getInstance().signOut();
+//                // change this code beacuse your app will crash
+//                startActivity(new Intent(MainActivity.this, StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                return true;
+//        }
+//
+//        return false;
+//    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -232,23 +241,39 @@ public void Customerr(){
     }
 
     private void status(String status){
+        Log.i("ddddddddddddddddddd","di"+firebaseUser.getUid());
+
         reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
+       // HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap map = new HashMap();
 
-        reference.updateChildren(hashMap);
+        map.put("status", status);
+
+        reference.updateChildren(map);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        status("online");
+       Log.i("OnResume","onresume");
+        // status("online");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         status("offline");
+        Log.i("Onpause","onpause");
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+         status("online");
+
+        Log.i("onstart","onstart");
+
     }
 }
