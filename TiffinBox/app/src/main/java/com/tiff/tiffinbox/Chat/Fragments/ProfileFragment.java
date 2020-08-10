@@ -2,7 +2,9 @@ package com.tiff.tiffinbox.Chat.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.R;
@@ -54,6 +57,7 @@ public class ProfileFragment extends Fragment {
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
+    SharedPreferences sharedPref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,11 +71,18 @@ public class ProfileFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        if (SignIn.UT.equals("Customer")){
+        sharedPref = getActivity().getSharedPreferences("UserType", Context.MODE_PRIVATE);
+
+        if (sharedPref.getString("UT",null).equals("Customer")){
             Customerr();
-        }else if (SignIn.UT.equals("Seller")){
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
             Sellerr();
         }
+        //        if (SignIn.UT.equals("Customer")){
+//            Customerr();
+//        }else if (SignIn.UT.equals("Seller")){
+//            Sellerr();
+//        }
 //        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
 //
 //        reference.addValueEventListener(new ValueEventListener() {
@@ -112,7 +123,9 @@ public void Sellerr(){
             if (user.getImageURL().equals("default")){
                 image_profile.setImageResource(R.mipmap.ic_launcher);
             } else {
-                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+                //Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+                Picasso.with(getContext()).
+                        load(user.getImageURL()).into(image_profile);
             }
         }
 
@@ -133,7 +146,9 @@ public void Customerr(){
             if (user.getImageURL().equals("default")){
                 image_profile.setImageResource(R.mipmap.ic_launcher);
             } else {
-                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+              //  Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+                Picasso.with(getContext()).
+                        load(user.getImageURL()).into(image_profile);
             }
         }
 

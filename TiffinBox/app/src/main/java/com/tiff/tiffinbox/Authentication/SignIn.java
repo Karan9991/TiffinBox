@@ -60,8 +60,10 @@ SharedPreferences sharedPref;
 //    DatabaseReference databaseReferenceSell = firebaseDatabaseSell.getReference();
 //    DatabaseReference dataSell = databaseReferenceSell.child("Seller");
 
-    DatabaseReference mFirebasedataRefSell = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mFirebasedataRefCust = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mFirebasedataRefSell;
+    DatabaseReference mFirebasedataRefCust;
+    DatabaseReference dfOnline;
+    DatabaseReference dfOnline2;
     Query querySeller, queryCustomer;
 
     @Override
@@ -83,15 +85,59 @@ SharedPreferences sharedPref;
 
 //Variables
         isValid = false;
-//Firebase Objects
+//Firebase Objects intialized
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        mFirebasedataRefSell  = FirebaseDatabase.getInstance().getReference();
+        mFirebasedataRefCust  = FirebaseDatabase.getInstance().getReference();
+
 
 //If User already signed in
                 if (firebaseUser!=null&&firebaseAuth.getCurrentUser().isEmailVerified()){
-                    querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail());
-                    queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail());
-                    triggerQuey();
+                    dfOnline = FirebaseDatabase.getInstance().getReference();
+                    dfOnline2 = FirebaseDatabase.getInstance().getReference();
+
+                    Query myTopPostsQuery = dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail());
+                    Query myTopPostsQuery2 = dfOnline2.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail());
+                    if (sharedPref.getString("UT",null).equals("Customer")){
+                        myTopPostsQuery.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Log.i("qqqqqqqqqqqqqqqqqqqqqqqqq","q"+dataSnapshot.getKey());
+                                if (dataSnapshot.getKey().equals("Customer")){
+                                    dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+                                    startActivity(new Intent(SignIn.this, Customer.class));
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }else if (sharedPref.getString("UT",null).equals("Seller")) {
+                        myTopPostsQuery2.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getKey().equals("Seller")) {
+
+                                    dfOnline2.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+                                    startActivity(new Intent(SignIn.this, AddView.class));
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    //ok
+//                    querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail());
+//                    queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail());
+//                    triggerQuey();
                  // finish();
                  //   startActivity(new Intent(SignIn.this, AddView.class));
                     }
@@ -107,7 +153,7 @@ SharedPreferences sharedPref;
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 if (firebaseAuth.getCurrentUser().isEmailVerified()){
-
+//startActivity(new Intent(SignIn.this, Customer.class));
                                     querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString());
                                     queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString());
                                 triggerQuey();
@@ -138,6 +184,24 @@ SharedPreferences sharedPref;
             }
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+     //   dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+     //   mFirebasedataRefSell.removeEventListener(this);
+       // mFirebasedataRefCust.removeEventListener(this);
+        Log.i("RRRRRRRRRRRRRRRRRRRRRRR","RRRRRRRRRRRRRRRRRRRRRRRRR");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+//        mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+//        mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+    }
+
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         Log.i("qqqq","qqqq");
@@ -146,20 +210,33 @@ SharedPreferences sharedPref;
             String key = dataSnapshot.getKey();
             if (key.equals("Customer")) {
                 data = dataSnapshot.getValue().toString();
-              //  Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show();
-                startActivity(new Intent(SignIn.this, Customer.class));
- UT = "Customer";
- editor.putString("UT", "Customer");
+              //  Toast.makeText(getApplicationContext(), "value " + data, Toast.LENGTH_LONG).show()
+         //       mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+       // mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+                editor.putString("UT", "Customer");
                 editor.commit();
+                mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+                startActivity(new Intent(SignIn.this, Customer.class));
+                //finish();
+ UT = "Customer";
+                Log.i("cccccccccccccccccccccccc","cccccccccccccccccccccc");
+//                startActivity(new Intent(MainActivity.this, StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+
 
             } else if (key.equals("Seller")){
-UT = "Seller";
+                Log.i("sssssssssssssssssssssssss","ssssssssssssssssssssssssssssss");
+
+                UT = "Seller";
                 editor.putString("UT", "Seller");
                 editor.commit();
 
-
                 data2 = dataSnapshot.getValue().toString();
               //  Toast.makeText(getApplicationContext(),"firebase "+data2,Toast.LENGTH_SHORT).show();
+               // mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+     //mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+              mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+
                 startActivity(new Intent(SignIn.this, AddView.class));
 
             }

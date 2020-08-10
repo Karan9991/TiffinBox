@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.Adapter.MessageAdapter;
 import com.tiff.tiffinbox.Chat.Fragments.APIService;
@@ -122,12 +123,12 @@ public class MessageActivity extends AppCompatActivity {
                 text_send.setText("");
             }
         });
-
-        if (SignIn.UT.equals("Seller")){
+        if (sharedPref.getString("UT",null).equals("Seller")){
             Customerr();
-        }else if (SignIn.UT.equals("Customer")){
+        }else if (sharedPref.getString("UT",null).equals("Customer")){
             Sellerr();
         }
+
 //        reference = FirebaseDatabase.getInstance().getReference("Seller").child(userid);
 //
 //        reference.addValueEventListener(new ValueEventListener() {
@@ -164,7 +165,9 @@ public void Sellerr(){
                 profile_image.setImageResource(R.mipmap.ic_launcher);
             } else {
                 //and this
-                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+             //   Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                Picasso.with(getApplicationContext()).
+                        load(user.getImageURL()).into(profile_image);
             }
 
             readMesagges(fuser.getUid(), userid, user.getImageURL());
@@ -187,7 +190,9 @@ public void Customerr(){
                 profile_image.setImageResource(R.mipmap.ic_launcher);
             } else {
                 //and this
-                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+             //   Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                Picasso.with(getApplicationContext()).
+                        load(user.getImageURL()).into(profile_image);
             }
 
             readMesagges(fuser.getUid(), userid, user.getImageURL());
@@ -391,12 +396,17 @@ public void Customerr(){
     }
 
     private void status(String status){
-        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
-
-        reference.updateChildren(hashMap);
+        if (sharedPref.getString("UT",null).equals("Customer")){
+            reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+            reference.updateChildren(hashMap);
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
+            reference = FirebaseDatabase.getInstance().getReference("Seller").child(fuser.getUid());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+            reference.updateChildren(hashMap);
+        }
     }
 
     @Override

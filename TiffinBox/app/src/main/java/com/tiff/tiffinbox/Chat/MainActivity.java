@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 //import android.widget.TabLayout;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.Fragments.ChatsFragment;
@@ -71,19 +74,14 @@ public class MainActivity extends AppCompatActivity {
         findUserType = new FindUserType();
         sharedPref = getSharedPreferences("UserType", Context.MODE_PRIVATE);
 
-        Log.i("eeeeeeeeee","ee"+ SignIn.UT);
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        if (SignIn.UT.equals("Customer")){
-//            Customerr();
-//        }else if (SignIn.UT.equals("Seller")){
-//            Sellerr();
-//        }
+
         if (sharedPref.getString("UT",null).equals("Customer")){
             Customerr();
         }else if (sharedPref.getString("UT",null).equals("Seller")){
             Sellerr();
         }
+//        Customerr();
 //        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
 //        reference.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -154,7 +152,9 @@ public void Sellerr()
                 profile_image.setImageResource(R.mipmap.ic_launcher);
             } else {
                 //change this
-                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+             //   Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                Picasso.with(getApplicationContext()).
+                        load(user.getImageURL()).into(profile_image);
             }
         }
 
@@ -175,7 +175,9 @@ public void Customerr(){
                 profile_image.setImageResource(R.mipmap.ic_launcher);
             } else {
                 //change this
-                Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+            //    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                Picasso.with(getApplicationContext()).
+                        load(user.getImageURL()).into(profile_image);
             }
         }
 
@@ -241,23 +243,28 @@ public void Customerr(){
     }
 
     private void status(String status){
-        Log.i("ddddddddddddddddddd","di"+firebaseUser.getUid());
+        if (sharedPref.getString("UT",null).equals("Customer")){
+            reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
+             HashMap<String, Object> map = new HashMap<>();
+            map.put("status", status);
+            reference.updateChildren(map);
+            Log.i("dddddddddddddddddddcustomer","di"+sharedPref.getString("UT",null));
+        }else if (sharedPref.getString("UT",null).equals("Seller")){
+            reference = FirebaseDatabase.getInstance().getReference("Seller").child(firebaseUser.getUid());
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("status", status);
+            reference.updateChildren(map);
+            Log.i("dddddddddddddddddddseller","di"+sharedPref.getString("UT",null));
 
-        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
+        }
 
-       // HashMap<String, Object> hashMap = new HashMap<>();
-        HashMap map = new HashMap();
-
-        map.put("status", status);
-
-        reference.updateChildren(map);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
        Log.i("OnResume","onresume");
-        // status("online");
+         status("online");
     }
 
     @Override
@@ -265,15 +272,6 @@ public void Customerr(){
         super.onPause();
         status("offline");
         Log.i("Onpause","onpause");
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-         status("online");
-
-        Log.i("onstart","onstart");
 
     }
 }

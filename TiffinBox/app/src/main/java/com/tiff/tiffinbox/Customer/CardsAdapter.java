@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 
@@ -70,8 +71,9 @@ CardModel cardModel = new CardModel();
 
         CardModel model = getItem(position);
        // holder.imageView.setImageResource(model.getImageURL());
-        Glide.with(getContext()).load(model.getImageURL()).into(holder.imageView);
-
+    //    Glide.with(getContext()).load(model.getImageURL()).into(holder.imageView);
+        Picasso.with(getContext()).
+                load(model.getImageURL()).into(holder.imageView);
         //  holder.tvTitle.setText(model.getTitle());
         holder.tvName.setText(cardModelListfiltered.get(position).getName());
         holder.tvAddress.setText(cardModelListfiltered.get(position).getAddress());

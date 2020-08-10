@@ -103,6 +103,7 @@ public class ChatsFragment extends Fragment {
         }else if (sharedPref.getString("UT",null).equals("Seller")){
             reference = FirebaseDatabase.getInstance().getReference("Customer");
         }
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

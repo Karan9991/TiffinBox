@@ -60,14 +60,6 @@ public class UsersFragment extends Fragment {
         }else if (sharedPref.getString("UT",null).equals("Seller")){
             readCustomers();
         }
-//        if (SignIn.UT.equals("Seller")){
-//            readCustomers();
-//        }else if (SignIn.UT.equals("Customer")){
-//            readSellers();
-//        }
-//        readSellers();
-
-//readCustomers();
         search_users = view.findViewById(R.id.search_users);
         search_users.addTextChangedListener(new TextWatcher() {
             @Override

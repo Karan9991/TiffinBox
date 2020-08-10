@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseUser;
 import com.tiff.tiffinbox.Chat.MainActivity;
 import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
@@ -34,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Customer extends AppCompatActivity {
@@ -44,6 +47,9 @@ public class Customer extends AppCompatActivity {
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference df = database.getReference();
+    DatabaseReference df2;
+    DatabaseReference df3;
+    FirebaseUser fuser;
     Query queryInfo, queryImgUrl;
     String imageur;
 
@@ -59,6 +65,8 @@ public class Customer extends AppCompatActivity {
         viewRecipe = new ViewRecipe();
 
         FloatingActionButton fab = findViewById(R.id.fabChatCustomer);
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        df2 = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,4 +195,56 @@ public class Customer extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void currentUser(String userid){
+        SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+        editor.putString("currentuser", userid);
+        editor.apply();
+    }
+    private void status(String status){
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        df2.updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onResume() {
+      //  status("online");
+
+        super.onResume();
+       // Log.i("onresumeeeeeeeeeeeeee", "onresume");
+       // currentUser(fuser.getUid());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+       // status("offline");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+      //  status("offline");
+     //   Log.d("destroyyyyyyyyyyyyyyyyyyyy", "ondestroy");
+
+    }
+
+    @Override
+    protected void onPause() {
+        //        status("offline");
+
+        super.onPause();
+       // df2.removeEventListener(seenListener);
+       // currentUser("none");
+//        df3 = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
+//
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("status", "offline");
+//
+//        df3.updateChildren(hashMap);
+       // Log.d("onpauseeeeeeeeeeeeeeeeee", "onPause");
+    }
 }
