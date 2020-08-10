@@ -215,15 +215,12 @@ SharedPreferences sharedPref;
        // mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
                 editor.putString("UT", "Customer");
                 editor.commit();
-                mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
+               mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString()).removeEventListener(this);
                 startActivity(new Intent(SignIn.this, Customer.class));
                 //finish();
  UT = "Customer";
                 Log.i("cccccccccccccccccccccccc","cccccccccccccccccccccc");
 //                startActivity(new Intent(MainActivity.this, StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
-
-
             } else if (key.equals("Seller")){
                 Log.i("sssssssssssssssssssssssss","ssssssssssssssssssssssssssssss");
 

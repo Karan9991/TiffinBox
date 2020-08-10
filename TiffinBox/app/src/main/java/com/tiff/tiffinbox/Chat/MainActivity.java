@@ -81,26 +81,6 @@ public class MainActivity extends AppCompatActivity {
         }else if (sharedPref.getString("UT",null).equals("Seller")){
             Sellerr();
         }
-//        Customerr();
-//        reference = FirebaseDatabase.getInstance().getReference("Customer").child(firebaseUser.getUid());
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
-//               username.setText(user.getUsername());
-//                if (user.getImageURL().equals("default")){
-//                    profile_image.setImageResource(R.mipmap.ic_launcher);
-//                } else {
-//                    //change this
-//                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         final TabLayout tabLayout = findViewById(R.id.tab_layout);
         final ViewPager viewPager = findViewById(R.id.view_pager);
@@ -125,8 +105,12 @@ public class MainActivity extends AppCompatActivity {
                     viewPagerAdapter.addFragment(new ChatsFragment(), "("+unread+") Chats");
                 }
 
-                viewPagerAdapter.addFragment(new UsersFragment(), "Users");
-                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+                if (sharedPref.getString("UT",null).equals("Seller")){
+                    viewPagerAdapter.addFragment(new UsersFragment(), "Customers");
+                }else if (sharedPref.getString("UT",null).equals("Customer")){
+                    viewPagerAdapter.addFragment(new UsersFragment(), "Sellers");
+                }
+             //   viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
                 viewPager.setAdapter(viewPagerAdapter);
 

@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/profile_image"
         android:layout_marginLeft="5dp"
+        android:textColor="@color/colorAccent"
         android:text="hello"
         android:id="@+id/show_message"
         android:textSize="18sp"

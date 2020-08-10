@@ -78,30 +78,6 @@ public class ProfileFragment extends Fragment {
         }else if (sharedPref.getString("UT",null).equals("Seller")){
             Sellerr();
         }
-        //        if (SignIn.UT.equals("Customer")){
-//            Customerr();
-//        }else if (SignIn.UT.equals("Seller")){
-//            Sellerr();
-//        }
-//        reference = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
-//
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
-//                username.setText(user.getUsername());
-//                if (user.getImageURL().equals("default")){
-//                    image_profile.setImageResource(R.mipmap.ic_launcher);
-//                } else {
-//                    Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         image_profile.setOnClickListener(new View.OnClickListener() {
             @Override

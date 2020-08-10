@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorAccent"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/MenuStyle">
 
@@ -59,6 +59,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_send"
             android:background="@android:color/transparent"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
             android:hint="Type a message..."
             android:layout_toLeftOf="@id/btn_send"
             android:layout_centerVertical="true"/>

@@ -238,7 +238,6 @@ public void Customerr(){
 
         reference.child("Chats").push().setValue(hashMap);
 
-
         // add user to chat fragment
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(fuser.getUid())
@@ -321,7 +320,6 @@ public void Customerr(){
 //        }
 //    });
 //}
-
 
     private void sendNotifiaction(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
