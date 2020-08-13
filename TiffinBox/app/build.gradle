@@ -8,8 +8,8 @@ android {
         minSdkVersion 24
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 2
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -74,7 +74,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
-
 
 }
 apply plugin: 'com.google.gms.google-services'

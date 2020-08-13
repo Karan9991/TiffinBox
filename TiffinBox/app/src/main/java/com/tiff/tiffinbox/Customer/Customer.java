@@ -2,8 +2,10 @@ package com.tiff.tiffinbox.Customer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
+import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.Chat.MainActivity;
 import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
@@ -43,6 +47,8 @@ public class Customer extends AppCompatActivity {
     CardsAdapter adapter;
     ViewRecipe viewRecipe;
     List<CardModel> myList;
+    AlertDialog.Builder builder2;
+    ImageView imgCustomerLogout;
 
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -61,6 +67,8 @@ public class Customer extends AppCompatActivity {
         setContentView(R.layout.activity_customer);
 
         getSupportActionBar().setTitle("Tiffin Recipes");
+        builder2 = new AlertDialog.Builder(this);
+        imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
 
         viewRecipe = new ViewRecipe();
 
@@ -114,6 +122,12 @@ public class Customer extends AppCompatActivity {
 
         gettingSellerList();
 
+        imgCustomerLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
     }
 
     public void gettingSellerList(){
@@ -195,56 +209,23 @@ public class Customer extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void currentUser(String userid){
-        SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-        editor.putString("currentuser", userid);
-        editor.apply();
-    }
-    private void status(String status){
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
-
-        df2.updateChildren(hashMap);
-    }
-
-    @Override
-    protected void onResume() {
-      //  status("online");
-
-        super.onResume();
-       // Log.i("onresumeeeeeeeeeeeeee", "onresume");
-       // currentUser(fuser.getUid());
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-       // status("offline");
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-      //  status("offline");
-     //   Log.d("destroyyyyyyyyyyyyyyyyyyyy", "ondestroy");
-
-    }
-
-    @Override
-    protected void onPause() {
-        //        status("offline");
-
-        super.onPause();
-       // df2.removeEventListener(seenListener);
-       // currentUser("none");
-//        df3 = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
-//
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        hashMap.put("status", "offline");
-//
-//        df3.updateChildren(hashMap);
-       // Log.d("onpauseeeeeeeeeeeeeeeeee", "onPause");
+    private void logout(){
+        builder2.setTitle("Logout");
+        builder2.setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        FirebaseAuth.getInstance().signOut();
+                        Intent i = new Intent(Customer.this, SignIn.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder2.create();
+        alert.show();
     }
 }

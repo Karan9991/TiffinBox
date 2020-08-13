@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     FindUserType findUserType;
     SharedPreferences sharedPref;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
         profile_image = findViewById(R.id.profile_image);
@@ -190,7 +191,14 @@ public void Customerr(){
 //
 //        return false;
 //    }
-
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    if (id == android.R.id.home){
+        this.finish();
+    }
+    return super.onOptionsItemSelected(item);
+}
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private ArrayList<Fragment> fragments;

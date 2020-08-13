@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.R;
 import com.google.android.material.tabs.TabLayout;
+import com.tiff.tiffinbox.SplashScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class IntroActivity extends AppCompatActivity {
 
         if (restorePrefData()) {
 
-            Intent mainActivity = new Intent(getApplicationContext(), SignIn.class );
+            Intent mainActivity = new Intent(getApplicationContext(), SplashScreen.class );
             startActivity(mainActivity);
             finish();
 
@@ -154,7 +155,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 //open main activity
 
-                Intent mainActivity = new Intent(getApplicationContext(),SignIn.class);
+                Intent mainActivity = new Intent(getApplicationContext(), SplashScreen.class);
                 startActivity(mainActivity);
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity

@@ -142,17 +142,6 @@
                 android:layout_marginTop="630dp"
                 android:src="@drawable/ic_leftarrow" />
 
-            <ImageView
-                android:id="@+id/imgCustomerLogout"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="638dp"
-                android:layout_marginEnd="15dp"
-                android:src="@drawable/ic_logout_svg"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </RelativeLayout>
     </ScrollView>

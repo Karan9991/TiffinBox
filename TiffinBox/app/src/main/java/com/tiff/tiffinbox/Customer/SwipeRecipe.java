@@ -43,10 +43,9 @@ public class SwipeRecipe extends AppCompatActivity {
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     TextView tvSellerName, tvSellerEmail, tvSellerPhone, tvSellerAddress;
-    ImageView imgLeftArrowSwipeR, imgCustomerLogout;
+    ImageView imgLeftArrowSwipeR;
 
     String tvEmail, tvName, tvAddress, tvMobile;
-    AlertDialog.Builder builder2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,6 @@ public class SwipeRecipe extends AppCompatActivity {
         tvSellerPhone = findViewById(R.id.tvSellerPhone);
         tvSellerAddress = findViewById(R.id.tvSellerAddress);
         imgLeftArrowSwipeR = findViewById(R.id.imgLeftArrowSwipeR);
-        imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
-
-        builder2 = new AlertDialog.Builder(this);
 
 //        FloatingActionButton fab = findViewById(R.id.fabChat);
 //
@@ -88,12 +84,6 @@ public class SwipeRecipe extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SwipeRecipe.this, Customer.class));
-            }
-        });
-        imgCustomerLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    logout();
             }
         });
     }
@@ -198,23 +188,4 @@ public  void getRecipes(){
         tvMobile = getIntent().getStringExtra("mobile");
     }
 
-    private void logout(){
-        builder2.setTitle("Logout");
-        builder2.setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        FirebaseAuth.getInstance().signOut();
-                        Intent i = new Intent(SwipeRecipe.this, SignIn.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder2.create();
-        alert.show();
-    }
 }

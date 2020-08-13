@@ -26,4 +26,16 @@
         android:dividerHeight="0dp"
         tools:layout_editor_absoluteX="-3dp"></ListView>
 
+    <ImageView
+        android:id="@+id/imgCustomerLogout"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="672dp"
+        android:src="@drawable/ic_logout_customer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
