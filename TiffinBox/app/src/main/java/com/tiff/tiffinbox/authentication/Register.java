@@ -1,4 +1,4 @@
-package com.tiff.tiffinbox.Authentication;
+package com.tiff.tiffinbox.authentication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tiff.tiffinbox.Authentication.Model.User;
+import com.tiff.tiffinbox.authentication.Model.User;
 import com.tiff.tiffinbox.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -205,7 +205,6 @@ private boolean validations(){
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
         MultiDex.install(this);
-
     }
 
 }

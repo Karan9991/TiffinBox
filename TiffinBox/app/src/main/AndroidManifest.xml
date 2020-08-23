@@ -12,7 +12,7 @@
         <activity android:name=".SplashScreen"></activity>
         <activity android:name=".Customer.SwipeRecipe" />
         <activity
-            android:name=".Authentication.ForgotPassword"
+            android:name=".authentication.ForgotPassword"
             android:theme="@style/AppTheme" />
         <activity android:name=".Seller.Profile.Profile" />
         <activity android:name=".Seller.Recipe" />
@@ -23,8 +23,8 @@
         <activity
             android:name=".Customer.Customer"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Authentication.SignIn"></activity>
-        <activity android:name=".Authentication.Register" />
+        <activity android:name=".authentication.SignIn"></activity>
+        <activity android:name=".authentication.Register" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".IntroScreen.IntroActivity"

@@ -17,7 +17,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,8 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import com.tiff.tiffinbox.Authentication.Model.User;
-import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.authentication.Model.User;
 import com.tiff.tiffinbox.R;
 
 import java.util.HashMap;
@@ -94,7 +92,7 @@ public void Sellerr(){
     reference.addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            com.tiff.tiffinbox.authentication.Model.User user = dataSnapshot.getValue(User.class);
             username.setText(user.getUsername());
             if (user.getImageURL().equals("default")){
                 image_profile.setImageResource(R.mipmap.ic_launcher);
@@ -117,7 +115,7 @@ public void Customerr(){
     reference.addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            com.tiff.tiffinbox.Authentication.Model.User user = dataSnapshot.getValue(User.class);
+            com.tiff.tiffinbox.authentication.Model.User user = dataSnapshot.getValue(User.class);
             username.setText(user.getUsername());
             if (user.getImageURL().equals("default")){
                 image_profile.setImageResource(R.mipmap.ic_launcher);

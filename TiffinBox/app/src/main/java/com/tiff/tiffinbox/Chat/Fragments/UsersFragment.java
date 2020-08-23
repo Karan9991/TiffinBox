@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.tiff.tiffinbox.Authentication.Model.User;
-import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.authentication.Model.User;
 import com.tiff.tiffinbox.Chat.Adapter.UserAdapter;
 import com.tiff.tiffinbox.R;
 
@@ -37,7 +34,7 @@ public class UsersFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
-    private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
+    private List<com.tiff.tiffinbox.authentication.Model.User> mUsers;
     SharedPreferences sharedPref;
 
     EditText search_users;
@@ -98,7 +95,7 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(User.class);
+                    com.tiff.tiffinbox.authentication.Model.User user = snapshot.getValue(User.class);
 
                     assert user != null;
                     assert fuser != null;
@@ -129,7 +126,7 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(User.class);
+                    com.tiff.tiffinbox.authentication.Model.User user = snapshot.getValue(User.class);
 
                     assert user != null;
                     assert fuser != null;
@@ -188,7 +185,7 @@ private void readSellers() {
             if (search_users.getText().toString().equals("")) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+                    com.tiff.tiffinbox.authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.authentication.Model.User.class);
                     //Log.i("TTTTTTTT", "vv"+user.getId());
 //                        if (!user.getId().equals(firebaseUser.getUid())) {
 //                            mUsers.add(user);
@@ -218,7 +215,7 @@ private void readSellers() {
                 if (search_users.getText().toString().equals("")) {
                     mUsers.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+                        com.tiff.tiffinbox.authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.authentication.Model.User.class);
                         //Log.i("TTTTTTTT", "vv"+user.getId());
 //                        if (!user.getId().equals(firebaseUser.getUid())) {
 //                            mUsers.add(user);

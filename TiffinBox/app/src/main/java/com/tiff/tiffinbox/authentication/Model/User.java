@@ -1,4 +1,4 @@
-package com.tiff.tiffinbox.Authentication.Model;
+package com.tiff.tiffinbox.authentication.Model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

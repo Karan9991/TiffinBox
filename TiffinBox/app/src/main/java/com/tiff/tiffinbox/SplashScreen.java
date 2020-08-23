@@ -1,27 +1,22 @@
 package com.tiff.tiffinbox;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.Customer.Customer;
 import com.tiff.tiffinbox.Seller.AddView;
 
@@ -62,7 +57,7 @@ public class SplashScreen extends AppCompatActivity {
                 }finally{
 //                    Intent intent = new Intent(SplashScreen.this, SignIn.class);
 //                    startActivity(intent);
-                findUT();
+                    findUT();
                 }
             }
         };
@@ -78,39 +73,43 @@ public class SplashScreen extends AppCompatActivity {
            Query myTopPostsQuery = dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail());
            Query myTopPostsQuery2 = dfOnline2.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail());
            if (sharedPref.getString("UT",null).equals("Customer")){
-               myTopPostsQuery.addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       Log.i("qqqqqqqqqqqqqqqqqqqqqqqqqsplashscreen","q"+dataSnapshot.getKey());
-                       if (dataSnapshot.getKey().equals("Customer")){
-                           dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
-                           startActivity(new Intent(SplashScreen.this, Customer.class));
+               startActivity(new Intent(SplashScreen.this, Customer.class));
                            finish();
-                       }
-                   }
-
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                   }
-               });
+//               myTopPostsQuery.addValueEventListener(new ValueEventListener() {
+//                   @Override
+//                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                       Log.i("qqqqqqqqqqqqqqqqqqqqqqqqqsplashscreen","q"+dataSnapshot.getKey());
+//                       if (dataSnapshot.getKey().equals("Customer")){
+//                           dfOnline.child("Customer").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+//                           startActivity(new Intent(SplashScreen.this, Customer.class));
+//                           finish();
+//                       }
+//                   }
+//
+//                   @Override
+//                   public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                   }
+//               });
            }else if (sharedPref.getString("UT",null).equals("Seller")) {
-               myTopPostsQuery2.addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       if (dataSnapshot.getKey().equals("Seller")) {
-
-                           dfOnline2.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
-                           startActivity(new Intent(SplashScreen.this, AddView.class));
+               startActivity(new Intent(SplashScreen.this, AddView.class));
                            finish();
-                       }
-                   }
-
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                   }
-               });
+//               myTopPostsQuery2.addValueEventListener(new ValueEventListener() {
+//                   @Override
+//                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                       if (dataSnapshot.getKey().equals("Seller")) {
+//
+//                           dfOnline2.child("Seller").orderByChild("email").equalTo(firebaseUser.getEmail()).removeEventListener(this);
+//                           startActivity(new Intent(SplashScreen.this, AddView.class));
+//                           finish();
+//                       }
+//                   }
+//
+//                   @Override
+//                   public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                   }
+//               });
            }
        }
        else
@@ -123,5 +122,9 @@ public class SplashScreen extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onPause();
         finish();
+    }
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

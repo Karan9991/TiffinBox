@@ -7,27 +7,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
-import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.Chat.MainActivity;
-import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
@@ -40,7 +34,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Customer extends AppCompatActivity {

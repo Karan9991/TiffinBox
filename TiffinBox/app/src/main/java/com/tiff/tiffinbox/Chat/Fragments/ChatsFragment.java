@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 //import android.support.v7.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Chat.Adapter.UserAdapter;
 import com.tiff.tiffinbox.Chat.Model.Chatlist;
 import com.tiff.tiffinbox.Chat.Notifications.Token;
@@ -34,15 +32,13 @@ import com.tiff.tiffinbox.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
 
 public class ChatsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
-    private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
+    private List<com.tiff.tiffinbox.authentication.Model.User> mUsers;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -109,7 +105,7 @@ public class ChatsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    com.tiff.tiffinbox.Authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.Authentication.Model.User.class);
+                    com.tiff.tiffinbox.authentication.Model.User user = snapshot.getValue(com.tiff.tiffinbox.authentication.Model.User.class);
                     for (Chatlist chatlist : usersList){
 
                         if (user.getId().equals(chatlist.getId())){

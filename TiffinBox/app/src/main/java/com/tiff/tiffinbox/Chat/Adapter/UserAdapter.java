@@ -5,7 +5,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.tiff.tiffinbox.Authentication.Model.User;
 import com.tiff.tiffinbox.Chat.MessageActivity;
 import com.tiff.tiffinbox.Chat.Model.Chat;
 import com.tiff.tiffinbox.R;
@@ -30,12 +28,12 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<com.tiff.tiffinbox.Authentication.Model.User> mUsers;
+    private List<com.tiff.tiffinbox.authentication.Model.User> mUsers;
     private boolean ischat;
 
     String theLastMessage;
 
-    public UserAdapter(Context mContext, List<com.tiff.tiffinbox.Authentication.Model.User> mUsers, boolean ischat){
+    public UserAdapter(Context mContext, List<com.tiff.tiffinbox.authentication.Model.User> mUsers, boolean ischat){
         this.mUsers = mUsers;
         this.mContext = mContext;
         this.ischat = ischat;
@@ -51,7 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final com.tiff.tiffinbox.Authentication.Model.User user = mUsers.get(position);
+        final com.tiff.tiffinbox.authentication.Model.User user = mUsers.get(position);
         holder.username.setText(user.getUsername());
         if (user.getImageURL().equals("default")){
             holder.profile_image.setImageResource(R.mipmap.ic_launcher);

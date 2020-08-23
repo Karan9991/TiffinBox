@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.tiff.tiffinbox.Authentication.SignIn;
+import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.AddView;
 import com.tiff.tiffinbox.Seller.Model.SellerProfile;

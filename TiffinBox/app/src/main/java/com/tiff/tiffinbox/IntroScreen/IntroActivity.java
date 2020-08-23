@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.tiff.tiffinbox.Authentication.SignIn;
 import com.tiff.tiffinbox.R;
 import com.google.android.material.tabs.TabLayout;
 import com.tiff.tiffinbox.SplashScreen;
@@ -47,15 +46,12 @@ public class IntroActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         // when this activity is about to be launch we need to check if its openened before or not
-
         if (restorePrefData()) {
 
             Intent mainActivity = new Intent(getApplicationContext(), SplashScreen.class );
             startActivity(mainActivity);
             finish();
-
 
         }
 
@@ -99,8 +95,6 @@ public class IntroActivity extends AppCompatActivity {
 
                     position++;
                     screenPager.setCurrentItem(position);
-
-
                 }
 
                 if (position == mList.size()-1) { // when we rech to the last screen
@@ -182,13 +176,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean restorePrefData() {
-
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
         Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
         return  isIntroActivityOpnendBefore;
-
-
 
     }
 

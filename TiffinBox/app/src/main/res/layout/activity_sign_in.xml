@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Authentication.SignIn">
+    tools:context=".authentication.SignIn">
     <RelativeLayout
         android:orientation="vertical"
         style="@style/loginParent"
