@@ -32,10 +32,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Validate;
 
 import java.util.Map;
 
-public class SignIn extends AppCompatActivity implements ValueEventListener {
+public class SignIn extends AppCompatActivity implements ValueEventListener, Validate {
 EditText etEmailLogin, etPasswordLogin;
 Button btnLogin;
 TextView tvSignUp, tvForgotPassword;
@@ -49,6 +50,7 @@ SharedPreferences sharedPref;
      Boolean isValid;
      String data, data2;
     Map<String, Object> map,map2;
+    AuthenticationPresenterLayer authenticationPresenterLayer;
 //Firebase
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -78,6 +80,8 @@ SharedPreferences sharedPref;
         progressBar = findViewById(R.id.progressBar_cyclicSignin);
         sharedPref = getSharedPreferences("UserType", Context.MODE_PRIVATE);
         editor =  sharedPref.edit();
+
+        authenticationPresenterLayer = new AuthenticationPresenterLayer(this);
 
         progressBar.setVisibility(View.GONE);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
@@ -145,23 +149,22 @@ SharedPreferences sharedPref;
             @Override
             public void onClick(View view) {
                 if (validations()){
-                    progressBar.setVisibility(View.VISIBLE);
+                    authenticationPresenterLayer.progressbarShow(progressBar);
                     firebaseAuth.signInWithEmailAndPassword(etEmailLogin.getText().toString(), etPasswordLogin.getText().toString()).addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBar.setVisibility(View.GONE);
+                            authenticationPresenterLayer.progressbarHide(progressBar);
                             if (task.isSuccessful()) {
                                 if (firebaseAuth.getCurrentUser().isEmailVerified()){
-//startActivity(new Intent(SignIn.this, Customer.class));
                                     querySeller = mFirebasedataRefSell.child("Seller").orderByChild("email").equalTo(etEmailLogin.getText().toString());
                                     queryCustomer = mFirebasedataRefCust.child("Customer").orderByChild("email").equalTo(etEmailLogin.getText().toString());
                                 triggerQuey();
                                 }else {
-                                    Toast.makeText(SignIn.this,"Please verify your E-Mail address", Toast.LENGTH_LONG).show();
+                                    authenticationPresenterLayer.toast(getApplicationContext(), "Please verify your E-Mail address");
 
                                 }
                             } else {
-                                Toast.makeText(SignIn.this, "SignIn Failed " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                authenticationPresenterLayer.toast(getApplicationContext(), "SignIn Failed " + task.getException().getMessage());
                             }
                         }
                     });
@@ -172,14 +175,14 @@ SharedPreferences sharedPref;
                 tvSignUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(SignIn.this, Register.class));
+                        authenticationPresenterLayer.navigateToAhead(Register.class);
                     }
                 });
 
            tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SignIn.this, ForgotPassword.class));
+                authenticationPresenterLayer.navigateToAhead(ForgotPassword.class);
             }
         });
     }
@@ -250,7 +253,9 @@ public void triggerQuey(){
 
     }
 }
-    private boolean validations(){
+
+    @Override
+    public boolean validations() {
         if (TextUtils.isEmpty(etEmailLogin.getText())) {
             etEmailLogin.setError("E-Mail is required!");
             isValid = false;

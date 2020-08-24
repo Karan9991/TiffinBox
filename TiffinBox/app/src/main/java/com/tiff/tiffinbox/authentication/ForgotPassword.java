@@ -39,6 +39,7 @@ private boolean isValid;
 
 private LoginViewModel loginViewModel;
 private ActivityForgotPasswordBinding binding;
+AuthenticationPresenterLayer presenterLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ private ActivityForgotPasswordBinding binding;
         etForgotPassword = findViewById(R.id.etForgotPassword);
         btnForgotPassword = findViewById(R.id.btnForgotPassword);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
+        presenterLayer = new AuthenticationPresenterLayer(this);
 
         isValid = false;
         firebaseAuth = FirebaseAuth.getInstance();
@@ -108,9 +111,9 @@ private ActivityForgotPasswordBinding binding;
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 etForgotPassword.setError(null);
-                                Toast.makeText(ForgotPassword.this, "Password Link sent to your E-Mail, Please check your E-Mail", Toast.LENGTH_LONG).show();
+                                presenterLayer.toast(getApplicationContext(), "Password Link sent to your E-Mail, Please check your E-Mail");
                             } else {
-                                Toast.makeText(ForgotPassword.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                presenterLayer.toast(getApplicationContext(), task.getException().getMessage());
                             }
                         }
                     });

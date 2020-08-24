@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.tiff.tiffinbox.Validate;
 import com.tiff.tiffinbox.authentication.Model.User;
 import com.tiff.tiffinbox.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,13 +33,14 @@ import java.util.regex.Pattern;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements Validate {
 TextView tvsignin;
 EditText etName, etMobile, etEmail, etPassword, etAddress;
 Button btnRegister;
 Spinner spinner;
 private ProgressBar progressBar;
-
+AuthenticationPresenterLayer registerPresenterLayer;
+ Register register;
 //Firebase
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
@@ -72,6 +72,9 @@ private ProgressBar progressBar;
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar_cyclic);
 
+        registerPresenterLayer = new AuthenticationPresenterLayer(this);
+        register = this;
+
 //Variables
         isValid = false;
         isSpinnerValid = false;
@@ -92,11 +95,11 @@ private ProgressBar progressBar;
     @Override
     public void onClick(View view) {
         if (validations() && setSpinnerError(spinner,"Please select user type")){
-            progressBar.setVisibility(View.VISIBLE);
+            registerPresenterLayer.progressbarShow(progressBar);
             firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    progressBar.setVisibility(View.GONE);
+                    registerPresenterLayer.progressbarHide(progressBar);
                     if (task.isSuccessful()) {
                         firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -107,7 +110,7 @@ private ProgressBar progressBar;
                                     writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                    // updateUI(user);
-                                    Toast.makeText(getApplicationContext(), "Registered Successfully Please check your E-Mail for verification", Toast.LENGTH_LONG).show();
+                                    registerPresenterLayer.toast(getApplicationContext(),"Registered Successfully Please check your E-Mail for verification");
                                     etName.setText("");
                                     etAddress.setText("");
                                     etMobile.setText("");
@@ -117,14 +120,13 @@ private ProgressBar progressBar;
                                     // startActivity(new Intent(SignUp.this, SignIn.class));
                                     //finish();
                                 }else {
-                                    Toast.makeText(getApplicationContext(),task.getException().getMessage(), Toast.LENGTH_LONG).show();
-
+                                    registerPresenterLayer.toast(getApplicationContext(), task.getException().getMessage());
                                 }
                             }
                         });
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "SignUp Unsuccessful " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        registerPresenterLayer.toast(getApplicationContext(),"SignUp Unsuccessful " + task.getException().getMessage());
                     }
                 }
             });
@@ -135,7 +137,7 @@ private ProgressBar progressBar;
         tvsignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Register.this, SignIn.class));
+                registerPresenterLayer.navigateToAhead(SignIn.class);
             }
         });
     }
@@ -148,40 +150,41 @@ private ProgressBar progressBar;
         mDatabase.child(userType).child(uid).setValue(user);
     }
 
-private boolean validations(){
-       if (TextUtils.isEmpty(etName.getText())) {
-          etName.setError("Name is required!");
-           isValid = false;
-       }
-      else if (TextUtils.isEmpty(etMobile.getText())) {
-          etMobile.setError("Mobile Number is required!");
-           isValid = false;
-       }
-      else if (TextUtils.isEmpty(etEmail.getText())) {
-          etEmail.setError("E-Mail is required!");
-           isValid = false;
-       }
-      else if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString().trim()).matches()) {
-          etEmail.setError("Please enter a valid email address");
-           isValid = false;
-       }
-      else if (TextUtils.isEmpty(etPassword.getText())) {
-        etPassword.setError("Password is required!");
-           isValid = false;
-       }
-       else if(!PASSWORD_PATTERN.matcher(etPassword.getText().toString().trim()).matches()){
-           etPassword.setError( "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace" );
-           isValid = false;
-       }
-       else if (TextUtils.isEmpty(etAddress.getText())) {
-           etAddress.setError("Address is required!");
-           isValid = false;
-       }
-      else {
-          isValid = true;
-       }
-          return isValid;
-      }
+    @Override
+    public boolean validations() {
+        if (TextUtils.isEmpty(etName.getText())) {
+            etName.setError("Name is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etMobile.getText())) {
+            etMobile.setError("Mobile Number is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etEmail.getText())) {
+            etEmail.setError("E-Mail is required!");
+            isValid = false;
+        }
+        else if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString().trim()).matches()) {
+            etEmail.setError("Please enter a valid email address");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etPassword.getText())) {
+            etPassword.setError("Password is required!");
+            isValid = false;
+        }
+        else if(!PASSWORD_PATTERN.matcher(etPassword.getText().toString().trim()).matches()){
+            etPassword.setError( "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace" );
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etAddress.getText())) {
+            etAddress.setError("Address is required!");
+            isValid = false;
+        }
+        else {
+            isValid = true;
+        }
+        return isValid;
+    }
 
     public boolean setSpinnerError(Spinner spinner, String error){
         int selectedItemOfMySpinner = spinner.getSelectedItemPosition();

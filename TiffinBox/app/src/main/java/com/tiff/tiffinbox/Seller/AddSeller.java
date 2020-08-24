@@ -43,6 +43,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.tiff.tiffinbox.Validate;
 
 import java.io.IOException;
 
@@ -57,7 +58,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddSeller#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddSeller extends Fragment {
+public class AddSeller extends Fragment implements Validate {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -309,6 +310,26 @@ countRecipe();
     }
 
     @Override
+    public boolean validations() {
+        if (TextUtils.isEmpty(etSellerTitle.getText())) {
+            etSellerTitle.setError("Title is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etSellerPrice.getText())) {
+            etSellerPrice.setError("Price is required!");
+            isValid = false;
+        }
+        else if (TextUtils.isEmpty(etSellerDesc.getText())) {
+            etSellerDesc.setError("Description is required!");
+            isValid = false;
+        }
+        else {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -335,24 +356,25 @@ countRecipe();
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    private boolean validations(){
-        if (TextUtils.isEmpty(etSellerTitle.getText())) {
-            etSellerTitle.setError("Title is required!");
-            isValid = false;
-        }
-        else if (TextUtils.isEmpty(etSellerPrice.getText())) {
-            etSellerPrice.setError("Price is required!");
-            isValid = false;
-        }
-        else if (TextUtils.isEmpty(etSellerDesc.getText())) {
-            etSellerDesc.setError("Description is required!");
-            isValid = false;
-        }
-        else {
-            isValid = true;
-        }
-        return isValid;
-    }
+
+//    private boolean validations(){
+//        if (TextUtils.isEmpty(etSellerTitle.getText())) {
+//            etSellerTitle.setError("Title is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etSellerPrice.getText())) {
+//            etSellerPrice.setError("Price is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etSellerDesc.getText())) {
+//            etSellerDesc.setError("Description is required!");
+//            isValid = false;
+//        }
+//        else {
+//            isValid = true;
+//        }
+//        return isValid;
+//    }
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

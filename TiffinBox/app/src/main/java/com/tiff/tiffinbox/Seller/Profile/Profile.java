@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.tiff.tiffinbox.Validate;
 import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.AddView;
@@ -29,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Profile extends AppCompatActivity {
+public class Profile extends AppCompatActivity implements Validate {
 EditText etName,etMobile,etAddress;
 Button btnEdit, btnUpdate, btnDeleteAccount;
 ImageView imgProfileleftArrow, imgLogout;
@@ -105,6 +107,7 @@ AlertDialog.Builder builder, builder2;
             }
         });
     }
+
 
     private void gettingFirebaseData(){
          df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -188,8 +191,8 @@ AlertDialog.Builder builder, builder2;
         alert.show();
     }
 
-
-    private boolean validations(){
+    @Override
+    public boolean validations() {
         if (TextUtils.isEmpty(etName.getText())) {
             etName.setError("Name is required!");
             isValid = false;
@@ -206,4 +209,24 @@ AlertDialog.Builder builder, builder2;
             isValid = true;
         }
         return isValid;
-    }}
+    }
+
+//    private boolean validations(){
+//        if (TextUtils.isEmpty(etName.getText())) {
+//            etName.setError("Name is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etMobile.getText())) {
+//            etMobile.setError("Mobile is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etAddress.getText())) {
+//            etAddress.setError("Address is required!");
+//            isValid = false;
+//        }
+//        else {
+//            isValid = true;
+//        }
+//        return isValid;
+//    }
+}

@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:minWidth="50dp"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:theme="@style/Progressbar.color"/>

@@ -34,12 +34,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.tiff.tiffinbox.Validate;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe extends AppCompatActivity implements ValueEventListener {
+public class Recipe extends AppCompatActivity implements ValueEventListener, Validate {
 
 //UI
     ImageView imgRecipe,imgView,imgLeftArrow;
@@ -253,7 +254,8 @@ writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getT
         Toast.makeText(Recipe.this, databaseError.toException().toString(), Toast.LENGTH_LONG).show();
     }
 
-    private boolean validations(){
+    @Override
+    public boolean validations() {
         if (TextUtils.isEmpty(etTitle.getText())) {
             etTitle.setError("Title is required!");
             isValid = false;
@@ -271,4 +273,22 @@ writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getT
         }
         return isValid;
     }
+//    private boolean validations(){
+//        if (TextUtils.isEmpty(etTitle.getText())) {
+//            etTitle.setError("Title is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etPrice.getText())) {
+//            etPrice.setError("Price is required!");
+//            isValid = false;
+//        }
+//        else if (TextUtils.isEmpty(etDesc.getText())) {
+//            etDesc.setError("Description is required!");
+//            isValid = false;
+//        }
+//        else {
+//            isValid = true;
+//        }
+//        return isValid;
+//    }
 }
