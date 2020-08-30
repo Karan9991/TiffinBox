@@ -4,9 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.tiff.tiffinbox.ConnectionReceiver;
 import com.tiff.tiffinbox.Validate;
 import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.R;
@@ -39,6 +47,13 @@ ImageView imgProfileleftArrow, imgLogout;
 private boolean isValid;
 SellerProfile sellerProfile;
 AlertDialog.Builder builder, builder2;
+
+        BoundService boundService;
+        boolean serviceBound = false;
+
+    ConnectionReceiver receiver;
+    IntentFilter intentFilter;
+    final static String CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
 
 //Firebase
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -66,6 +81,10 @@ AlertDialog.Builder builder, builder2;
 
         gettingFirebaseData();
 
+        receiver = new ConnectionReceiver();
+        intentFilter = new IntentFilter("com.tiff.tiffinbox.SOME_ACTION");
+        intentFilter.addAction(CONNECTIVITY_ACTION);
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,8 +99,8 @@ AlertDialog.Builder builder, builder2;
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                   if (validations()){
-                       updateProfile(etName.getText().toString(),etMobile.getText().toString(),etAddress.getText().toString());
+                   if (validations() && serviceBound){
+                       boundService.updateProfile(etName.getText().toString(),etMobile.getText().toString(),etAddress.getText().toString());
                    }
             }
         });
@@ -127,13 +146,6 @@ AlertDialog.Builder builder, builder2;
 
              }
          });
-    }
-
-    private void updateProfile(String name, String mobile, String address) {
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("name").setValue(name);
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("mobile").setValue(mobile);
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("address").setValue(address);
-        Toast.makeText(getApplicationContext(),"Profile Updated", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteAccount(){
@@ -211,22 +223,54 @@ AlertDialog.Builder builder, builder2;
         return isValid;
     }
 
-//    private boolean validations(){
-//        if (TextUtils.isEmpty(etName.getText())) {
-//            etName.setError("Name is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etMobile.getText())) {
-//            etMobile.setError("Mobile is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etAddress.getText())) {
-//            etAddress.setError("Address is required!");
-//            isValid = false;
-//        }
-//        else {
-//            isValid = true;
-//        }
-//        return isValid;
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("Serviceeeeeee","onstart");
+        Intent intent = new Intent(this, BoundService.class);
+        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (serviceBound){
+
+            unbindService(serviceConnection);
+            serviceBound = false;
+            Intent intent = new Intent(Profile.this, BoundService.class);
+            stopService(intent);
+            Log.i("Serviceeeeeee","onstop");
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            BoundService.MyBinder myBinder = (BoundService.MyBinder) iBinder;
+            boundService = myBinder.getService();
+            serviceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            serviceBound = false;
+        }
+    };
+
 }

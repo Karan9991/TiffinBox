@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -124,7 +125,6 @@ public class AddSeller extends Fragment implements Validate {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
@@ -228,7 +228,7 @@ countRecipe();
         // Checking whether FilePathUri Is empty or not.
         if (FilePathUri != null) {
             // Setting progressDialog Title.
-            progressDialog.setTitle("Image is Uploading...");
+            progressDialog.setTitle("Recipe is Publishing...");
             // Showing progressDialog.
             progressDialog.show();
             // Creating second StorageReference.
@@ -252,7 +252,7 @@ countRecipe();
                                     progressDialog.dismiss();
 
                                      // @SuppressWarnings("VisibleForTests")
-                                    Toast.makeText(getContext(), "Recipe Added, Your Recipe Published, Customers will Contact You Soon ",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Your Recipe Published, Customers will Contact You Soon ",Toast.LENGTH_LONG).show();
 
 
                                 }
@@ -275,7 +275,7 @@ countRecipe();
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             // Setting progressDialog Title.
-                            progressDialog.setTitle("Adding Recipe...");
+                            progressDialog.setTitle("Recipe is Publishing...");
                         }
                     });
         }
@@ -346,35 +346,6 @@ countRecipe();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
-//    private boolean validations(){
-//        if (TextUtils.isEmpty(etSellerTitle.getText())) {
-//            etSellerTitle.setError("Title is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etSellerPrice.getText())) {
-//            etSellerPrice.setError("Price is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etSellerDesc.getText())) {
-//            etSellerDesc.setError("Description is required!");
-//            isValid = false;
-//        }
-//        else {
-//            isValid = true;
-//        }
-//        return isValid;
-//    }
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -401,6 +372,5 @@ countRecipe();
         });
         return intcountChildren;
     }
-
- }
+}
 

@@ -114,7 +114,6 @@
                                 <EditText
                                     android:id="@+id/etEditProfileName"
                                     style="@style/modifiedEditText"
-                                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                                     android:hint="Name"
                                     android:inputType="textCapWords"
                                     android:maxLength="30"

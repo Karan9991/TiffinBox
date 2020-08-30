@@ -82,7 +82,6 @@ SharedPreferences sharedPref;
         editor =  sharedPref.edit();
 
         authenticationPresenterLayer = new AuthenticationPresenterLayer(this);
-
         progressBar.setVisibility(View.GONE);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
