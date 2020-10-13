@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tiff.tiffinbox.Chat.MainActivity;
+import com.tiff.tiffinbox.Data;
 import com.tiff.tiffinbox.FindUserType;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Profile.Profile;
@@ -22,7 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.tiff.tiffinbox.Seller.addCustomers.AddCustomer;
 import com.tiff.tiffinbox.Seller.ui.main.SectionsPagerAdapter;
 
 public class AddView extends AppCompatActivity implements AddSeller.OnFragmentInteractionListener, ViewSeller2.OnFragmentInteractionListener {
@@ -31,6 +34,8 @@ public class AddView extends AppCompatActivity implements AddSeller.OnFragmentIn
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FindUserType findUserType;
+
+    Data data = Data.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +58,21 @@ public class AddView extends AppCompatActivity implements AddSeller.OnFragmentIn
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                startActivity(new Intent(AddView.this, Profile.class));
+                if (data.isNetworkAvailable(getApplicationContext())){
+                    startActivity(new Intent(AddView.this, AddCustomer.class));
+                }else {
+                    Snackbar.make(view, "No Internet", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
         fabChatSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action"+findUserType.findUT(firebaseUser.getEmail()), Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                startActivity(new Intent(AddView.this, MainActivity.class));
+
+                if (data.isNetworkAvailable(getApplicationContext())){
+                    startActivity(new Intent(AddView.this, MainActivity.class));
+                }else {
+                    Snackbar.make(view, "No Internet", Snackbar.LENGTH_LONG).setAction("Action", null).show();                }
             }
         });
     }

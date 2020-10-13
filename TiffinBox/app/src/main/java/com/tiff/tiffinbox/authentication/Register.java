@@ -94,43 +94,45 @@ AuthenticationPresenterLayer registerPresenterLayer;
         btnRegister.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-        if (validations() && setSpinnerError(spinner,"Please select user type")){
-            registerPresenterLayer.progressbarShow(progressBar);
-            firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    registerPresenterLayer.progressbarHide(progressBar);
-                    if (task.isSuccessful()) {
-                        firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                    String userid = firebaseUser.getUid();
-                                    writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
-                                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                                   // updateUI(user);
-                                    registerPresenterLayer.toast(getApplicationContext(),"Registered Successfully Please check your E-Mail for verification");
-                                    etName.setText("");
-                                    etAddress.setText("");
-                                    etMobile.setText("");
-                                    etEmail.setText("");
-                                    etPassword.setText("");
-                                    spinner.setSelection(0);
-                                    // startActivity(new Intent(SignUp.this, SignIn.class));
-                                    //finish();
-                                }else {
-                                    registerPresenterLayer.toast(getApplicationContext(), task.getException().getMessage());
-                                }
-                            }
-                        });
-
-                    } else {
-                        registerPresenterLayer.toast(getApplicationContext(),"SignUp Unsuccessful " + task.getException().getMessage());
-                    }
-                }
-            });
-        }
+        String userid =  mDatabase.getDatabase().getReference().push().getKey();
+        testNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
+//        if (validations() && setSpinnerError(spinner,"Please select user type")){
+//            registerPresenterLayer.progressbarShow(progressBar);
+//            firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+//                @Override
+//                public void onComplete(@NonNull Task<AuthResult> task) {
+//                    registerPresenterLayer.progressbarHide(progressBar);
+//                    if (task.isSuccessful()) {
+//                        firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if (task.isSuccessful()){
+//                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+//                                    String userid = firebaseUser.getUid();
+//                                    writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
+//                                    FirebaseUser user = firebaseAuth.getCurrentUser();
+//                                   // updateUI(user);
+//                                    registerPresenterLayer.toast(getApplicationContext(),"Registered Successfully Please check your E-Mail for verification");
+//                                    etName.setText("");
+//                                    etAddress.setText("");
+//                                    etMobile.setText("");
+//                                    etEmail.setText("");
+//                                    etPassword.setText("");
+//                                    spinner.setSelection(0);
+//                                    // startActivity(new Intent(SignUp.this, SignIn.class));
+//                                    //finish();
+//                                }else {
+//                                    registerPresenterLayer.toast(getApplicationContext(), task.getException().getMessage());
+//                                }
+//                            }
+//                        });
+//
+//                    } else {
+//                        registerPresenterLayer.toast(getApplicationContext(),"SignUp Unsuccessful " + task.getException().getMessage());
+//                    }
+//                }
+//            });
+//        }
 
     }
 });
@@ -149,7 +151,18 @@ AuthenticationPresenterLayer registerPresenterLayer;
        String uid = firebaseAuth.getCurrentUser().getUid();
         mDatabase.child(userType).child(uid).setValue(user);
     }
+    private void testNewUser(String name, String mobile, String email, String password, String address, String userType, String imageURL, String status, String id, String username, String search) {
 
+        User user = new User(name, mobile, email, password, address, userType, imageURL, status, id, username, search);
+          String key = mDatabase.getDatabase().getReference().push().getKey();
+        String uid = firebaseAuth.getUid();
+        mDatabase.child(userType).child(key).setValue(user);
+        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("desc").setValue("MEAL STARTS FROM AS LOW AS $5.\n" +
+                "TIFFIN SERVICE IN MISSISSAUGA AND BRAMPTON");
+        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("imageURL").setValue("Adsfd");
+        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("price").setValue("$100");
+
+    }
     @Override
     public boolean validations() {
         if (TextUtils.isEmpty(etName.getText())) {
@@ -209,5 +222,4 @@ AuthenticationPresenterLayer registerPresenterLayer;
         super.attachBaseContext(newBase);
         MultiDex.install(this);
     }
-
 }

@@ -273,22 +273,4 @@ writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getT
         }
         return isValid;
     }
-//    private boolean validations(){
-//        if (TextUtils.isEmpty(etTitle.getText())) {
-//            etTitle.setError("Title is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etPrice.getText())) {
-//            etPrice.setError("Price is required!");
-//            isValid = false;
-//        }
-//        else if (TextUtils.isEmpty(etDesc.getText())) {
-//            etDesc.setError("Description is required!");
-//            isValid = false;
-//        }
-//        else {
-//            isValid = true;
-//        }
-//        return isValid;
-//    }
 }

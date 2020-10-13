@@ -3,7 +3,10 @@ package com.tiff.tiffinbox.Seller.Profile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +14,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -23,7 +29,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.tiff.tiffinbox.ConnectionReceiver;
+import com.tiff.tiffinbox.Data;
 import com.tiff.tiffinbox.Validate;
 import com.tiff.tiffinbox.authentication.SignIn;
 import com.tiff.tiffinbox.R;
@@ -50,6 +64,8 @@ AlertDialog.Builder builder, builder2;
 
         BoundService boundService;
         boolean serviceBound = false;
+        private static final int PERMISSIONS_REQUEST = 100;
+
 
     ConnectionReceiver receiver;
     IntentFilter intentFilter;
@@ -60,10 +76,13 @@ AlertDialog.Builder builder, builder2;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference df = database.getReference();
 
+    Data data = Data.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        FirebaseApp.initializeApp(this);
 
         etName = findViewById(R.id.etEditProfileName);
         etMobile = findViewById(R.id.etEditProfileMobile);
@@ -85,6 +104,7 @@ AlertDialog.Builder builder, builder2;
         intentFilter = new IntentFilter("com.tiff.tiffinbox.SOME_ACTION");
         intentFilter.addAction(CONNECTIVITY_ACTION);
 
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,8 +119,10 @@ AlertDialog.Builder builder, builder2;
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                   if (validations() && serviceBound){
+                   if (validations() && serviceBound && data.isNetworkAvailable(Profile.this)){
                        boundService.updateProfile(etName.getText().toString(),etMobile.getText().toString(),etAddress.getText().toString());
+                   }else {
+                       Snackbar.make(view, "No Internet", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                    }
             }
         });
@@ -122,7 +144,11 @@ AlertDialog.Builder builder, builder2;
         imgLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout();
+                if (data.isNetworkAvailable(Profile.this)){
+                    logout();
+                }else {
+                    Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -177,7 +203,7 @@ AlertDialog.Builder builder, builder2;
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                       }
+                    }
                 });
         AlertDialog alert = builder.create();
         alert.show();
@@ -236,20 +262,22 @@ AlertDialog.Builder builder, builder2;
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, intentFilter);
+        Intent intent = new Intent("com.tiff.tiffinbox.SOME_ACTION");
+        sendBroadcast(intent);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (serviceBound){
+        data = null;
 
+        if (serviceBound){
             unbindService(serviceConnection);
             serviceBound = false;
             Intent intent = new Intent(Profile.this, BoundService.class);
             stopService(intent);
             Log.i("Serviceeeeeee","onstop");
-
         }
     }
 
@@ -272,5 +300,6 @@ AlertDialog.Builder builder, builder2;
             serviceBound = false;
         }
     };
+
 
 }

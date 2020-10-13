@@ -10,6 +10,8 @@
     <string name="title_activity_add_view">AddView</string>
     <string name="tab_text_1">Add Recipe</string>
     <string name="tab_text_2">Published Recipes</string>
+    <string name="tab_textcustomer_1">Add Customers</string>
+    <string name="tab_textcustomer_2">Your Customers</string>
 
     <string name="titleSeller">Title</string>
     <string name="priceSeller">Price</string>
@@ -41,4 +43,16 @@
     <string name="pluto_sub" formatted="false">A small, icy "dwarf planet". Scientists are still unsure as to exactly what it\'s made of.</string>
     <string name="profile">Profile</string>
 
+    //delivered notification
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="request_location_updates">Request location updates</string>
+    <string name="remove_location_updates">Remove location updates</string>
+
+    <string name="location_updated">Location Updated: %1$s</string>
+    <string name="title_activity_add_customers">AddCustomers</string>
+    <string name="title_activity_add_customer">AddCustomer</string>
 </resources>

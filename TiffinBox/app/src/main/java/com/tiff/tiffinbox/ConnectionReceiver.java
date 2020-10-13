@@ -15,9 +15,9 @@ public class ConnectionReceiver extends BroadcastReceiver {
 
         Log.d("API123",""+intent.getAction());
 
-        if(intent.getAction().equals("com.tiff.tiffinbox.SOME_ACTION"))
-            Toast.makeText(context, "SOME_ACTION is received", Toast.LENGTH_LONG).show();
-
+        if(intent.getAction().equals("com.tiff.tiffinbox.SOME_ACTION")){
+            // Toast.makeText(context, "SOME_ACTION is received", Toast.LENGTH_LONG).show();
+        }
         else {
             ConnectivityManager cm =
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
