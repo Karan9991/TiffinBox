@@ -58,10 +58,11 @@ public class PlaceholderFragment extends Fragment {
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference df = database.getReference();
+    private FirebaseAuth firebaseAuth;
 
     Query queryInfo, queryImgUrl;
 
-    AddCustomerModel addCustomerModel;
+    AddCustomerModel addCustomerModel, addCustomerDatabase;
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
@@ -91,6 +92,7 @@ public class PlaceholderFragment extends Fragment {
         setHasOptionsMenu(true);
 
         builder2 = new AlertDialog.Builder(getContext());
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //Firebase
         queryInfo = df.child("Customer");
@@ -120,6 +122,8 @@ public class PlaceholderFragment extends Fragment {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Log.i("test","v "+custid);
+                                addCustomerDatabase = new AddCustomerModel(custid, name, email, mobile);
+                                addCustomer(custid);
 
                             }
                         })
@@ -131,16 +135,8 @@ public class PlaceholderFragment extends Fragment {
                 AlertDialog alert = builder2.create();
                 alert.show();
 
-
-//                Intent intent = new Intent(Customer.this, SwipeRecipe.class);
-//                intent.putExtra("name", name);
-//                intent.putExtra("email", email);
-//                intent.putExtra("mobile", mobile);
-//                startActivity(intent);
-
             }
         });
-
 
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -219,5 +215,8 @@ public class PlaceholderFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void addCustomer(String id){
+        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("MyCustomers").child(id).setValue(addCustomerDatabase);
     }
 }

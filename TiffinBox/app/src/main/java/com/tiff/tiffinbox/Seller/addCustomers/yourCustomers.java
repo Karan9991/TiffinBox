@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,13 +51,13 @@ public class yourCustomers extends Fragment {
     private String mParam2;
 
     YourCustomerAdapter adapter;
-    ViewRecipe viewRecipe;
     List<YourCustomerModel> myList;
     AlertDialog.Builder builder2;
 
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference df = database.getReference();
+    FirebaseAuth firebaseAuth;
 
     Query queryInfo, queryImgUrl;
 
@@ -104,12 +105,11 @@ public class yourCustomers extends Fragment {
         setHasOptionsMenu(true);
 
         builder2 = new AlertDialog.Builder(getContext());
-//1        imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        viewRecipe = new ViewRecipe();
 
         //Firebase
-        queryInfo = df.child("Customer");
+        queryInfo = df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("MyCustomers");
         queryImgUrl = df.child("Customer");
 
         // Todo--   for get all images in Recipe
@@ -145,10 +145,7 @@ public class yourCustomers extends Fragment {
                 }
 //getting name and address
                 addCustomerModel = dataSnapshot.getValue(AddCustomerModel.class);
-                //viewRecipe = dataSnapshot.getValue(ViewRecipe.class);
-                //  adapter.add(new CardModel(dataSnapshot.getKey(),viewRecipe.imageURL));
                 adapter.add(new YourCustomerModel(addCustomerModel.getName(), addCustomerModel.email, addCustomerModel.mobile));
-                //  Log.i("for222","for222"+cardModel.getImageURL());
             }
 
             @Override
