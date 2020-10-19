@@ -77,12 +77,14 @@ public class AddCustomerAdapter extends ArrayAdapter<AddCustomerModel> implement
         holder.tvId.setText(cardModelListfiltered.get(position).getId());
         holder.tvName.setText(cardModelListfiltered.get(position).getName());
         holder.tvEmail.setText(cardModelListfiltered.get(position).getEmail());
-        holder.tvPhone.setText(model.getMobile());
+        holder.tvPhone.setText(cardModelListfiltered.get(position).getMobile());
+        holder.tvAddress.setText(cardModelListfiltered.get(position).getAddress());
+
         return convertView;
     }
 
     static class ViewHolder {
-        TextView tvId, tvName, tvEmail, tvPhone;
+        TextView tvId, tvName, tvEmail, tvPhone, tvAddress;
         LinearLayout relativeLayout;
 
         ViewHolder(View view) {
@@ -90,6 +92,7 @@ public class AddCustomerAdapter extends ArrayAdapter<AddCustomerModel> implement
             tvName = (TextView) view.findViewById(R.id.addcusttvName);
             tvEmail = (TextView) view.findViewById(R.id.addcusttvEmail);
             tvPhone = (TextView) view.findViewById(R.id.addcusttvPhone);
+            tvAddress = (TextView) view.findViewById(R.id.addcusttvAddress);
         }
     }
 

@@ -11,6 +11,7 @@ public class AddCustomerModel implements Serializable {
     public String name;
     public String email;
     public String mobile;
+    public String address;
 
     public AddCustomerModel() {
     }
@@ -25,6 +26,22 @@ public class AddCustomerModel implements Serializable {
         this.name = name;
         this.email = email;
         this.mobile = mobile;
+    }
+
+    public AddCustomerModel(String id, String name, String email, String mobile, String address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getId() {

@@ -1,5 +1,7 @@
 package com.tiff.tiffinbox.Seller.addCustomers;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
 import com.tiff.tiffinbox.Seller.addCustomers.Model.AddCustomerModel;
 import com.tiff.tiffinbox.Seller.addCustomers.Model.YourCustomerModel;
+import com.tiff.tiffinbox.Seller.addCustomers.map.Map;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +65,7 @@ public class yourCustomers extends Fragment {
 
     Query queryInfo, queryImgUrl;
 
-    AddCustomerModel addCustomerModel;
+    YourCustomerModel yourCustomerModel;
 
     public yourCustomers() {
         // Required empty public constructor
@@ -122,7 +126,22 @@ public class yourCustomers extends Fragment {
         lvCards.setAdapter(adapter);
 
         gettingSellerList();
+        lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String custid = ((TextView) view.findViewById(R.id.addcusttvId)).getText().toString();
+//                String email = ((TextView) view.findViewById(R.id.addcusttvEmail)).getText().toString();
+                String name = ((TextView) view.findViewById(R.id.yourcusttvName)).getText().toString();
+                String address = ((TextView) view.findViewById(R.id.yourcusttvAddress)).getText().toString();
+                Log.i("cccccc"," "+address);
+                Log.i("nnnnn"," "+name);
 
+
+//                String mobile = ((TextView) view.findViewById(R.id.addcusttvPhone)).getText().toString();
+            //  startActivity(new Intent(getContext(), Map.class));
+
+            }
+        });
         return root;
     }
 
@@ -134,7 +153,7 @@ public class yourCustomers extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.i("oooooo","ok"+dataSnapshot.getKey().toString());
                     for (DataSnapshot childd : child.getChildren()) {
-                        addCustomerModel = childd.getValue(AddCustomerModel.class);
+                        yourCustomerModel = childd.getValue(YourCustomerModel.class);
                         //  imageur = addCustomerModel.imageURL;
                         //    adapter.add(new CardModel(cardModel.imageURL));
                         // Log.i("for","for"+cardModel.imageURL+cardModel.name+cardModel.address);
@@ -144,8 +163,8 @@ public class yourCustomers extends Fragment {
                     }
                 }
 //getting name and address
-                addCustomerModel = dataSnapshot.getValue(AddCustomerModel.class);
-                adapter.add(new YourCustomerModel(addCustomerModel.getName(), addCustomerModel.email, addCustomerModel.mobile));
+                yourCustomerModel = dataSnapshot.getValue(YourCustomerModel.class);
+                adapter.add(new YourCustomerModel(yourCustomerModel.getName(), yourCustomerModel.email, yourCustomerModel.mobile, yourCustomerModel.getAddress()));
             }
 
             @Override

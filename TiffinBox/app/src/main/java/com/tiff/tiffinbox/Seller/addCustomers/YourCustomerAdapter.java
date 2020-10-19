@@ -66,18 +66,21 @@ public class YourCustomerAdapter extends ArrayAdapter<YourCustomerModel> impleme
         //  holder.tvTitle.setText(model.getTitle());
         holder.tvName.setText(cardModelListfiltered.get(position).getName());
         holder.tvEmail.setText(cardModelListfiltered.get(position).getEmail());
-        holder.tvPhone.setText(model.getMobile());
+        holder.tvPhone.setText(cardModelListfiltered.get(position).getMobile());
+        holder.tvAddress.setText(cardModelListfiltered.get(position).getAddress());
+
         return convertView;
     }
 
     static class ViewHolder {
-        TextView tvName, tvEmail, tvPhone;
+        TextView tvName, tvEmail, tvPhone, tvAddress;
         LinearLayout relativeLayout;
 
         ViewHolder(View view) {
-            tvName = (TextView) view.findViewById(R.id.addcusttvName);
-            tvEmail = (TextView) view.findViewById(R.id.addcusttvEmail);
-            tvPhone = (TextView) view.findViewById(R.id.addcusttvPhone);
+            tvName = (TextView) view.findViewById(R.id.yourcusttvName);
+            tvEmail = (TextView) view.findViewById(R.id.yourcusttvEmail);
+            tvPhone = (TextView) view.findViewById(R.id.yourcusttvPhone);
+            tvAddress = (TextView) view.findViewById(R.id.yourcusttvAddress);
         }
     }
 

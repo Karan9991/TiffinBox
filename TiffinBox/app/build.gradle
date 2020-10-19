@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -35,6 +36,7 @@ dependencies {
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
 
@@ -101,6 +103,14 @@ dependencies {
     //delivered notification
     implementation 'com.firebase:geofire-android:2.1.1'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
+//map
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+
+
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'

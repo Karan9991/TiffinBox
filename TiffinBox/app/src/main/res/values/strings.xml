@@ -55,4 +55,17 @@
     <string name="location_updated">Location Updated: %1$s</string>
     <string name="title_activity_add_customers">AddCustomers</string>
     <string name="title_activity_add_customer">AddCustomer</string>
+
+    <string name="total_online_drivers">Total Online Drivers : </string>
+    <string name="need_location">Enable GPS SERVICE</string>
+    <string name="location_content">This app wants to change your device settings use GPS,Wi-Fi and cell networks for your location</string>
+    <!--    <string name="google_maps_key">AIzaSyD0OBtyeR7qU3XTXR8oQ5zStBeJqGES7MQ</string>-->
+    <!--    <string name="google_maps_API_key">AIzaSyD0OBtyeR7qU3XTXR8oQ5zStBeJqGES7MQ</string>-->
+    <string name="google_maps_key">AIzaSyD6o_7WI26URMYrvUYUSvAi6chpJh0562g</string>
+    <string name="google_maps_API_key">AIzaSyD6o_7WI26URMYrvUYUSvAi6chpJh0562g</string>
+    <string name="api_key">AIzaSyD6o_7WI26URMYrvUYUSvAi6chpJh0562g</string>
+
+    <!--    AIzaSyD0OBtyeR7qU3XTXR8oQ5zStBeJqGES7MQ-->
+    <!--    <string name="google_maps_key">AIzaSyAeNdw_YqLCgEnvv8KqSVv28BoiXOKvPOo</string>-->
+
 </resources>

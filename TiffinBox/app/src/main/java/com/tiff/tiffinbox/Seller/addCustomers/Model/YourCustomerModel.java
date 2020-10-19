@@ -7,6 +7,7 @@ public class YourCustomerModel implements Serializable {
     public String name;
     public String email;
     public String mobile;
+    public String address;
 
     public YourCustomerModel() {
     }
@@ -16,11 +17,19 @@ public class YourCustomerModel implements Serializable {
         this.mobile = mobile;
     }
 
-    public YourCustomerModel(String id, String name, String email, String mobile) {
-        this.id = id;
+    public YourCustomerModel(String name, String email, String mobile, String address) {
         this.name = name;
         this.email = email;
         this.mobile = mobile;
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getId() {

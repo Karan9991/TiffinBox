@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -116,13 +117,16 @@ public class PlaceholderFragment extends Fragment {
                 String email = ((TextView) view.findViewById(R.id.addcusttvEmail)).getText().toString();
                 String name = ((TextView) view.findViewById(R.id.addcusttvName)).getText().toString();
                 String mobile = ((TextView) view.findViewById(R.id.addcusttvPhone)).getText().toString();
+                String address = ((TextView) view.findViewById(R.id.addcusttvAddress)).getText().toString();
+                Log.i("checking....", " "+address);
+
                 builder2.setTitle(name);
                 builder2.setMessage("You want add "+name+"?")
                         .setCancelable(false)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Log.i("test","v "+custid);
-                                addCustomerDatabase = new AddCustomerModel(custid, name, email, mobile);
+                                addCustomerDatabase = new AddCustomerModel(custid, name, email, mobile, address);
                                 addCustomer(custid);
 
                             }
@@ -160,7 +164,7 @@ public class PlaceholderFragment extends Fragment {
                 }
 //getting name and address
                 addCustomerModel = dataSnapshot.getValue(AddCustomerModel.class);
-                adapter.add(new AddCustomerModel(addCustomerModel.getId(), addCustomerModel.getName(), addCustomerModel.email, addCustomerModel.mobile));
+                adapter.add(new AddCustomerModel(addCustomerModel.getId(), addCustomerModel.getName(), addCustomerModel.email, addCustomerModel.mobile, addCustomerModel.address));
             }
 
             @Override
@@ -183,6 +187,13 @@ public class PlaceholderFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Snackbar.make(view, "Add Customers for give delivery Notification", Snackbar.LENGTH_INDEFINITE).setAction("Action", null).show();
+
     }
 
     @Override

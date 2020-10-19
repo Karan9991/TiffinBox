@@ -20,7 +20,7 @@
         <activity
             android:name=".Seller.addCustomers.AddCustomer"
             android:label="@string/title_activity_add_customer"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".deliveredNotification.MainActivity" />
         <activity android:name=".SplashScreen" />
         <activity android:name=".Customer.SwipeRecipe" />
@@ -28,6 +28,7 @@
             android:name=".authentication.ForgotPassword"
             android:theme="@style/AppTheme" />
         <activity android:name=".Seller.Profile.Profile" />
+        <activity android:name=".Seller.addCustomers.map.Map" />
         <activity android:name=".Seller.Recipe" />
         <activity
             android:name=".Seller.AddView"
@@ -84,6 +85,13 @@
             android:name=".deliveredNotification.LocationService"
             android:enabled="true"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
