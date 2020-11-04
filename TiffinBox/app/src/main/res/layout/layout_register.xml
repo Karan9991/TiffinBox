@@ -77,7 +77,6 @@
                 android:hint="@string/signup_addresshint"
                 android:maxLines="1"
                 android:maxLength="60"
-                android:editable="false"
                />
         </com.google.android.material.textfield.TextInputLayout>
 

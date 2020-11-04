@@ -60,6 +60,12 @@
                     android:layout_height="1dp"
                     android:visibility="gone"
                     />
+                <TextView
+                    android:id="@+id/yourCustID"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView

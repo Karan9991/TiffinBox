@@ -17,17 +17,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tiff.tiffinbox.R;
@@ -120,49 +125,51 @@ AuthenticationPresenterLayer registerPresenterLayer;
             }
         });
         btnRegister.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        String userid =  mDatabase.getDatabase().getReference().push().getKey();
-        testNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
-//        if (validations() && setSpinnerError(spinner,"Please select user type")){
-//            registerPresenterLayer.progressbarShow(progressBar);
-//            firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull Task<AuthResult> task) {
-//                    registerPresenterLayer.progressbarHide(progressBar);
-//                    if (task.isSuccessful()) {
-//                        firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                if (task.isSuccessful()){
-//                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//                                    String userid = firebaseUser.getUid();
-//                                    writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
-//                                    FirebaseUser user = firebaseAuth.getCurrentUser();
-//                                   // updateUI(user);
-//                                    registerPresenterLayer.toast(getApplicationContext(),"Registered Successfully Please check your E-Mail for verification");
-//                                    etName.setText("");
-//                                    etAddress.setText("");
-//                                    etMobile.setText("");
-//                                    etEmail.setText("");
-//                                    etPassword.setText("");
-//                                    spinner.setSelection(0);
-//                                    // startActivity(new Intent(SignUp.this, SignIn.class));
-//                                    //finish();
-//                                }else {
-//                                    registerPresenterLayer.toast(getApplicationContext(), task.getException().getMessage());
-//                                }
-//                            }
-//                        });
-//
-//                    } else {
-//                        registerPresenterLayer.toast(getApplicationContext(),"SignUp Unsuccessful " + task.getException().getMessage());
-//                    }
-//                }
-//            });
-//        }
+            @Override
+            public void onClick(View view) {
+                //      String userid =  mDatabase.getDatabase().getReference().push().getKey();
+//        startActivity(new Intent(Register.this, AddView.class));
+                //  testNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
+                if (validations() && setSpinnerError(spinner, "Please select user type")) {
+                    registerPresenterLayer.progressbarShow(progressBar);
+                    firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            registerPresenterLayer.progressbarHide(progressBar);
+                            if (task.isSuccessful()) {
+                                firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                            String userid = firebaseUser.getUid();
+                                            writeNewUser(etName.getText().toString(), etMobile.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString(), etAddress.getText().toString(), spinner.getSelectedItem().toString(), "default", "offline", userid, etEmail.getText().toString(), etEmail.getText().toString().toLowerCase());
+                                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                                            // updateUI(user);
+                                            registerPresenterLayer.toast(getApplicationContext(), "Registered Successfully Please check your E-Mail for verification");
+                                            etName.setText("");
+                                            etAddress.setText("");
+                                            etMobile.setText("");
+                                            etEmail.setText("");
+                                            etPassword.setText("");
+                                            spinner.setSelection(0);
+                                            // startActivity(new Intent(SignUp.this, SignIn.class));
+                                            //finish();
+                                        } else {
+                                            registerPresenterLayer.toast(getApplicationContext(), task.getException().getMessage());
+                                        }
+                                    }
+                                });
 
-    }
+                            } else {
+                                registerPresenterLayer.toast(getApplicationContext(), "SignUp Unsuccessful " + task.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+
+            }
+
 });
         tvsignin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,10 +192,22 @@ AuthenticationPresenterLayer registerPresenterLayer;
           String key = mDatabase.getDatabase().getReference().push().getKey();
         String uid = firebaseAuth.getUid();
         mDatabase.child(userType).child(key).setValue(user);
-        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("desc").setValue("MEAL STARTS FROM AS LOW AS $5.\n" +
-                "TIFFIN SERVICE IN MISSISSAUGA AND BRAMPTON");
-        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("imageURL").setValue("Adsfd");
-        mDatabase.child(userType).child(key).child("Recipe").child("Ghar Da Swad Tiffin Service").child("price").setValue("$100");
+        mDatabase.child(userType).child(key).child("Recipe").child("Apni Rasoi: Pure Veg tiffin and catering service.").child("desc").setValue("Tiffin and catering in Mississauga and Brampton. We make variety of dishes to cover full nutrition profile for a family keeping meals seasonal, traditional and healthy.\n" +
+                "1. Standard tiffin\n" +
+                "8oz dal\n" +
+                "8oz sabji\n" +
+                "8oz rice+ 4 roti\n" +
+                "Or\n" +
+                "8 roti + no rice\n" +
+                "Monthly rates\n" +
+                "Mon-Fri 190\n" +
+                "Mon-Sat 216\n" +
+                "2. Big tiffin\n" +
+                "12oz dal\n" +
+                "12oz sabji\n" +
+                "12oz rice + 6roti\n");
+        mDatabase.child(userType).child(key).child("Recipe").child("Apni Rasoi: Pure Veg tiffin and catering service.").child("imageURL").setValue("Adsfd");
+        mDatabase.child(userType).child(key).child("Recipe").child("Apni Rasoi: Pure Veg tiffin and catering service.").child("price").setValue("On Call");
 
     }
     @Override
@@ -214,7 +233,7 @@ AuthenticationPresenterLayer registerPresenterLayer;
             isValid = false;
         }
         else if(!PASSWORD_PATTERN.matcher(etPassword.getText().toString().trim()).matches()){
-            etPassword.setError( "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace" );
+            etPassword.setError( "Password must between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace" );
             isValid = false;
         }
         else if (TextUtils.isEmpty(etAddress.getText())) {
@@ -270,7 +289,9 @@ AuthenticationPresenterLayer registerPresenterLayer;
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
-                Toast.makeText(Register.this, "ID: " + place.getId() + "address:" + place.getAddress() + "Name:" + place.getName() + " latlong: " + place.getLatLng(), Toast.LENGTH_LONG).show();
+                etAddress.setText(place.getAddress().toString());
+                etAddress.setError(null);
+             //   Toast.makeText(Register.this, "ID: " + place.getId() + "address:" + place.getAddress() + "Name:" + place.getName() + " latlong: " + place.getLatLng(), Toast.LENGTH_LONG).show();
                 String address = place.getAddress();
                 // do query with address
 

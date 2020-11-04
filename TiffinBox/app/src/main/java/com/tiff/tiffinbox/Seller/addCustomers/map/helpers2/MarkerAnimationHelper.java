@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.tiff.tiffinbox.Seller.addCustomers.map.PointsParser;
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolator;
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolatorNew;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.tiff.tiffinbox.Seller.addCustomers.map.Map;
+import com.tiff.tiffinbox.Seller.addCustomers.map.PointsParser;
+import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolator;
+import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolatorNew;
 
 
 public final class MarkerAnimationHelper {
@@ -67,7 +68,7 @@ public final class MarkerAnimationHelper {
 
             public void run() {
                 final LatLngInterpolatorNew latLngInterpolato = new LatLngInterpolatorNew.LinearFixed();
-        final LatLng endPosition = new LatLng(43.658038, -79.760535);
+                final LatLng endPosition = new LatLng(Map.currentLatitude, Map.currentLongitude);
 
                 this.elapsed = SystemClock.uptimeMillis() - start;
                 this.t = (float)this.elapsed / durationInMs;
@@ -97,17 +98,23 @@ public final class MarkerAnimationHelper {
         long elapsedv = SystemClock.uptimeMillis() - start;
         float tv = interpolator.getInterpolation((float) elapsedv/duration
         );
-        lng = tv * endPositionn.longitude + (1 - tv)
-                * startPositionn.longitude;
-        lat = tv * endPositionn.latitude + (1 - tv)
-                * startPositionn.latitude;
+        Log.i("startend","startenddddddddddddd"+startPositionn+" "+endPositionn);
+        if (startPositionn!=null && endPositionn!=null) {
+            lng = tv * endPositionn.longitude + (1 - tv)
+                    * startPositionn.longitude;
+            lat = tv * endPositionn.latitude + (1 - tv)
+                    * startPositionn.latitude;
+        }
         newPos = new LatLng(lat, lng);
         marker.setPosition(newPos);
         marker.setAnchor(0.5f, 0.5f);
         // if (null != newPos) {
         //  marker.setRotation(getBearing(startPositionn, newPos));
+       if (startPositionn!=null&&newPos!=null) {
+           marker.setRotation((float) getBearing(startPositionn, newPos));
+           Log.i("bearinggggggggggggg","bearing one");
 
-        marker.setRotation(getBearing(startPositionn, newPos));
+       }
     }
     public void createAnimation(final Marker marker, GoogleMap mMap){
         // Collections.reverse(PointsParser.polyLineList);
@@ -144,20 +151,24 @@ public final class MarkerAnimationHelper {
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         v = valueAnimator.getAnimatedFraction();
                         //  Log.i("vv","vvvvvvvvvvvvv"+v);
-
-                        lng = v * endPositionca.longitude + (1 - v)
-                                * startPositionca.longitude;
-                        lat = v * endPositionca.latitude + (1 - v)
-                                * startPositionca.latitude;
+                        if (endPositionca!=null&& startPositionca!=null) {
+                            lng = v * endPositionca.longitude + (1 - v)
+                                    * startPositionca.longitude;
+                            lat = v * endPositionca.latitude + (1 - v)
+                                    * startPositionca.latitude;
+                        }
                         LatLng newPos = new LatLng(lat, lng);
 //                        CurrentJourneyEvent currentJourneyEvent = new CurrentJourneyEvent();
 //                        currentJourneyEvent.setCurrentLatLng(newPos);
 //                        JourneyEventBus.getInstance().setOnJourneyUpdate(currentJourneyEvent);
                         marker.setPosition(newPos);
                         marker.setAnchor(0.5f, 0.5f);
-                        marker.setRotation((float) getBearing(startPositionca, newPos));
+                        if (startPositionca!=null&&newPos!=null) {
+                            marker.setRotation((float) getBearing(startPositionca, newPos));
+                            Log.i("bearinggggggggggggg","bearing two");
+                        }
                         //  Log.i("bearing","bbbbbbbbbbbbbbb"+ getBearing(startPosition, newPos));
-                        // Log.i("sd",startPosition +"v"+ newPos);
+                        // Log.i("sd",startPosition +"v"+ newPos);F
 
 //                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition
 //                                (new CameraPosition.Builder().target(newPos)
@@ -180,8 +191,9 @@ public final class MarkerAnimationHelper {
         INSTANCE = var0;
     }
     private float getBearing(LatLng begin, LatLng end) {
-        double lat = Math.abs(begin.latitude - end.latitude);
-        double lng = Math.abs(begin.longitude - end.longitude);
+            double lat = Math.abs(begin.latitude - end.latitude);
+            double lng = Math.abs(begin.longitude - end.longitude);
+
 
         if (begin.latitude < end.latitude && begin.longitude < end.longitude)
             return (float) (Math.toDegrees(Math.atan(lng / lat)));

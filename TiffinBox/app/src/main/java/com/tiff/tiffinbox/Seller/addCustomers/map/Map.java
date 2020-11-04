@@ -5,10 +5,8 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -18,9 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.app.Fragment;
-///import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,18 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 
-import com.tiff.tiffinbox.R;
-//import com.tiff.tiffinbox.Seller.addCustomers.map.DatabaseHelper;
-import com.tiff.tiffinbox.Seller.addCustomers.map.FetchURL;
-import com.tiff.tiffinbox.Seller.addCustomers.map.GpsTracker;
-//import com.tiff.tiffinbox.Seller.addCustomers.map.MapsActivity;
-//import com.example.sandhu.Student.MyProvider;
-import com.tiff.tiffinbox.Seller.addCustomers.map.TaskLoadedCallback;
-//import com.tiff.tiffinbox.Seller.addCustomers.map.UserModel;
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolatorNew;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -56,43 +41,60 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.CancelableCallback;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-//import com.google.maps.android.SphericalUtil;
-//import com.google.maps.android.geometry.*;
-
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-//import com.example.sandhu.R;
-//import com.example.sandhu.R.id;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.addCustomers.map.collection2.MarkerCollection;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.APIService;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.Client;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.Data;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.MyResponse;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.Token;
 import com.tiff.tiffinbox.Seller.addCustomers.map.helpers2.FirebaseEventListenerHelper;
 import com.tiff.tiffinbox.Seller.addCustomers.map.helpers2.GoogleMapHelper;
 import com.tiff.tiffinbox.Seller.addCustomers.map.helpers2.MarkerAnimationHelper;
 import com.tiff.tiffinbox.Seller.addCustomers.map.helpers2.UiHelper;
 import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.FirebaseDriverListener;
 import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.IPositiveNegativeListener;
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.IPositiveNegativeListener.DefaultImpls;
 import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolator;
 import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolator.Spherical;
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolatorNew.LinearFixed;
+import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.LatLngInterpolatorNew;
 import com.tiff.tiffinbox.Seller.addCustomers.map.model2.Driver;
-//import com.tiff.tiffinbox.Seller.addCustomers.map.MyProvider;
-import com.google.firebase.database.ValueEventListener;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+//import android.support.v4.app.ActivityCompat;
+//import android.support.v4.app.Fragment;
+///import android.support.v7.app.AppCompatActivity;
+//import com.tiff.tiffinbox.Seller.addCustomers.map.DatabaseHelper;
+//import com.tiff.tiffinbox.Seller.addCustomers.map.MapsActivity;
+//import com.example.sandhu.Student.MyProvider;
+//import com.tiff.tiffinbox.Seller.addCustomers.map.UserModel;
+//import com.google.maps.android.SphericalUtil;
+//import com.google.maps.android.geometry.*;
+//import com.example.sandhu.R;
+//import com.example.sandhu.R.id;
+//import com.tiff.tiffinbox.Seller.addCustomers.map.MyProvider;
 
 public class Map extends AppCompatActivity implements FirebaseDriverListener, TaskLoadedCallback, ValueEventListener {
     private GoogleMap googleMap;
@@ -115,7 +117,7 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
     String contentProvider=null;
     CursorLoader cursorLoader;
     StringBuilder res;
-    String data,destinationn;
+    String data, name, address, custid;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference mdatabaseReference = firebaseDatabase.getReference();
     DatabaseReference mdata = mdatabaseReference.child("passengerpicked");
@@ -124,14 +126,17 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
     DatabaseReference databaseRefCancelR = firebaseCancelR.getReference();
     DatabaseReference cancelRdata = databaseRefCancelR.child("Cancelride");
     String rideCanceldata;
-    double dlat,dlng;
     private GoogleMap mMap;
  //   DatabaseHelper databaseHelper;
     private static final int CAMERA_REQUEST = 200;
     public Bitmap bp;
     public byte[] photo;
-    boolean adddr;
+    boolean adddr, notificationDelivery;
     Marker markeragain;
+    Location locationn = null;
+    public static double currentLatitude, currentLongitude, customerLat, customerLng;
+    private APIService apiService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,12 +147,17 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
         mdata.addValueEventListener(this);
         cancelRdata.addValueEventListener(this);
 //inserting content provider
-        gpsTracker = new GpsTracker(getApplication());
+        gpsTracker = new GpsTracker(this);
  //       databaseHelper = new DatabaseHelper(getApplicationContext());
         // driver = new Driver();
      //   bp = convertToBitmap(databaseHelper.getMoviep(1).getImage());
         // bp=decodeUri(databaseHelper.getMoviep(1).getImage(), 400);
         adddr = false;
+        notificationDelivery = true;
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        UpdateToken();
+
 //        getValues();
 //        ContentValues values = new ContentValues();
 //        values.put(MyProvider.name, databaseHelper.getMoviep(1).getFname());
@@ -217,7 +227,30 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
 
         var3.addChildEventListener((ChildEventListener)var4);
         //  getSupportLoaderManager().initLoader(1, null, this);
+        mdatabaseReference.child("online_drivers").child("0000").child("lat").setValue(currentLatitude);
+        mdatabaseReference.child("online_drivers").child("0000").child("lng").setValue(currentLongitude);
 
+                Intent bb = getIntent();
+        if (bb!=null)
+        {
+            name = bb.getStringExtra("name");
+            address = bb.getStringExtra("address");
+            custid = bb.getStringExtra("custid");
+            Log.i("Intentttttttttttt"," "+custid);
+            //sendDeliveryNotification();
+
+        }
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getApplication(), Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocationName(address,1);
+            customerLat = addresses.get(0).getLatitude();
+            customerLng = addresses.get(0).getLongitude();
+           // Toast.makeText(this, " "+dlat+dlng,Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -320,7 +353,6 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
 
     }
 
-
     private void getValues(){
         photo = profileImage(bp);
     }
@@ -420,6 +452,16 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
                     Location var10003 = locationResult.getLastLocation();
                     LatLng latLng = new LatLng(var3, var10003.getLongitude());
                     Log.e("Locationn", latLng.latitude + " , " + latLng.longitude);
+                    currentLatitude = latLng.latitude;
+                    currentLongitude = latLng.longitude;
+                    mdatabaseReference.child("online_drivers").child("0000").child("lat").setValue(latLng.latitude);
+                    mdatabaseReference.child("online_drivers").child("0000").child("lng").setValue(latLng.longitude);
+                    Log.i("distanceeeeeeeeeeeeeeeeeeeee"," "+findDistance());
+                    if (notificationDelivery && findDistance()>70){
+                        sendDeliveryNotification();
+                        notificationDelivery = false;
+                    }
+
                     if (Map.this.locationFlag) {
                         Map.this.locationFlag = false;
                         Map.this.animateCamera(latLng);
@@ -485,10 +527,12 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
         GoogleMap var10000 = this.googleMap;
 
         Marker marker = var10000.addMarker(markerOptions);
-        marker.setTag(var1.getDriverId());
+        marker.setTag("ghghg");
+        marker.showInfoWindow();
         MarkerCollection.INSTANCE.insertMarker(marker);
         TextView var4 = (TextView)this._$_findCachedViewById(R.id.totalOnlineDrivers);
-        var4.setText((CharSequence)(this.getResources().getString(R.string.total_online_drivers) + " " + MarkerCollection.INSTANCE.allMarkers().size()));
+        var4.setText(name);
+        //var4.setText((CharSequence)(this.getResources().getString(R.string.total_online_drivers) + " " + MarkerCollection.INSTANCE.allMarkers().size()));
         markeragain = marker;
         // Toast.makeText(getBaseContext(), "driver added"+var1.getLat()+var1.getLng(), Toast.LENGTH_SHORT).show();
 //        place1 = new MarkerOptions().position(new LatLng(43.658038, -79.760535)).title("Location 1");
@@ -523,7 +567,6 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
         final String path = "location";
-
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permission == PackageManager.PERMISSION_GRANTED) {
@@ -531,10 +574,11 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     Location location = locationResult.getLastLocation();
+                    locationn = locationResult.getLastLocation();
                     if (location != null) {
                         Log.i("sdf",location.toString());
-                        place1 = new MarkerOptions().position(new LatLng(44.638730, -63.630210)).title("Customer");
-                        place2 = new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Driver");
+                        place1 = new MarkerOptions().position(new LatLng(customerLat, customerLng)).title(address);
+                        place2 = new MarkerOptions().position(new LatLng(var1.getLat(), var1.getLng())).title("Driver");
                         googleMap.addMarker(place1).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                         // googleMap.addMarker(place2).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                         new FetchURL(Map.this).execute(getUrl(place2.getPosition(), place1.getPosition(), "driving"), "driving");
@@ -544,11 +588,11 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
         }else {
             Log.i("Asdfsdfsdfsdf","nooooooooooooo");
         }
-            place1 = new MarkerOptions().position(new LatLng(44.638730, -63.630210)).title("Customer");
-            place2 = new MarkerOptions().position(new LatLng(var1.getLat(), var1.getLng())).title("Driver");
-            googleMap.addMarker(place1).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+//            place1 = new MarkerOptions().position(new LatLng(44.638730, -63.630210)).title("Customer");
+  //          place2 = new MarkerOptions().position(new LatLng(locationn.getLatitude(), locationn.getLongitude())).title("Driver");
+    //        googleMap.addMarker(place1).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             // googleMap.addMarker(place2).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            new FetchURL(Map.this).execute(getUrl(place2.getPosition(), place1.getPosition(), "driving"), "driving");
+      //      new FetchURL(Map.this).execute(getUrl(place2.getPosition(), place1.getPosition(), "driving"), "driving");
 //            Toast.makeText(getBaseContext(), "database" + data, Toast.LENGTH_SHORT)
 //                    .show();
             //     var10000r.createAnimation(marker,mMap);
@@ -593,59 +637,24 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
     @Override
     public void onDriverUpdated(Driver var1) {
 
-        Intent bb = getIntent();
-        if (bb!=null)
-        {
-            destinationn = bb.getStringExtra("destinationn");
-        }
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(getApplication(), Locale.getDefault());
-        try {
-            addresses = geocoder.getFromLocationName(destinationn,1);
-            dlat = addresses.get(0).getLatitude();
-            dlng = addresses.get(0).getLongitude();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //
         final LatLngInterpolatorNew latLngInterpolator = new LatLngInterpolatorNew.LinearFixed();
+        Marker marker = MarkerCollection.INSTANCE.getMarker("ghghg");
 
-        Marker marker = MarkerCollection.INSTANCE.getMarker(var1.getDriverId());
         MarkerAnimationHelper var10000 = MarkerAnimationHelper.INSTANCE;
         final LatLng startPosition = marker.getPosition();
         final LatLng newPosition = new LatLng(var1.getLat(), var1.getLng());
 
-        final LatLng endPosition = new LatLng(43.658038, -79.760535);
-//var10000.animateMarkerToGB(marker, new LatLng(var1.getLat(), var1.getLng()), (LatLngInterpolatorNew)(new LinearFixed()));
-        LocationRequest request = new LocationRequest();
-        request.setInterval(10000);
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-        final String path = "location";
 
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permission == PackageManager.PERMISSION_GRANTED) {
-            client.requestLocationUpdates(request, new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    Location location = locationResult.getLastLocation();
-                    if (location != null) {
-                        Log.i("sdf",location.toString());
-                        var10000.animateMarkerToGB(marker, new LatLng(location.getLatitude(), location.getLongitude()), (LatLngInterpolator)(new Spherical()));
-                        place1 = new MarkerOptions().position(new LatLng(44.638730, -63.630210)).title("Passenger");
-                        place2 = new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Driver");
-                        //googleMap.addMarker(place1).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        final LatLng endPosition = new LatLng(43.658038, -79.760535);
+//var10000.animateMarkerToGB(marker, new LatLng(var1.getLat(), var1.getLng()), (LatLngInterpolatorNew)(new LatLngInterpolatorNew.LinearFixed()));
+
+                        var10000.animateMarkerToGB(marker, new LatLng(var1.getLat(), var1.getLng()), (LatLngInterpolator)(new Spherical()));
+                        place1 = new MarkerOptions().position(new LatLng(customerLat, customerLng)).title(address);
+                        place2 = new MarkerOptions().position(new LatLng(var1.getLat(), var1.getLng())).title("Driver");
+                        googleMap.addMarker(place1).showInfoWindow();
                         // googleMap.addMarker(place2).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                         new FetchURL(Map.this).execute(getUrl(place2.getPosition(), place1.getPosition(), "driving"), "driving");
 
-                    }
-                }
-            }, null);
-        }else {
-            Log.i("Asdfsdfsdfsdf","nooooooooooooo");
-        }
         /////////vv
 
         // var10000.animateMarkerToGB(marker, new LatLng(var1.getLat(), var1.getLng()), (LatLngInterpolator)(new LatLngInterpolator.Spherical()));
@@ -800,5 +809,57 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
 ////                break;
 //        }
         return false;
+    }
+    private double findDistance(){
+        Location startPoint=new Location("locationA");
+        startPoint.setLatitude(currentLatitude);
+        startPoint.setLongitude(currentLongitude);
+
+        Location endPoint=new Location("locationA");
+        endPoint.setLatitude(customerLat);
+        endPoint.setLongitude(customerLng);
+
+        double distance=startPoint.distanceTo(endPoint);
+        return distance;
+    }
+    private void sendDeliveryNotification(){
+        FirebaseDatabase.getInstance().getReference().child("Tokens").child(custid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String usertoken=dataSnapshot.getValue(String.class);
+                sendNotifications(usertoken, "Tiffin Delivered","Your Tiffin has been delivered");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void UpdateToken(){
+        FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        String refreshToken= FirebaseInstanceId.getInstance().getToken();
+        Token token= new Token(refreshToken);
+        FirebaseDatabase.getInstance().getReference("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
+    }
+
+    public void sendNotifications(String usertoken, String title, String message) {
+        Log.i("yyyyyyyyyyyyyyyes","yes");
+        Data data = new Data(title, message);
+        com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.NotificationSender sender = new com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.NotificationSender(data, usertoken);
+        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
+            @Override
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(Map.this, "Failed ", Toast.LENGTH_LONG);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<MyResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

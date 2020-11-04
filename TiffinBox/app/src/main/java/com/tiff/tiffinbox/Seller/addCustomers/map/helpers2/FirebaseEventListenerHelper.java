@@ -1,10 +1,9 @@
 package com.tiff.tiffinbox.Seller.addCustomers.map.helpers2;
 
-import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.FirebaseDriverListener;
-import com.tiff.tiffinbox.Seller.addCustomers.map.model2.Driver;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.tiff.tiffinbox.Seller.addCustomers.map.interfaces2.FirebaseDriverListener;
 
 import kotlin.jvm.internal.Intrinsics;
 
@@ -34,7 +33,6 @@ public final class FirebaseEventListenerHelper implements ChildEventListener {
         if (driver == null) {
             Intrinsics.throwNpe();
         }
-
         var10000.onDriverAdded(driver);
     }
 

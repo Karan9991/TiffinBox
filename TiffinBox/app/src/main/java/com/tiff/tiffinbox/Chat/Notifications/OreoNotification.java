@@ -10,6 +10,8 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
 
+import com.tiff.tiffinbox.R;
+
 public class OreoNotification extends ContextWrapper {
 
     private static final String CHANNEL_ID = "com.koddev.chatapp";
@@ -55,6 +57,14 @@ public class OreoNotification extends ContextWrapper {
                 .setContentText(body)
                 .setSmallIcon(Integer.parseInt(icon))
                 .setSound(soundUri)
+                .setAutoCancel(true);
+    }
+    @TargetApi(Build.VERSION_CODES.O)
+    public  Notification.Builder getOreoNotificationDelivery(String title, String message){
+        return new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.bg_circle)
                 .setAutoCancel(true);
     }
 }

@@ -30,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.MainActivity;
 import com.tiff.tiffinbox.authentication.SignIn;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class Customer extends AppCompatActivity {
 //                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
 //                intent.putExtra("userid", userid);
 //                startActivity(intent);
-               // startActivity(new Intent(Customer.this, MainActivity.class));
+                startActivity(new Intent(Customer.this, MainActivity.class));
             }
         });
 

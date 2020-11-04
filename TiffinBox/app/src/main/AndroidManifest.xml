@@ -43,7 +43,6 @@
         <activity
             android:name=".IntroScreen.IntroActivity"
             android:theme="@style/AppTheme">
-
             <!-- Intent filter here -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,7 +62,22 @@
         <activity
             android:name=".Chat.ResetPasswordActivity"
             android:parentActivityName=".Chat.LoginActivity" />
-
+<!--        <service-->
+<!--            android:name=".Seller.addCustomers.map.deliveryNotification.MyFirebaseIdService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+<!--        <service-->
+<!--            android:name=".Seller.addCustomers.map.deliveryNotification.MyFireBaseMessagingService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
         <service
             android:name=".Chat.Notifications.MyFirebaseIdService"
             android:enabled="true"
@@ -80,6 +94,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service android:name=".Seller.Profile.BoundService" />
         <service
             android:name=".deliveredNotification.LocationService"
@@ -92,6 +107,17 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+<!--        delivery notification-->
+        <activity android:name=".Seller.addCustomers.map.deliveryNotification.SendNotif"></activity>
+        <activity android:name=".Seller.addCustomers.map.deliveryNotification.MainActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
+
     </application>
 
 </manifest>

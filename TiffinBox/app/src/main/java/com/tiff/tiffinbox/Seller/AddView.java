@@ -3,29 +3,23 @@ package com.tiff.tiffinbox.Seller;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.tiff.tiffinbox.Chat.MainActivity;
-import com.tiff.tiffinbox.Data;
-import com.tiff.tiffinbox.FindUserType;
-import com.tiff.tiffinbox.R;
-import com.tiff.tiffinbox.Seller.Profile.Profile;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.tiff.tiffinbox.Data;
+import com.tiff.tiffinbox.FindUserType;
+import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.addCustomers.AddCustomer;
+import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.MainActivity;
 import com.tiff.tiffinbox.Seller.ui.main.SectionsPagerAdapter;
 
 public class AddView extends AppCompatActivity implements AddSeller.OnFragmentInteractionListener, ViewSeller2.OnFragmentInteractionListener {
@@ -80,6 +74,5 @@ public class AddView extends AppCompatActivity implements AddSeller.OnFragmentIn
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
-
 
 }

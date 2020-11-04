@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 import com.tiff.tiffinbox.R;
-import com.tiff.tiffinbox.Seller.addCustomers.Model.AddCustomerModel;
 import com.tiff.tiffinbox.Seller.addCustomers.Model.YourCustomerModel;
 
 import java.util.ArrayList;
@@ -64,6 +63,7 @@ public class YourCustomerAdapter extends ArrayAdapter<YourCustomerModel> impleme
 //        Picasso.with(getContext()).
 //                load(model.getImageURL()).into(holder.imageView);
         //  holder.tvTitle.setText(model.getTitle());
+        holder.tvID.setText(cardModelListfiltered.get(position).getId());
         holder.tvName.setText(cardModelListfiltered.get(position).getName());
         holder.tvEmail.setText(cardModelListfiltered.get(position).getEmail());
         holder.tvPhone.setText(cardModelListfiltered.get(position).getMobile());
@@ -73,10 +73,11 @@ public class YourCustomerAdapter extends ArrayAdapter<YourCustomerModel> impleme
     }
 
     static class ViewHolder {
-        TextView tvName, tvEmail, tvPhone, tvAddress;
+        TextView tvID,tvName, tvEmail, tvPhone, tvAddress;
         LinearLayout relativeLayout;
 
         ViewHolder(View view) {
+            tvID = (TextView) view.findViewById(R.id.yourCustID);
             tvName = (TextView) view.findViewById(R.id.yourcusttvName);
             tvEmail = (TextView) view.findViewById(R.id.yourcusttvEmail);
             tvPhone = (TextView) view.findViewById(R.id.yourcusttvPhone);

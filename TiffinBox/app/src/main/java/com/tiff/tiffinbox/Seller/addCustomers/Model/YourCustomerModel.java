@@ -24,6 +24,14 @@ public class YourCustomerModel implements Serializable {
         this.address = address;
     }
 
+    public YourCustomerModel(String id, String name, String email, String mobile, String address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+    }
+
     public String getAddress() {
         return address;
     }
