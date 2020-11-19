@@ -110,20 +110,20 @@ AuthenticationPresenterLayer registerPresenterLayer;
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
-        etAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSearchCalled();
-            }
-        });
-        etAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    onSearchCalled();
-                }
-            }
-        });
+//        etAddress.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//               // onSearchCalled();
+//            }
+//        });
+//        etAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                 //   onSearchCalled();
+//                }
+//            }
+//        });
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

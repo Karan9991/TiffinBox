@@ -1,8 +1,8 @@
 package com.tiff.tiffinbox.Customer;
 
 import android.content.Context;
-//import android.support.annotation.NonNull;
-//import android.support.v4.view.PagerAdapter;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,9 @@ import com.tiff.tiffinbox.Customer.Model.ModelDemo;
 import com.tiff.tiffinbox.R;
 
 import java.util.List;
+
+//import android.support.annotation.NonNull;
+//import android.support.v4.view.PagerAdapter;
 
 public class Adapter extends PagerAdapter {
 
@@ -63,9 +66,10 @@ public class Adapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, DetailActivity.class);
-//                intent.putExtra("param", modelDemos.get(position).getTitle());
-//                context.startActivity(intent);
+                Log.i("changaaaaaaaaaaaa","ok"+modelDemos.get(position).getTitle());
+                Intent intent = new Intent(context, Description.class);
+                intent.putExtra("desc", modelDemos.get(position).getDesc());
+                context.startActivity(intent);
                 // finish();
             }
         });

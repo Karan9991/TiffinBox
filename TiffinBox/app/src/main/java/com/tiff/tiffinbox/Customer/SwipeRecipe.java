@@ -1,25 +1,23 @@
 package com.tiff.tiffinbox.Customer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.animation.ArgbEvaluator;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tiff.tiffinbox.Customer.Model.ModelDemo;
-import com.tiff.tiffinbox.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Customer.Model.ModelDemo;
+import com.tiff.tiffinbox.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ public class SwipeRecipe extends AppCompatActivity {
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     TextView tvSellerName, tvSellerEmail, tvSellerPhone, tvSellerAddress;
-    ImageView imgLeftArrowSwipeR;
+  //  ImageView imgLeftArrowSwipeR;
 
     String tvEmail, tvName, tvAddress, tvMobile;
 
@@ -46,7 +44,7 @@ public class SwipeRecipe extends AppCompatActivity {
         tvSellerEmail = findViewById(R.id.tvSellerEmail);
         tvSellerPhone = findViewById(R.id.tvSellerPhone);
         tvSellerAddress = findViewById(R.id.tvSellerAddress);
-        imgLeftArrowSwipeR = findViewById(R.id.imgLeftArrowSwipeR);
+       // imgLeftArrowSwipeR = findViewById(R.id.imgLeftArrowSwipeR);
 
 //        FloatingActionButton fab = findViewById(R.id.fabChat);
 //
@@ -70,12 +68,12 @@ public class SwipeRecipe extends AppCompatActivity {
         tvSellerAddress.setText("Address: "+tvAddress);
         tvSellerPhone.setText("Phone: "+tvMobile);
 
-        imgLeftArrowSwipeR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SwipeRecipe.this, Customer.class));
-            }
-        });
+//        imgLeftArrowSwipeR.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(SwipeRecipe.this, Customer.class));
+//            }
+//        });
     }
 
     public void all(){
@@ -102,12 +100,13 @@ public class SwipeRecipe extends AppCompatActivity {
         };
 
         colors = colors_temp;
-
+        
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
                 if (position < (adapter.getCount() -1) && position < (colors.length - 1)) {
+
                     viewPager.setBackgroundColor(
 
                             (Integer) argbEvaluator.evaluate(
@@ -125,7 +124,6 @@ public class SwipeRecipe extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
             }
 
             @Override

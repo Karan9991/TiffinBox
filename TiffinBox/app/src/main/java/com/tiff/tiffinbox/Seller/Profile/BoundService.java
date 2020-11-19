@@ -2,16 +2,14 @@ package com.tiff.tiffinbox.Seller.Profile;
 
 import android.Manifest;
 import android.app.Service;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Chronometer;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,7 +20,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +29,7 @@ public class BoundService extends Service {
     private static String LOG_TAG = "Bound Service";
     private IBinder iBinder = new MyBinder();
 
-
+    SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -57,10 +54,20 @@ public class BoundService extends Service {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference df = database.getReference();
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("name").setValue(name);
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("mobile").setValue(mobile);
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("address").setValue(address);
-        Toast.makeText(getApplicationContext(),"Profile Updated", Toast.LENGTH_SHORT).show();
+        sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE);
+
+        if (sharedPreferences.getString("UT",null).equals("Seller")) {
+            df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("name").setValue(name);
+            df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("mobile").setValue(mobile);
+            df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("address").setValue(address);
+            Toast.makeText(getApplicationContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
+        }
+        else if (sharedPreferences.getString("UT",null).equals("Customer")) {
+            df.child("Customer").child(firebaseAuth.getCurrentUser().getUid()).child("name").setValue(name);
+            df.child("Customer").child(firebaseAuth.getCurrentUser().getUid()).child("mobile").setValue(mobile);
+            df.child("Customer").child(firebaseAuth.getCurrentUser().getUid()).child("address").setValue(address);
+            Toast.makeText(getApplicationContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void requestLocationUpdates() {

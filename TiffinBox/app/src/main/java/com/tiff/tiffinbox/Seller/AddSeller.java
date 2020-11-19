@@ -3,18 +3,11 @@ package com.tiff.tiffinbox.Seller;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,8 +22,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tiff.tiffinbox.R;
-import com.tiff.tiffinbox.Seller.Model.AddRecipe;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +41,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.tiff.tiffinbox.R;
+import com.tiff.tiffinbox.Seller.Model.AddRecipe;
 import com.tiff.tiffinbox.Validate;
 
 import java.io.IOException;
@@ -184,7 +183,7 @@ countRecipe();
                       //  Toast.makeText(getContext(), "Recipes", Toast.LENGTH_LONG).show();
                         UploadImageFileToFirebaseStorage();
                     }else {
-                        Toast.makeText(getContext(), "You can't add more than 3 Recipes", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "You can't post more than 3 Ads", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -228,7 +227,7 @@ countRecipe();
         // Checking whether FilePathUri Is empty or not.
         if (FilePathUri != null) {
             // Setting progressDialog Title.
-            progressDialog.setTitle("Recipe is Publishing...");
+            progressDialog.setTitle("Tiffin Ad Posting...");
             // Showing progressDialog.
             progressDialog.show();
             // Creating second StorageReference.
@@ -252,7 +251,8 @@ countRecipe();
                                     progressDialog.dismiss();
 
                                      // @SuppressWarnings("VisibleForTests")
-                                    Toast.makeText(getContext(), "Your Recipe Published, Customers will Contact You Soon ",Toast.LENGTH_LONG).show();
+                                    addPostedAlert();
+                                    //Toast.makeText(getContext(), "Your Ad Published, Customers will Contact You Soon",Toast.LENGTH_LONG).show();
 
 
                                 }
@@ -275,7 +275,7 @@ countRecipe();
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             // Setting progressDialog Title.
-                            progressDialog.setTitle("Recipe is Publishing...");
+                            progressDialog.setTitle("Tiffin Ad Posting...");
                         }
                     });
         }
@@ -371,6 +371,19 @@ countRecipe();
             }
         });
         return intcountChildren;
+    }
+
+        private void addPostedAlert(){
+        builder.setTitle("Your Ad Published, Customers will Contact You Soon");
+        builder.setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
 

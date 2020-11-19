@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,10 +29,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.Chat.MainActivity;
 import com.tiff.tiffinbox.Customer.Model.CardModel;
 import com.tiff.tiffinbox.R;
 import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
-import com.tiff.tiffinbox.Seller.addCustomers.map.deliveryNotification.MainActivity;
+import com.tiff.tiffinbox.Seller.Profile.Profile;
 import com.tiff.tiffinbox.authentication.SignIn;
 
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ public class Customer extends AppCompatActivity {
     List<CardModel> myList;
     AlertDialog.Builder builder2;
     ImageView imgCustomerLogout;
+    TextView tvhamburgerName, tvhamburgerEmail;
 
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -54,32 +59,86 @@ public class Customer extends AppCompatActivity {
 
     CardModel cardModel;
 
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        getSupportActionBar().setTitle("Tiffin Recipes");
+        getSupportActionBar().setTitle("Brampton Tiffins");
         builder2 = new AlertDialog.Builder(this);
-        imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
+
+        //imgCustomerLogout = findViewById(R.id.imgCustomerLogout);
 
         viewRecipe = new ViewRecipe();
 
-        FloatingActionButton fab = findViewById(R.id.fabChatCustomer);
+       // FloatingActionButton fab = findViewById(R.id.fabChatCustomer);
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         df2 = FirebaseDatabase.getInstance().getReference("Customer").child(fuser.getUid());
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        dl = (DrawerLayout)findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl,R.string.descSeller, R.string.addressSeller);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = (NavigationView)findViewById(R.id.nv);
+        nv.setItemIconTintList(null);
+        View hView =  nv.getHeaderView(0);
+        tvhamburgerName = (TextView)hView.findViewById(R.id.tvhamburgername);
+        tvhamburgerEmail = (TextView)hView.findViewById(R.id.tvhamburgeremail);
+        df2.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-//                intent.putExtra("userid", userid);
-//                startActivity(intent);
-                startActivity(new Intent(Customer.this, MainActivity.class));
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tvhamburgerName.setText(dataSnapshot.child("name").getValue().toString());
+                tvhamburgerEmail.setText(dataSnapshot.child("email").getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch(id)
+                {
+                    case R.id.account:
+                        startActivity(new Intent(Customer.this, Profile.class));
+                        break;
+                    case R.id.settings:
+                        startActivity(new Intent(Customer.this, MainActivity.class));
+                        break;
+                    case R.id.mycart:
+                        logout();
+                        break;
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action"+userid, Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+////                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+////                intent.putExtra("userid", userid);
+////                startActivity(intent);
+//                startActivity(new Intent(Customer.this, MainActivity.class));
+//            }
+//        });
 
         //Firebase
         queryInfo = df.child("Seller");
@@ -91,6 +150,8 @@ public class Customer extends AppCompatActivity {
         myList = new ArrayList<CardModel>();
 
         ListView lvCards = (ListView) findViewById(R.id.list_cards);
+
+        lvCards.setSaveEnabled(true);
 
         lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,12 +176,12 @@ public class Customer extends AppCompatActivity {
 
         gettingSellerList();
 
-        imgCustomerLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logout();
-            }
-        });
+//        imgCustomerLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                logout();
+//            }
+//        });
     }
 
     public void gettingSellerList(){
@@ -176,7 +237,7 @@ public class Customer extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main,menu);
         MenuItem menuItem = menu.findItem(R.id.searchView);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Location or Seller Name");
+        searchView.setQueryHint("Address or Seller Name");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -199,6 +260,8 @@ public class Customer extends AppCompatActivity {
         if(id == R.id.searchView){
             return true;
         }
+        if(t.onOptionsItemSelected(item))
+            return true;
         return super.onOptionsItemSelected(item);
     }
 

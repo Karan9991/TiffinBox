@@ -233,7 +233,7 @@ android:layout_gravity="center_horizontal"
                 android:layout_marginTop="662dp"
                 android:layout_marginEnd="95dp"
                 android:elevation="7dp"
-                android:text="Update" />
+                android:text="Update   Ad" />
 
         </RelativeLayout>
     </ScrollView>

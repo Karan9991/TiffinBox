@@ -1,25 +1,14 @@
 package com.tiff.tiffinbox.Seller.Profile;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,23 +17,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.FirebaseApp;
-import com.tiff.tiffinbox.ConnectionReceiver;
-import com.tiff.tiffinbox.Data;
-import com.tiff.tiffinbox.Validate;
-import com.tiff.tiffinbox.authentication.SignIn;
-import com.tiff.tiffinbox.R;
-import com.tiff.tiffinbox.Seller.AddView;
-import com.tiff.tiffinbox.Seller.Model.SellerProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,11 +32,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tiff.tiffinbox.ConnectionReceiver;
+import com.tiff.tiffinbox.Customer.Customer;
+import com.tiff.tiffinbox.Data;
+import com.tiff.tiffinbox.R;
+import com.tiff.tiffinbox.Seller.AddView;
+import com.tiff.tiffinbox.Seller.Model.SellerProfile;
+import com.tiff.tiffinbox.Validate;
+import com.tiff.tiffinbox.authentication.SignIn;
 
 public class Profile extends AppCompatActivity implements Validate {
 EditText etName,etMobile,etAddress;
 Button btnEdit, btnUpdate, btnDeleteAccount;
-ImageView imgProfileleftArrow, imgLogout;
+ImageView imgProfileleftArrow;
 
 private boolean isValid;
 SellerProfile sellerProfile;
@@ -77,6 +65,7 @@ AlertDialog.Builder builder, builder2;
     DatabaseReference df = database.getReference();
 
     Data data = Data.getInstance();
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,19 +80,19 @@ AlertDialog.Builder builder, builder2;
         btnUpdate = findViewById(R.id.btnUpdateProfile);
         btnDeleteAccount = findViewById(R.id.btnDeleteProfile);
         imgProfileleftArrow = findViewById(R.id.imgProfileLeftArrow);
-        imgLogout = findViewById(R.id.imgProfileLogout);
+      //  imgLogout = findViewById(R.id.imgProfileLogout);
 
         isValid = false;
         sellerProfile = new SellerProfile();
         builder = new AlertDialog.Builder(this);
         builder2 = new AlertDialog.Builder(this);
 
+        sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE);
         gettingFirebaseData();
 
         receiver = new ConnectionReceiver();
         intentFilter = new IntentFilter("com.tiff.tiffinbox.SOME_ACTION");
         intentFilter.addAction(CONNECTIVITY_ACTION);
-
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,59 +126,103 @@ AlertDialog.Builder builder, builder2;
         imgProfileleftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Profile.this, AddView.class));
-            }
+                if (sharedPreferences.getString("UT",null).equals("Seller")) {
+                    startActivity(new Intent(Profile.this, AddView.class));
+                }
+                else if (sharedPreferences.getString("UT",null).equals("Customer")) {
+                    startActivity(new Intent(Profile.this, Customer.class));
+                }
+
+                }
         });
 
-        imgLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (data.isNetworkAvailable(Profile.this)){
-                    logout();
-                }else {
-                    Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        imgLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (data.isNetworkAvailable(Profile.this)){
+//                    logout();
+//                }else {
+//                    Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
     }
 
 
     private void gettingFirebaseData(){
-         df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 sellerProfile = dataSnapshot.getValue(SellerProfile.class);
-                 etName.setText(sellerProfile.getName());
-                 etMobile.setText(sellerProfile.getMobile());
-                 etAddress.setText(sellerProfile.getAddress());
-                 etName.setEnabled(false);
-                 etMobile.setEnabled(false);
-                 etAddress.setEnabled(false);
-             }
+        if (sharedPreferences.getString("UT",null).equals("Seller")) {
+            df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    sellerProfile = dataSnapshot.getValue(SellerProfile.class);
+                    etName.setText(sellerProfile.getName());
+                    etMobile.setText(sellerProfile.getMobile());
+                    etAddress.setText(sellerProfile.getAddress());
+                    etName.setEnabled(false);
+                    etMobile.setEnabled(false);
+                    etAddress.setEnabled(false);
+                }
 
-             @Override
-             public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-             }
-         });
+                }
+            });
+        }
+        else if (sharedPreferences.getString("UT",null).equals("Customer")){
+            df.child("Customer").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    sellerProfile = dataSnapshot.getValue(SellerProfile.class);
+                    etName.setText(sellerProfile.getName());
+                    etMobile.setText(sellerProfile.getMobile());
+                    etAddress.setText(sellerProfile.getAddress());
+                    etName.setEnabled(false);
+                    etMobile.setEnabled(false);
+                    etAddress.setEnabled(false);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void deleteAccount(){
-        df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).removeValue();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),"Your Account Deleted Permanently", Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(Profile.this, SignIn.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
+        if (sharedPreferences.getString("UT",null).equals("Seller")) {
+            df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Your Account Deleted Permanently", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(Profile.this, SignIn.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
+                            }
                         }
-                    }
-                });
-    }
+                    });
+        } else if (sharedPreferences.getString("UT",null).equals("Customer")) {
+            df.child("Customer").child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Your Account Deleted Permanently", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(Profile.this, SignIn.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
+                            }
+                        }
+                    });
+        }
+        }
 
     private void alertDialogdelete(){
         builder.setTitle("Are You Sure?");
@@ -209,25 +242,25 @@ AlertDialog.Builder builder, builder2;
         alert.show();
     }
 
-    private void logout(){
-        builder2.setTitle("Logout");
-        builder2.setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        FirebaseAuth.getInstance().signOut();
-                        Intent i = new Intent(Profile.this, SignIn.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder2.create();
-        alert.show();
-    }
+//    private void logout(){
+//        builder2.setTitle("Logout");
+//        builder2.setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        FirebaseAuth.getInstance().signOut();
+//                        Intent i = new Intent(Profile.this, SignIn.class);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(i);
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder2.create();
+//        alert.show();
+//    }
 
     @Override
     public boolean validations() {

@@ -61,7 +61,7 @@
                         android:layout_marginTop="18dp"
                         android:layout_marginEnd="123dp"
                         android:text="Seller Detail"
-                        android:textColor="@color/green"
+                        android:textColor="@color/lightblue"
                         android:textSize="17dp" />
 
                     <LinearLayout
@@ -119,6 +119,7 @@
                 android:layout_marginTop="410dp"
                 android:clipToPadding="false"
                 android:foregroundGravity="center"
+                android:background="@color/colorAccent"
                 android:overScrollMode="never"></androidx.viewpager.widget.ViewPager>
 
 <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
@@ -133,14 +134,14 @@
 <!--                android:layout_marginBottom="@dimen/fab_margin"-->
 <!--                app:srcCompat="@drawable/ic_baseline_chat_24" />-->
 
-            <ImageView
-                android:id="@+id/imgLeftArrowSwipeR"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="630dp"
-                android:src="@drawable/ic_leftarrow" />
+<!--            <ImageView-->
+<!--                android:id="@+id/imgLeftArrowSwipeR"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_marginTop="630dp"-->
+<!--                android:src="@drawable/ic_leftarrow" />-->
 
 
         </RelativeLayout>
