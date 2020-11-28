@@ -531,6 +531,7 @@ public class Map extends AppCompatActivity implements FirebaseDriverListener, Ta
         marker.showInfoWindow();
         MarkerCollection.INSTANCE.insertMarker(marker);
         TextView var4 = (TextView)this._$_findCachedViewById(R.id.totalOnlineDrivers);
+        Toast.makeText(getApplicationContext(),"n "+name,Toast.LENGTH_SHORT).show();
         var4.setText(name);
         //var4.setText((CharSequence)(this.getResources().getString(R.string.total_online_drivers) + " " + MarkerCollection.INSTANCE.allMarkers().size()));
         markeragain = marker;

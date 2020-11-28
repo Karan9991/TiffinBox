@@ -122,7 +122,6 @@ public class Recipe extends AppCompatActivity implements ValueEventListener, Val
                // writeNewPost(etDesc.getText().toString(), editRecipe.getImageURL(), etPrice.getText().toString());
             }
         });
-
     }
 
     @Override
@@ -136,16 +135,14 @@ public class Recipe extends AppCompatActivity implements ValueEventListener, Val
            }
     }
     private void writeNewPost(String desc, String imageURL, String price) {
-        // Create new post at /user-posts/$userid/$postid
-        // and at /posts/$postid simultaneously
-         editRecipe = new EditRecipe(desc, imageURL, price);
-        Map<String, Object> postValues = editRecipe.toMap();
+        // Create new post at /user-posts/$userid/$postid and at /posts/$postid simultaneously
 
+        editRecipe = new EditRecipe(desc, imageURL, price);
+        Map<String, Object> postValues = editRecipe.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(title , postValues);
         dfUpdate.updateChildren(childUpdates);
         Toast.makeText(Recipe.this, "Ad Updated", Toast.LENGTH_LONG).show();
-
     }
     private void gettingIntent(){
         title = getIntent().getStringExtra("etTitle");

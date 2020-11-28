@@ -4,6 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,16 +23,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.tiff.tiffinbox.R;
-import com.tiff.tiffinbox.Seller.Model.Message;
-import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.tiff.tiffinbox.R;
+import com.tiff.tiffinbox.Seller.Model.Message;
+import com.tiff.tiffinbox.Seller.Model.ViewRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -316,6 +316,7 @@ getFirebase();
                 .child(firebaseAuth.getCurrentUser().getUid())
                 .child("Recipe")
                 .child(desc).removeValue();
+        Toast.makeText(getContext(), "Ad Deleted",Toast.LENGTH_LONG).show();
 //real
 //        deleteRecipe2 = df2.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe").child(desc2).orderByValue().equalTo(desc);
 //       deleteRecipe2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -402,7 +403,7 @@ getFirebase();
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main, menu);
+       // inflater.inflate(R.menu.main, menu);
        // inflater.inflate(R.menu.cancel_ride, menu);
     }
     @Override

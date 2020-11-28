@@ -48,7 +48,7 @@ public class PlaceholderFragment extends Fragment {
 
     AddCustomerAdapter adapter;
     List<AddCustomerModel> myList;
-    AlertDialog.Builder builder2;
+    AlertDialog.Builder builder2, builder3;
 
     //Firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -87,6 +87,7 @@ public class PlaceholderFragment extends Fragment {
         setHasOptionsMenu(true);
 
         builder2 = new AlertDialog.Builder(getContext());
+        builder3 = new AlertDialog.Builder(getContext());
         firebaseAuth = FirebaseAuth.getInstance();
 
         //Firebase
@@ -223,5 +224,17 @@ public class PlaceholderFragment extends Fragment {
     }
     private void addCustomer(String id){
         df.child("Seller").child(firebaseAuth.getCurrentUser().getUid()).child("MyCustomers").child(id).setValue(addCustomerDatabase);
+        builder3.setTitle("Customer Added");
+        builder3.setMessage("Tap on Your customer. When you will reach near the customer location. Customer will get the notification as ''Tiffin Delivered''")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder3.create();
+        alert.show();
+
     }
+
 }
