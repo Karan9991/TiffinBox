@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Seller.addCustomers.yourCustomers">
+    <ListView
+        android:id="@+id/yourCustlist_cards"
+        android:layout_width="414dp"
+        android:layout_height="655dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        tools:layout_editor_absoluteX="-3dp"></ListView>
+    <!-- TODO: Update blank fragment layout -->
+
+</FrameLayout>

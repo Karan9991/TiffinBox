@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tiff.tiffinbox">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_LAUNCH_BROADCASTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Customer.ui.Description"></activity>
+        <activity
+            android:name=".Seller.addCustomers.AddCustomer"
+            android:label="@string/title_activity_add_customer"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".deliveredNotification.MainActivity" />
+        <activity android:name=".SplashScreen" />
+        <activity android:name=".Customer.ui.SwipeRecipe" />
+        <activity
+            android:name=".authentication.ui.ForgotPassword"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Seller.Profile.Profile" />
+        <activity android:name=".Seller.addCustomers.map.Map" />
+        <activity android:name=".Seller.Recipe" />
+        <activity
+            android:name=".Seller.AddView"
+            android:label="@string/title_activity_add_view"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Customer.ui.Customer"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".authentication.ui.SignIn" />
+        <activity android:name=".authentication.ui.Register" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".IntroScreen.IntroActivity"
+            android:theme="@style/AppTheme">
+
+            <!-- Intent filter here -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Chat -->
+        <activity android:name=".Chat.StartActivity" />
+        <activity
+            android:name=".Chat.RegisterActivity"
+            android:parentActivityName=".Chat.StartActivity" />
+        <activity android:name=".Chat.MainActivity" />
+        <activity
+            android:name=".Chat.LoginActivity"
+            android:parentActivityName=".Chat.StartActivity" />
+        <activity android:name=".Chat.MessageActivity" />
+        <activity
+            android:name=".Chat.ResetPasswordActivity"
+            android:parentActivityName=".Chat.LoginActivity" /> <!-- <service -->
+        <!-- android:name=".Seller.addCustomers.map.deliveryNotification.MyFirebaseIdService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <service -->
+        <!-- android:name=".Seller.addCustomers.map.deliveryNotification.MyFireBaseMessagingService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <service
+            android:name=".Chat.Notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Chat.Notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Seller.Profile.BoundService" />
+        <service
+            android:name=".deliveredNotification.LocationService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" /> <!-- delivery notification -->
+        <activity android:name=".Seller.addCustomers.map.deliveryNotification.SendNotif" />
+        <activity android:name=".Seller.addCustomers.map.deliveryNotification.MainActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+    </application>
+
+</manifest>

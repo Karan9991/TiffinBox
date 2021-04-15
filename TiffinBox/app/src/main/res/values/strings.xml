@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">TiffinBox</string>
+
+    <string name="register">REGISTER</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="signup_login_hint">Already have an account? Sign In</string>
+    <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
+    <string name="signup_addresshint">Address</string>
+    <string name="title_activity_add_view">AddView</string>
+    <string name="tab_text_1">Post Ad</string>
+    <string name="tab_text_2">Your Ads</string>
+    <string name="tab_textcustomer_1">Add Customers</string>
+    <string name="tab_textcustomer_2">Your Customers</string>
+
+    <string name="titleSeller">Title</string>
+    <string name="priceSeller">Price</string>
+    <string name="addressSeller">Address</string>
+    <string name="descSeller">Description</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--garbage-->
+
+    <string name="mercury">Mercury</string>
+    <string name="venus">Venus</string>
+    <string name="earth">Earth</string>
+    <string name="mars">Mars</string>
+    <string name="jupiter">Jupiter</string>
+    <string name="saturn">Saturn</string>
+    <string name="uranus">Uranus</string>
+    <string name="neptune">Neptune</string>
+    <string name="pluto">Pluto</string>
+
+    <string name="mercury_sub" formatted="false">A small, rocky planet.</string>
+    <string name="venus_sub" formatted="false">A small, rocky planet blanketed in a thick layer of yellowish clouds.</string>
+    <string name="earth_sub" formatted="false">A small, rocky planet which supports a variety of life!</string>
+    <string name="mars_sub" formatted="false">A small, rocky planet which is cold and lifeless.</string>
+    <string name="jupiter_sub" formatted="false">A giant gas planet which is made up of about 90% hydrogen and 10% helium.</string>
+    <string name="saturn_sub" formatted="false">A giant gas planet which is made up of about 75% hydrogen and 25% helium.</string>
+    <string name="uranus_sub" formatted="false">A giant gas planet which is made up of mostly rock and various ices.</string>
+    <string name="neptune_sub" formatted="false">A giant gas planet which is most likely made up of various \"ices\" and rock.</string>
+    <string name="pluto_sub" formatted="false">A small, icy "dwarf planet". Scientists are still unsure as to exactly what it\'s made of.</string>
+    <string name="profile">Profile</string>
+
+    //delivered notification
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="request_location_updates">Request location updates</string>
+    <string name="remove_location_updates">Remove location updates</string>
+
+    <string name="location_updated">Location Updated: %1$s</string>
+    <string name="title_activity_add_customers">AddCustomers</string>
+    <string name="title_activity_add_customer">AddCustomer</string>
+
+    <string name="total_online_drivers">Total Online Drivers : </string>
+    <string name="need_location">Enable GPS SERVICE</string>
+    <string name="location_content">This app wants to change your device settings use GPS,Wi-Fi and cell networks for your location</string>
+
+    <string name="google_maps_key">AIzaSyBWX1-8m3V0zP2ZI_qnTr5VI</string>
+    <string name="google_maps_API_key">AIzaSyBWX1-8m3V0zP2ZI_qnTr5VI</string>
+    <string name="api_key">AIzaSyBWX1-8m3V0zP2ZI_qnTr5VI</string>
+
+
+</resources>
