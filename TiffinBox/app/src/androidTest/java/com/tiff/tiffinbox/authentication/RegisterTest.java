@@ -4,8 +4,6 @@ import android.widget.Spinner;
 
 import androidx.test.rule.ActivityTestRule;
 
-import com.tiff.tiffinbox.authentication.ui.Register;
-
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

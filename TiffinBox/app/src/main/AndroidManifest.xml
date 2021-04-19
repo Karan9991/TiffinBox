@@ -24,6 +24,9 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".deliveredNotification.MainActivity" />
         <activity android:name=".SplashScreen" />
+        <activity android:name=".authentication.ui.SignIn" />
+        <activity android:name=".authentication.ui.Register" />
+
         <activity android:name=".Customer.ui.SwipeRecipe" />
         <activity
             android:name=".authentication.ui.ForgotPassword"
@@ -38,8 +41,6 @@
         <activity
             android:name=".Customer.ui.Customer"
             android:theme="@style/AppTheme" />
-        <activity android:name=".authentication.ui.SignIn" />
-        <activity android:name=".authentication.ui.Register" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".IntroScreen.IntroActivity"
